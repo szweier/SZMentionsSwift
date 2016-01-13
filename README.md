@@ -2,6 +2,9 @@
 [![Platform](https://img.shields.io/cocoapods/p/SZMentionsSwift.svg?style=flat)](http://cocoadocs.org/docsets/SZMentionsSwift)
 [![Twitter](https://img.shields.io/badge/twitter-@StevenZweier-blue.svg?style=flat)](http://twitter.com/StevenZweier)
 
+
+# SWIFT CODE EXAMPLES TO COME
+
 SZMentionsSwift is a lightweight mentions library for iOS. This library was built to assist with the adding, removing and editing of a mention within a textview.
 
 ## How To Get Started
