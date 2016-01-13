@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.license          = 'MIT'
   s.author           = { "Steven Zweier" => "steve.zweier+mentions@gmail.com" }
   s.source           = { :git => "https://github.com/szweier/SZMentionsSwift.git", :tag => s.version.to_s }
-  s.platform     = :ios, '7.1'
+  s.platform     = :ios, '8.0'
   s.requires_arc = true
   s.source_files = 'SZMentionsSwift/Classes/**/*'
 
