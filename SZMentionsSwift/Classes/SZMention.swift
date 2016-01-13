@@ -12,14 +12,14 @@ public class SZMention: NSObject {
     /**
      @brief The location of the mention within the attributed string of the UITextView
      */
-    var mentionRange: NSRange
+    public var mentionRange: NSRange
     
     /**
      @brief Contains a reference to the object sent to the addMention: method
      */
-    var mentionObject: SZCreateMentionProtocol
+    public var mentionObject: SZCreateMentionProtocol
 
-    init(mentionRange: NSRange, mentionObject: SZCreateMentionProtocol) {
+    public init(mentionRange: NSRange, mentionObject: SZCreateMentionProtocol) {
         self.mentionRange = mentionRange;
         self.mentionObject = mentionObject;
     }

@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		DB0403DF1C44A05E000904DB /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0403DE1C44A05E000904DB /* SZMentionsSwift.framework */; };
+		DB9EDBB51C45D38D009C32A7 /* SZExampleMentionsTableViewDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9EDBB41C45D38D009C32A7 /* SZExampleMentionsTableViewDataManager.swift */; };
+		DB9EDBB91C45E6BD009C32A7 /* SZExampleMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9EDBB81C45E6BD009C32A7 /* SZExampleMention.swift */; };
 		DBCFB3821C449874007E3722 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCFB3811C449874007E3722 /* AppDelegate.swift */; };
-		DBCFB3841C449874007E3722 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCFB3831C449874007E3722 /* ViewController.swift */; };
+		DBCFB3841C449874007E3722 /* SZExampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCFB3831C449874007E3722 /* SZExampleViewController.swift */; };
 		DBCFB3871C449874007E3722 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBCFB3851C449874007E3722 /* Main.storyboard */; };
 		DBCFB3891C449874007E3722 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBCFB3881C449874007E3722 /* Assets.xcassets */; };
 		DBCFB38C1C449874007E3722 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBCFB38A1C449874007E3722 /* LaunchScreen.storyboard */; };
@@ -29,9 +31,11 @@
 
 /* Begin PBXFileReference section */
 		DB0403DE1C44A05E000904DB /* SZMentionsSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SZMentionsSwift.framework; path = "../SZMentionsSwift/build/Debug-iphoneos/SZMentionsSwift.framework"; sourceTree = "<group>"; };
+		DB9EDBB41C45D38D009C32A7 /* SZExampleMentionsTableViewDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZExampleMentionsTableViewDataManager.swift; sourceTree = "<group>"; };
+		DB9EDBB81C45E6BD009C32A7 /* SZExampleMention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZExampleMention.swift; sourceTree = "<group>"; };
 		DBCFB37E1C449874007E3722 /* SZMentionsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SZMentionsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBCFB3811C449874007E3722 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		DBCFB3831C449874007E3722 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		DBCFB3831C449874007E3722 /* SZExampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SZExampleViewController.swift; sourceTree = "<group>"; };
 		DBCFB3861C449874007E3722 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DBCFB3881C449874007E3722 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DBCFB38B1C449874007E3722 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -84,12 +88,14 @@
 			isa = PBXGroup;
 			children = (
 				DBCFB3811C449874007E3722 /* AppDelegate.swift */,
-				DBCFB3831C449874007E3722 /* ViewController.swift */,
+				DBCFB3831C449874007E3722 /* SZExampleViewController.swift */,
 				DBCFB3851C449874007E3722 /* Main.storyboard */,
 				DBCFB3881C449874007E3722 /* Assets.xcassets */,
 				DBCFB38A1C449874007E3722 /* LaunchScreen.storyboard */,
 				DBCFB38D1C449874007E3722 /* Info.plist */,
 				DBCFB3A11C449925007E3722 /* SZExampleAccessoryView.swift */,
+				DB9EDBB41C45D38D009C32A7 /* SZExampleMentionsTableViewDataManager.swift */,
+				DB9EDBB81C45E6BD009C32A7 /* SZExampleMention.swift */,
 			);
 			path = SZMentionsExample;
 			sourceTree = "<group>";
@@ -204,8 +210,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB9EDBB51C45D38D009C32A7 /* SZExampleMentionsTableViewDataManager.swift in Sources */,
 				DBCFB3A21C449925007E3722 /* SZExampleAccessoryView.swift in Sources */,
-				DBCFB3841C449874007E3722 /* ViewController.swift in Sources */,
+				DB9EDBB91C45E6BD009C32A7 /* SZExampleMention.swift in Sources */,
+				DBCFB3841C449874007E3722 /* SZExampleViewController.swift in Sources */,
 				DBCFB3821C449874007E3722 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

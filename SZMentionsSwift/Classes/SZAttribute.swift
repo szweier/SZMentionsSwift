@@ -19,7 +19,7 @@ public class SZAttribute: NSObject {
      */
     var attributeValue: NSObject
 
-    init(attributeName: String, attributeValue: NSObject) {
+    public init(attributeName: String, attributeValue: NSObject) {
         self.attributeName = attributeName
         self.attributeValue = attributeValue
     }

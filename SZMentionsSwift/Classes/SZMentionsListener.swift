@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SZMentionsManagerProtocol {
+public protocol SZMentionsManagerProtocol {
     /**
      @brief Called when the UITextView is editing a mention.
 
@@ -23,7 +23,7 @@ protocol SZMentionsManagerProtocol {
     func hideMentionsList()
 }
 
-protocol SZCreateMentionProtocol {
+public protocol SZCreateMentionProtocol {
     /**
      @brief The name of the mention to be added to the UITextView when selected.
      */
@@ -34,34 +34,34 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
     /**
      @brief Trigger to start a mention. Default: @
      */
-    var trigger: NSString = "@"
+    public var trigger: NSString = "@"
 
     /**
      @brief Text attributes to be applied to all text excluding mentions.
      */
-    var defaultTextAttributes: [SZAttribute]?
+    public var defaultTextAttributes: [SZAttribute]?
 
     /**
      @brief Text attributes to be applied to mentions.
      */
-    var mentionTextAttributes: [SZAttribute]?
+    public var mentionTextAttributes: [SZAttribute]?
 
     /**
      @brief The UITextView being handled by the SZMentionsListener
      */
-    var mentionsTextView: UITextView
+    public var mentionsTextView: UITextView
 
     /**
     @brief An optional delegate that can be used to handle all UITextView delegate
     methods after they've been handled by the SZMentionsListener
     */
-    var delegate: UITextViewDelegate!
+    public var delegate: UITextViewDelegate!
 
     /**
      @brief Manager in charge of handling the creation and dismissal of the mentions
      list.
      */
-    var mentionsManager: SZMentionsManagerProtocol!
+    public var mentionsManager: SZMentionsManagerProtocol!
 
     /**
      @brief Mutable array list of mentions managed by listener, accessible via the
@@ -71,19 +71,19 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
     /**
      @brief Array of mentions currently added to the textview
      */
-    var mentions:[SZMention] {
+    public var mentions:[SZMention] {
         return mutableMentions
     }
 
     /**
      @brief Amount of time to delay between showMentions calls default:0.5
      */
-    var cooldownInterval: NSTimeInterval = 0.5
+    public var cooldownInterval: NSTimeInterval = 0.5
 
     /**
      @brief Whether or not we should add a space after the mention, default: false
      */
-    var spaceAfterMention: Bool = false
+    public var spaceAfterMention: Bool = false
 
     /**
      @brief Range of mention currently being edited.
@@ -110,7 +110,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      */
     private var cooldownTimer: NSTimer?
 
-    func addMention(mention: SZCreateMentionProtocol) {
+    public func addMention(mention: SZCreateMentionProtocol) {
         self.filterString = nil
         var displayName = mention.szMentionName
 
@@ -174,8 +174,6 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
     func handleEditingMention(mention: SZMention, textView: UITextView, range: NSRange, text: String) -> Bool {
         let mutableAttributedString = textView.attributedText.mutableCopy()
 
-        self.apply(self.mentionTextAttributes!, range: mention.mentionRange, mutableAttributedString: mutableAttributedString as! NSMutableAttributedString)
-
         self.apply(self.defaultTextAttributes!, range: mention.mentionRange, mutableAttributedString: mutableAttributedString as! NSMutableAttributedString)
 
         mutableAttributedString.mutableString.replaceCharactersInRange(range, withString: text)
@@ -204,7 +202,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         return mentionColor
     }
 
-    init(mentionTextView: UITextView) {
+    public init(mentionTextView: UITextView) {
         mentionsTextView = mentionTextView
         super.init()
         mentionsTextView.delegate = self
@@ -233,6 +231,10 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         assert((textView.delegate?.isEqual(self))!, "Textview delegate must be set equal to SZMentionsListener")
+
+        if (self.delegate.respondsToSelector(Selector(""))) {
+            self.delegate.textView!(textView, shouldChangeTextInRange: range, replacementText: text)
+        }
 
         if (self.settingText == true) {
             return false
@@ -275,13 +277,10 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
                     self.mentionsManager.showMentionsListWithString(self.filterString!)
                 }
                 self.activateCooldownTimer()
-            } else {
-                self.mentionsManager.hideMentionsList()
+                return
             }
-
-        } else {
-            self.mentionsManager.hideMentionsList()
         }
+            self.mentionsManager.hideMentionsList()
     }
 
     func shouldAdjust(textView: UITextView, range: NSRange, text: String) -> Bool {
@@ -292,18 +291,25 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         self.showHideMentionsList(textView, text: text)
 
         self.editingMention = false
+        let mention = self.mentionBeingEdited(range)
 
-        if let index = self.mutableMentions.indexOf(self.mentionBeingEdited(range)) {
-            self.editingMention = true
-            self.mutableMentions.removeAtIndex(index)
-        }
-
-        if self.needsToChangeToDefaultColor(textView, range: range) {
-            return self.forceDefaultColor(textView, range: range, text: text)
+        if (mention != nil) {
+            if let index = self.mutableMentions.indexOf(mention!) {
+                self.editingMention = true
+                self.mutableMentions.removeAtIndex(index)
+            }
         }
 
         if self.delegate.respondsToSelector(Selector("textView:shouldChangeTextInRange:replacementText:")) {
             return self.delegate.textView!(textView, shouldChangeTextInRange: range, replacementText: text)
+        }
+
+        if editingMention == true {
+            self.handleEditingMention(mention!, textView: textView, range: range, text: text)
+        }
+
+        if self.needsToChangeToDefaultColor(textView, range: range) {
+            return self.forceDefaultColor(textView, range: range, text: text)
         }
 
         return true
@@ -317,11 +323,13 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         textView.attributedText = mutableAttributedString
         self.settingText = false
 
-        if range.length > 0 {
-            textView.selectedRange = NSRange.init(location: range.location, length: 0)
-        } else {
-            textView.selectedRange = NSRange.init(location: range.location + text.characters.count, length: 0)
+        var newRange = NSRange.init(location: range.location, length: 0)
+
+        if newRange.length <= 0 {
+            newRange.location = range.location + text.characters.count
         }
+
+        textView.selectedRange = newRange
 
         return false
     }
@@ -346,7 +354,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         return isAheadOfMention || isAtStartOfTextViewAndIsTouchingMention
     }
 
-    func mentionBeingEdited(range: NSRange) -> SZMention {
+    func mentionBeingEdited(range: NSRange) -> SZMention? {
         var editedMention: SZMention?
 
         for mention in self.mentions {
@@ -360,7 +368,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             }
         }
 
-        return editedMention!
+        return editedMention
     }
 
     func showHideMentionsList(textView: UITextView, text: String) {
@@ -415,6 +423,10 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
     }
 
     public func textViewDidChangeSelection(textView: UITextView) {
+        if editingMention == false {
+            self.adjust(textView, range: textView.selectedRange, text: "")
+        }
+
         if self.delegate.respondsToSelector(Selector("textViewDidChangeSelection:")) {
             self.delegate.textViewDidChangeSelection!(textView)
         }
