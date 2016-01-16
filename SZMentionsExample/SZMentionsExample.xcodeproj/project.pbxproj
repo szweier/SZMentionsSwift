@@ -17,6 +17,8 @@
 		DBCFB3971C449874007E3722 /* SZMentionsExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCFB3961C449874007E3722 /* SZMentionsExampleTests.swift */; };
 		DBCFB3A21C449925007E3722 /* SZExampleAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCFB3A11C449925007E3722 /* SZExampleAccessoryView.swift */; };
 		DBF2DF3A1C4B051A001B9788 /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBF2DF391C4B051A001B9788 /* SZMentionsSwift.framework */; };
+		DBF2DF3C1C4B05BE001B9788 /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBF2DF3B1C4B05BE001B9788 /* SZMentionsSwift.framework */; };
+		DBF2DF3D1C4B05BE001B9788 /* SZMentionsSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DBF2DF3B1C4B05BE001B9788 /* SZMentionsSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +38,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				DBF2DF3D1C4B05BE001B9788 /* SZMentionsSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -57,6 +60,7 @@
 		DBCFB3981C449874007E3722 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DBCFB3A11C449925007E3722 /* SZExampleAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZExampleAccessoryView.swift; sourceTree = "<group>"; };
 		DBF2DF391C4B051A001B9788 /* SZMentionsSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SZMentionsSwift.framework; path = "../SZMentionsSwift/build/Debug-iphoneos/SZMentionsSwift.framework"; sourceTree = "<group>"; };
+		DBF2DF3B1C4B05BE001B9788 /* SZMentionsSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SZMentionsSwift.framework; path = "/Users/stevenzweier/Library/Developer/Xcode/DerivedData/SZMentions-hiuqpjpfnijivufgvljeunqrfixs/Build/Products/Debug-iphoneos/SZMentionsSwift.framework"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBF2DF3C1C4B05BE001B9788 /* SZMentionsSwift.framework in Frameworks */,
 				DBF2DF3A1C4B051A001B9788 /* SZMentionsSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -81,6 +86,7 @@
 		DBCFB3751C449874007E3722 = {
 			isa = PBXGroup;
 			children = (
+				DBF2DF3B1C4B05BE001B9788 /* SZMentionsSwift.framework */,
 				DBF2DF391C4B051A001B9788 /* SZMentionsSwift.framework */,
 				DBCFB3801C449874007E3722 /* SZMentionsExample */,
 				DBCFB3951C449874007E3722 /* SZMentionsExampleTests */,
