@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DB0403DF1C44A05E000904DB /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0403DE1C44A05E000904DB /* SZMentionsSwift.framework */; };
+		AA37D9221C4A12DD0024A5DF /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA37D9211C4A12DD0024A5DF /* SZMentionsSwift.framework */; };
+		AA37D9231C4A12DD0024A5DF /* SZMentionsSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA37D9211C4A12DD0024A5DF /* SZMentionsSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DB9EDBB51C45D38D009C32A7 /* SZExampleMentionsTableViewDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9EDBB41C45D38D009C32A7 /* SZExampleMentionsTableViewDataManager.swift */; };
 		DB9EDBB91C45E6BD009C32A7 /* SZExampleMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9EDBB81C45E6BD009C32A7 /* SZExampleMention.swift */; };
 		DBCFB3821C449874007E3722 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCFB3811C449874007E3722 /* AppDelegate.swift */; };
@@ -29,7 +30,22 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		AA37D9241C4A12DD0024A5DF /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				AA37D9231C4A12DD0024A5DF /* SZMentionsSwift.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		AA37D9211C4A12DD0024A5DF /* SZMentionsSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = SZMentionsSwift.framework; path = "/Users/Steve/Library/Developer/Xcode/DerivedData/SZMentions-fahgbdaqmtnmheclxhdfjrgfjkqm/Build/Products/Debug-iphoneos/SZMentionsSwift.framework"; sourceTree = "<absolute>"; };
 		DB0403DE1C44A05E000904DB /* SZMentionsSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SZMentionsSwift.framework; path = "../SZMentionsSwift/build/Debug-iphoneos/SZMentionsSwift.framework"; sourceTree = "<group>"; };
 		DB9EDBB41C45D38D009C32A7 /* SZExampleMentionsTableViewDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZExampleMentionsTableViewDataManager.swift; sourceTree = "<group>"; };
 		DB9EDBB81C45E6BD009C32A7 /* SZExampleMention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZExampleMention.swift; sourceTree = "<group>"; };
@@ -51,7 +67,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB0403DF1C44A05E000904DB /* SZMentionsSwift.framework in Frameworks */,
+				AA37D9221C4A12DD0024A5DF /* SZMentionsSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +84,7 @@
 		DBCFB3751C449874007E3722 = {
 			isa = PBXGroup;
 			children = (
+				AA37D9211C4A12DD0024A5DF /* SZMentionsSwift.framework */,
 				DB0403DE1C44A05E000904DB /* SZMentionsSwift.framework */,
 				DBCFB3801C449874007E3722 /* SZMentionsExample */,
 				DBCFB3951C449874007E3722 /* SZMentionsExampleTests */,
@@ -119,6 +136,7 @@
 				DBCFB37A1C449874007E3722 /* Sources */,
 				DBCFB37B1C449874007E3722 /* Frameworks */,
 				DBCFB37C1C449874007E3722 /* Resources */,
+				AA37D9241C4A12DD0024A5DF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -343,7 +361,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SZMentionsExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -354,7 +372,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SZMentionsExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
