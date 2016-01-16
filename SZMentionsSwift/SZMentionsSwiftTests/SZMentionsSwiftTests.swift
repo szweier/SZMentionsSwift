@@ -1,15 +1,14 @@
 //
-//  SZMentionsExampleTests.swift
-//  SZMentionsExampleTests
+//  SZMentionsSwiftTests.swift
+//  SZMentionsSwiftTests
 //
-//  Created by Steven Zweier on 1/11/16.
+//  Created by Steven Zweier on 1/16/16.
 //  Copyright © 2016 Steven Zweier. All rights reserved.
 //
 
 import XCTest
-@testable import SZMentionsExample
 
-class SZMentionsExampleTests: XCTestCase {
+class SZMentionsSwiftTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

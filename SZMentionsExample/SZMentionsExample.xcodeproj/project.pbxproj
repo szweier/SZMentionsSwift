@@ -14,21 +14,10 @@
 		DBCFB3871C449874007E3722 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBCFB3851C449874007E3722 /* Main.storyboard */; };
 		DBCFB3891C449874007E3722 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBCFB3881C449874007E3722 /* Assets.xcassets */; };
 		DBCFB38C1C449874007E3722 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBCFB38A1C449874007E3722 /* LaunchScreen.storyboard */; };
-		DBCFB3971C449874007E3722 /* SZMentionsExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCFB3961C449874007E3722 /* SZMentionsExampleTests.swift */; };
 		DBCFB3A21C449925007E3722 /* SZExampleAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBCFB3A11C449925007E3722 /* SZExampleAccessoryView.swift */; };
 		DBF2DF441C4B0A03001B9788 /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBF2DF421C4B09D4001B9788 /* SZMentionsSwift.framework */; };
 		DBF2DF451C4B0A03001B9788 /* SZMentionsSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = DBF2DF421C4B09D4001B9788 /* SZMentionsSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		DBCFB3931C449874007E3722 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DBCFB3761C449874007E3722 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DBCFB37D1C449874007E3722;
-			remoteInfo = SZMentionsExample;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		DBF2DF461C4B0A03001B9788 /* Embed Frameworks */ = {
@@ -54,9 +43,6 @@
 		DBCFB3881C449874007E3722 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DBCFB38B1C449874007E3722 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DBCFB38D1C449874007E3722 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DBCFB3921C449874007E3722 /* SZMentionsExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SZMentionsExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DBCFB3961C449874007E3722 /* SZMentionsExampleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SZMentionsExampleTests.swift; sourceTree = "<group>"; };
-		DBCFB3981C449874007E3722 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DBCFB3A11C449925007E3722 /* SZExampleAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZExampleAccessoryView.swift; sourceTree = "<group>"; };
 		DBF2DF421C4B09D4001B9788 /* SZMentionsSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SZMentionsSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -70,13 +56,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DBCFB38F1C449874007E3722 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -84,7 +63,6 @@
 			isa = PBXGroup;
 			children = (
 				DBCFB3801C449874007E3722 /* SZMentionsExample */,
-				DBCFB3951C449874007E3722 /* SZMentionsExampleTests */,
 				DBCFB37F1C449874007E3722 /* Products */,
 				DBF2DF521C4B0EE5001B9788 /* Frameworks */,
 			);
@@ -94,7 +72,6 @@
 			isa = PBXGroup;
 			children = (
 				DBCFB37E1C449874007E3722 /* SZMentionsExample.app */,
-				DBCFB3921C449874007E3722 /* SZMentionsExampleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -113,15 +90,6 @@
 				DB9EDBB81C45E6BD009C32A7 /* SZExampleMention.swift */,
 			);
 			path = SZMentionsExample;
-			sourceTree = "<group>";
-		};
-		DBCFB3951C449874007E3722 /* SZMentionsExampleTests */ = {
-			isa = PBXGroup;
-			children = (
-				DBCFB3961C449874007E3722 /* SZMentionsExampleTests.swift */,
-				DBCFB3981C449874007E3722 /* Info.plist */,
-			);
-			path = SZMentionsExampleTests;
 			sourceTree = "<group>";
 		};
 		DBF2DF521C4B0EE5001B9788 /* Frameworks */ = {
@@ -154,24 +122,6 @@
 			productReference = DBCFB37E1C449874007E3722 /* SZMentionsExample.app */;
 			productType = "com.apple.product-type.application";
 		};
-		DBCFB3911C449874007E3722 /* SZMentionsExampleTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DBCFB39E1C449874007E3722 /* Build configuration list for PBXNativeTarget "SZMentionsExampleTests" */;
-			buildPhases = (
-				DBCFB38E1C449874007E3722 /* Sources */,
-				DBCFB38F1C449874007E3722 /* Frameworks */,
-				DBCFB3901C449874007E3722 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				DBCFB3941C449874007E3722 /* PBXTargetDependency */,
-			);
-			name = SZMentionsExampleTests;
-			productName = SZMentionsExampleTests;
-			productReference = DBCFB3921C449874007E3722 /* SZMentionsExampleTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,10 +134,6 @@
 				TargetAttributes = {
 					DBCFB37D1C449874007E3722 = {
 						CreatedOnToolsVersion = 7.2;
-					};
-					DBCFB3911C449874007E3722 = {
-						CreatedOnToolsVersion = 7.2;
-						TestTargetID = DBCFB37D1C449874007E3722;
 					};
 				};
 			};
@@ -205,7 +151,6 @@
 			projectRoot = "";
 			targets = (
 				DBCFB37D1C449874007E3722 /* SZMentionsExample */,
-				DBCFB3911C449874007E3722 /* SZMentionsExampleTests */,
 			);
 		};
 /* End PBXProject section */
@@ -218,13 +163,6 @@
 				DBCFB38C1C449874007E3722 /* LaunchScreen.storyboard in Resources */,
 				DBCFB3891C449874007E3722 /* Assets.xcassets in Resources */,
 				DBCFB3871C449874007E3722 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DBCFB3901C449874007E3722 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,23 +181,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DBCFB38E1C449874007E3722 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DBCFB3971C449874007E3722 /* SZMentionsExampleTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		DBCFB3941C449874007E3722 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DBCFB37D1C449874007E3722 /* SZMentionsExample */;
-			targetProxy = DBCFB3931C449874007E3722 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		DBCFB3851C449874007E3722 /* Main.storyboard */ = {
@@ -384,30 +306,6 @@
 			};
 			name = Release;
 		};
-		DBCFB39F1C449874007E3722 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = SZMentionsExampleTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsExampleTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SZMentionsExample.app/SZMentionsExample";
-			};
-			name = Debug;
-		};
-		DBCFB3A01C449874007E3722 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = SZMentionsExampleTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsExampleTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SZMentionsExample.app/SZMentionsExample";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -425,15 +323,6 @@
 			buildConfigurations = (
 				DBCFB39C1C449874007E3722 /* Debug */,
 				DBCFB39D1C449874007E3722 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DBCFB39E1C449874007E3722 /* Build configuration list for PBXNativeTarget "SZMentionsExampleTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DBCFB39F1C449874007E3722 /* Debug */,
-				DBCFB3A01C449874007E3722 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

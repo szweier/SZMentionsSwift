@@ -14,7 +14,19 @@
 		DB0403E01C44A0DC000904DB /* SZAttribute.swift in Headers */ = {isa = PBXBuildFile; fileRef = DB0403D81C44A02D000904DB /* SZAttribute.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB0403E11C44A0DC000904DB /* SZMention.swift in Headers */ = {isa = PBXBuildFile; fileRef = DB0403D91C44A02D000904DB /* SZMention.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB0403E21C44A0DC000904DB /* SZMentionsListener.swift in Headers */ = {isa = PBXBuildFile; fileRef = DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		DBF2DF5F1C4B1067001B9788 /* SZMentionsSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF2DF5E1C4B1067001B9788 /* SZMentionsSwiftTests.swift */; };
+		DBF2DF611C4B1067001B9788 /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DBF2DF621C4B1067001B9788 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DB0403B41C44A017000904DB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DB0403BC1C44A017000904DB;
+			remoteInfo = SZMentionsSwift;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SZMentionsSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -23,6 +35,9 @@
 		DB0403D81C44A02D000904DB /* SZAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZAttribute.swift; sourceTree = "<group>"; };
 		DB0403D91C44A02D000904DB /* SZMention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMention.swift; sourceTree = "<group>"; };
 		DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMentionsListener.swift; sourceTree = "<group>"; };
+		DBF2DF5C1C4B1067001B9788 /* SZMentionsSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SZMentionsSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBF2DF5E1C4B1067001B9788 /* SZMentionsSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SZMentionsSwiftTests.swift; sourceTree = "<group>"; };
+		DBF2DF601C4B1067001B9788 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +48,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DBF2DF591C4B1067001B9788 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBF2DF611C4B1067001B9788 /* SZMentionsSwift.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -40,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				DB0403BF1C44A017000904DB /* SZMentionsSwift */,
+				DBF2DF5D1C4B1067001B9788 /* SZMentionsSwiftTests */,
 				DB0403BE1C44A017000904DB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */,
+				DBF2DF5C1C4B1067001B9788 /* SZMentionsSwiftTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -71,6 +96,15 @@
 			);
 			path = Classes;
 			sourceTree = SOURCE_ROOT;
+		};
+		DBF2DF5D1C4B1067001B9788 /* SZMentionsSwiftTests */ = {
+			isa = PBXGroup;
+			children = (
+				DBF2DF5E1C4B1067001B9788 /* SZMentionsSwiftTests.swift */,
+				DBF2DF601C4B1067001B9788 /* Info.plist */,
+			);
+			path = SZMentionsSwiftTests;
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -107,6 +141,24 @@
 			productReference = DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		DBF2DF5B1C4B1067001B9788 /* SZMentionsSwiftTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DBF2DF661C4B1067001B9788 /* Build configuration list for PBXNativeTarget "SZMentionsSwiftTests" */;
+			buildPhases = (
+				DBF2DF581C4B1067001B9788 /* Sources */,
+				DBF2DF591C4B1067001B9788 /* Frameworks */,
+				DBF2DF5A1C4B1067001B9788 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DBF2DF631C4B1067001B9788 /* PBXTargetDependency */,
+			);
+			name = SZMentionsSwiftTests;
+			productName = SZMentionsSwiftTests;
+			productReference = DBF2DF5C1C4B1067001B9788 /* SZMentionsSwiftTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -118,6 +170,9 @@
 				ORGANIZATIONNAME = "Steven Zweier";
 				TargetAttributes = {
 					DB0403BC1C44A017000904DB = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					DBF2DF5B1C4B1067001B9788 = {
 						CreatedOnToolsVersion = 7.2;
 					};
 				};
@@ -135,12 +190,20 @@
 			projectRoot = "";
 			targets = (
 				DB0403BC1C44A017000904DB /* SZMentionsSwift */,
+				DBF2DF5B1C4B1067001B9788 /* SZMentionsSwiftTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		DB0403BB1C44A017000904DB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBF2DF5A1C4B1067001B9788 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -160,7 +223,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DBF2DF581C4B1067001B9788 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBF2DF5F1C4B1067001B9788 /* SZMentionsSwiftTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DBF2DF631C4B1067001B9788 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DB0403BC1C44A017000904DB /* SZMentionsSwift */;
+			targetProxy = DBF2DF621C4B1067001B9788 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		DB0403CF1C44A017000904DB /* Debug */ = {
@@ -284,6 +363,26 @@
 			};
 			name = Release;
 		};
+		DBF2DF641C4B1067001B9788 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SZMentionsSwiftTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		DBF2DF651C4B1067001B9788 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SZMentionsSwiftTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -304,6 +403,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		DBF2DF661C4B1067001B9788 /* Build configuration list for PBXNativeTarget "SZMentionsSwiftTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DBF2DF641C4B1067001B9788 /* Debug */,
+				DBF2DF651C4B1067001B9788 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
