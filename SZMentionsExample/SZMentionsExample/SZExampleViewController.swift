@@ -11,7 +11,7 @@ import SZMentionsSwift
 
 class SZExampleViewController: UIViewController, UITextViewDelegate {
 
-    var myInputAccessoryView: UIView?
+    private var myInputAccessoryView: UIView?
 
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -31,19 +31,9 @@ class SZExampleViewController: UIViewController, UITextViewDelegate {
         return true
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         self.becomeFirstResponder()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 }
 

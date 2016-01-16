@@ -11,38 +11,50 @@ import SZMentionsSwift
 
 class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UITableViewDelegate {
 
-    var listener: SZMentionsListener?
-    var mentions: [SZExampleMention]?
-    var tableView: UITableView?
-    var filterString: NSString?
+    private var listener: SZMentionsListener?
+    private var mentions: [SZExampleMention] {
+        let names = ["Steven Zweier", "Professor Belly Button", "Turtle Paper"]
 
-    internal init(mentionTableView: UITableView, mentionsListener: SZMentionsListener) {
+        var tempMentions = [SZExampleMention]()
+
+        for name in names {
+            let mention = SZExampleMention.init()
+            mention.szMentionName = name
+            tempMentions.append(mention)
+        }
+
+        return tempMentions
+    }
+    private var tableView: UITableView?
+    private var filterString: String?
+
+    init(mentionTableView: UITableView, mentionsListener: SZMentionsListener) {
         tableView = mentionTableView
-        tableView!.registerClass(UITableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
+        tableView!.registerClass(
+            UITableViewCell.classForCoder(),
+            forCellReuseIdentifier: "Cell")
         listener = mentionsListener
     }
 
-    internal func filter(string: NSString?) {
+    func filter(string: String?) {
         filterString = string
         tableView?.reloadData()
     }
 
-    func mentionsList() -> [SZExampleMention] {
-        if mentions == nil {
-            let names = ["Steven Zweier", "Professor Belly Button", "Turtle Paper"]
+    private func mentionsList() -> [SZExampleMention] {
+        var filteredMentions = mentions
 
-            var tempMentions = [SZExampleMention]()
-
-            for name in names {
-                let mention = SZExampleMention.init()
-                mention.szMentionName = name
-                tempMentions.append(mention)
+        if (filterString?.characters.count > 0) {
+            filteredMentions = mentions.filter() {
+                if let type = ($0 as SZExampleMention).szMentionName as String! {
+                    return type.lowercaseString.containsString(filterString!.lowercaseString)
+                } else {
+                    return false
+                }
             }
-
-            mentions = tempMentions
         }
 
-        return mentions!
+        return filteredMentions
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
