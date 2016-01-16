@@ -32,6 +32,7 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
         mentionsTableView?.dataSource = dataManager
         mentionsListener?.defaultTextAttributes = defaultAttributes()
         mentionsListener?.mentionTextAttributes = mentionAttributes()
+        self.backgroundColor = UIColor.grayColor()
         self.addSubview(textView)
         self.removeConstraints(self.constraints)
         self.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("|-5-[textView]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: ["textView": textView]))
