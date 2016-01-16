@@ -224,7 +224,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         self.delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text)
 
         if editingMention == true {
-            self.handleEditingMention(mention!, textView: textView, range: range, text: text)
+            return self.handleEditingMention(mention!, textView: textView, range: range, text: text)
         }
 
         if self.needsToChangeToDefaultColor(textView, range: range) {
