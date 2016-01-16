@@ -1,5 +1,3 @@
-# README TO BE ADJUST TO REFLECT SWIFT
-
 [![Cocoapods Compatible](https://img.shields.io/cocoapods/v/SZMentionsSwift.svg)](https://img.shields.io/cocoapods/v/SZMentionsSwift.svg)
 [![Platform](https://img.shields.io/cocoapods/p/SZMentionsSwift.svg?style=flat)](http://cocoadocs.org/docsets/SZMentionsSwift)
 [![Twitter](https://img.shields.io/badge/twitter-@StevenZweier-blue.svg?style=flat)](http://twitter.com/StevenZweier)
@@ -58,19 +56,19 @@ This class manages the mention interaction.
 `defaultTextAttributes` : Attributes (see: `SZAttribute`) to apply to the textview for all text that is not a mention.
 `mentionTextAttributes` : Attributes (see: `SZAttribute`) to apply to the textview for all mentions
 
-`textView` : **required** The text view we are applying the mentions listener to. Note: it's delegate **must** be the mentions manager.
+`mentionsTextView` : **required** The text view we are applying the mentions listener to. Note: it's delegate **must** be the mentions manager.
 
 `delegate` : **optional** If you would like to receive UITextView delegate methods set this and it will be passed through after processing view the mentions listener.
 
 `mentionsManager` : **required** The class that will be handling the mention interaction.
 
-`mentions` : **readonly** Array of all mentions currently applied to the text view.
-
 `cooldownInterval` : **optional** The amount of time to wait between calling showMentionsList. Default is `0.5`
 
 `spaceAfterMention` : **optional** Whether or not you would like a space to be added to the end of your mentions. Default is `NO`
 
-`- (void)addMention:(NSObject<SZCreateMentionProtocol> *)mention;` : Call this method while adding a mention to apply the mention to the current text.
+`mentions` : **readonly** Array of all mentions currently applied to the text view.
+
+`public func addMention(mention: SZCreateMentionProtocol)` : Call this method while adding a mention to apply the mention to the current text.
 
 #### SZCreateMentionProtocol
 
@@ -80,8 +78,8 @@ This required properties for a mention being sent to the mentions listener
 
 The require methods for handling mention interaction.
 
-`- (void)showMentionsListWithString:(NSString *)mentionString;` lets the delegate know to show a mentions list as well as provides the current string typed into the textview, allowing for filtering of the mentions list.
-`- (void)hideMentionsList;` lets the delegate know we are no longer typing in a mention. 
+`func showMentionsListWithString(mentionsString: NSString)` lets the delegate know to show a mentions list as well as provides the current string typed into the textview, allowing for filtering of the mentions list.
+`func hideMentionsList()` lets the delegate know we are no longer typing in a mention. 
 
 #### SZMention
 
@@ -93,9 +91,7 @@ This class is used to pass attributes to apply mentions text as well as regular 
 
 Example:
     
-    SZAttribute *attribute = [[SZAttribute alloc] init];
-    [attribute setAttributeName:NSForegroundColorAttributeName];
-    [attribute setAttributeValue:[UIColor redColor]];
+    SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.blackColor())
     
 
 ## Unit Tests
