@@ -1,4 +1,3 @@
-# Xcode
 .DS_Store
 build/
 *.pbxuser
@@ -9,11 +8,8 @@ build/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
-!default.xcworkspace
 xcuserdata
 profile
 *.moved-aside
 DerivedData
 .idea/
-# Pods - for those of you who use CocoaPods
-Pods
