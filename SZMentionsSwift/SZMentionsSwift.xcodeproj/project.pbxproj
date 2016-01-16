@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		DB0403C11C44A017000904DB /* SZMentionsSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = DB0403C01C44A017000904DB /* SZMentionsSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DB0403C81C44A017000904DB /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */; };
-		DB0403CD1C44A017000904DB /* SZMentionsSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403CC1C44A017000904DB /* SZMentionsSwiftTests.swift */; };
 		DB0403DB1C44A02D000904DB /* SZAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403D81C44A02D000904DB /* SZAttribute.swift */; };
 		DB0403DC1C44A02D000904DB /* SZMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403D91C44A02D000904DB /* SZMention.swift */; };
 		DB0403DD1C44A02D000904DB /* SZMentionsListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */; };
@@ -18,23 +16,10 @@
 		DB0403E21C44A0DC000904DB /* SZMentionsListener.swift in Headers */ = {isa = PBXBuildFile; fileRef = DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		DB0403C91C44A017000904DB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DB0403B41C44A017000904DB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DB0403BC1C44A017000904DB;
-			remoteInfo = SZMentionsSwift;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SZMentionsSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0403C01C44A017000904DB /* SZMentionsSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SZMentionsSwift.h; sourceTree = "<group>"; };
 		DB0403C21C44A017000904DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DB0403C71C44A017000904DB /* SZMentionsSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SZMentionsSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB0403CC1C44A017000904DB /* SZMentionsSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SZMentionsSwiftTests.swift; sourceTree = "<group>"; };
-		DB0403CE1C44A017000904DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB0403D81C44A02D000904DB /* SZAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZAttribute.swift; sourceTree = "<group>"; };
 		DB0403D91C44A02D000904DB /* SZMention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMention.swift; sourceTree = "<group>"; };
 		DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMentionsListener.swift; sourceTree = "<group>"; };
@@ -48,14 +33,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DB0403C41C44A017000904DB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DB0403C81C44A017000904DB /* SZMentionsSwift.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -63,7 +40,6 @@
 			isa = PBXGroup;
 			children = (
 				DB0403BF1C44A017000904DB /* SZMentionsSwift */,
-				DB0403CB1C44A017000904DB /* SZMentionsSwiftTests */,
 				DB0403BE1C44A017000904DB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -72,7 +48,6 @@
 			isa = PBXGroup;
 			children = (
 				DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */,
-				DB0403C71C44A017000904DB /* SZMentionsSwiftTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -85,15 +60,6 @@
 				DB0403C21C44A017000904DB /* Info.plist */,
 			);
 			path = SZMentionsSwift;
-			sourceTree = "<group>";
-		};
-		DB0403CB1C44A017000904DB /* SZMentionsSwiftTests */ = {
-			isa = PBXGroup;
-			children = (
-				DB0403CC1C44A017000904DB /* SZMentionsSwiftTests.swift */,
-				DB0403CE1C44A017000904DB /* Info.plist */,
-			);
-			path = SZMentionsSwiftTests;
 			sourceTree = "<group>";
 		};
 		DB0403D71C44A02D000904DB /* Classes */ = {
@@ -141,24 +107,6 @@
 			productReference = DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		DB0403C61C44A017000904DB /* SZMentionsSwiftTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = DB0403D41C44A017000904DB /* Build configuration list for PBXNativeTarget "SZMentionsSwiftTests" */;
-			buildPhases = (
-				DB0403C31C44A017000904DB /* Sources */,
-				DB0403C41C44A017000904DB /* Frameworks */,
-				DB0403C51C44A017000904DB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				DB0403CA1C44A017000904DB /* PBXTargetDependency */,
-			);
-			name = SZMentionsSwiftTests;
-			productName = SZMentionsSwiftTests;
-			productReference = DB0403C71C44A017000904DB /* SZMentionsSwiftTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -170,9 +118,6 @@
 				ORGANIZATIONNAME = "Steven Zweier";
 				TargetAttributes = {
 					DB0403BC1C44A017000904DB = {
-						CreatedOnToolsVersion = 7.2;
-					};
-					DB0403C61C44A017000904DB = {
 						CreatedOnToolsVersion = 7.2;
 					};
 				};
@@ -190,20 +135,12 @@
 			projectRoot = "";
 			targets = (
 				DB0403BC1C44A017000904DB /* SZMentionsSwift */,
-				DB0403C61C44A017000904DB /* SZMentionsSwiftTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		DB0403BB1C44A017000904DB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		DB0403C51C44A017000904DB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -223,23 +160,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		DB0403C31C44A017000904DB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				DB0403CD1C44A017000904DB /* SZMentionsSwiftTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		DB0403CA1C44A017000904DB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = DB0403BC1C44A017000904DB /* SZMentionsSwift */;
-			targetProxy = DB0403C91C44A017000904DB /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		DB0403CF1C44A017000904DB /* Debug */ = {
@@ -363,26 +284,6 @@
 			};
 			name = Release;
 		};
-		DB0403D51C44A017000904DB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = SZMentionsSwiftTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		DB0403D61C44A017000904DB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = SZMentionsSwiftTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -400,15 +301,6 @@
 			buildConfigurations = (
 				DB0403D21C44A017000904DB /* Debug */,
 				DB0403D31C44A017000904DB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		DB0403D41C44A017000904DB /* Build configuration list for PBXNativeTarget "SZMentionsSwiftTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				DB0403D51C44A017000904DB /* Debug */,
-				DB0403D61C44A017000904DB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

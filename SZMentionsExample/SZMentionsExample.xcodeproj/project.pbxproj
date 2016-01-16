@@ -83,10 +83,10 @@
 		DBCFB3751C449874007E3722 = {
 			isa = PBXGroup;
 			children = (
-				DBF2DF421C4B09D4001B9788 /* SZMentionsSwift.framework */,
 				DBCFB3801C449874007E3722 /* SZMentionsExample */,
 				DBCFB3951C449874007E3722 /* SZMentionsExampleTests */,
 				DBCFB37F1C449874007E3722 /* Products */,
+				DBF2DF521C4B0EE5001B9788 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -122,6 +122,15 @@
 				DBCFB3981C449874007E3722 /* Info.plist */,
 			);
 			path = SZMentionsExampleTests;
+			sourceTree = "<group>";
+		};
+		DBF2DF521C4B0EE5001B9788 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DBF2DF421C4B09D4001B9788 /* SZMentionsSwift.framework */,
+			);
+			name = Frameworks;
+			path = SZMentionsExample;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
