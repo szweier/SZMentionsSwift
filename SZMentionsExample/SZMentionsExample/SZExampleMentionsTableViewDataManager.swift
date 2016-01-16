@@ -13,7 +13,10 @@ class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UI
 
     private var listener: SZMentionsListener?
     private var mentions: [SZExampleMention] {
-        let names = ["Steven Zweier", "Professor Belly Button", "Turtle Paper"]
+        let names = [
+            "Steven Zweier",
+            "John Smith",
+            "Joe Tesla"]
 
         var tempMentions = [SZExampleMention]()
 
