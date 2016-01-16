@@ -12,7 +12,7 @@ public class SZAttribute: NSObject {
     /**
      @brief Name of the attribute to set on a string
      */
-     var attributeName: String
+    var attributeName: String
 
     /**
      @brief Value of the attribute to set on a string
