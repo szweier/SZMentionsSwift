@@ -113,7 +113,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
     /**
      @brief Whether or not we are currently editing a mention.
      */
-    private var editingMention: Bool?
+    private var editingMention: Bool = false
 
     /**
      @brief Allow us to edit text internally without triggering delegate
@@ -192,7 +192,8 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
                     trigger as String,
                     withString: "")
 
-                if self.filterString?.characters.count > 0 && self.cooldownTimer?.valid == true {
+                if self.filterString?.characters.count > 0 &&
+                    (self.cooldownTimer == nil || self.cooldownTimer?.valid == false) {
                     self.mentionsManager.showMentionsListWithString(self.filterString!)
                 }
                 self.activateCooldownTimer()
@@ -271,19 +272,21 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
     // MARK: Mention management
 
     public func addMention(mention: SZCreateMentionProtocol) {
+        if (self.currentMentionRange == nil) {
+            return
+        }
+
         self.filterString = nil
         var displayName = mention.szMentionName
 
         if self.spaceAfterMention {
             displayName = displayName.stringByAppendingString(" ")
         }
-        let mutableAttributedString = self.mentionsTextView.attributedText.mutableCopy()
 
-        if (self.currentMentionRange != nil) {
-            mutableAttributedString.mutableString.replaceCharactersInRange(
-                self.currentMentionRange!,
-                withString: displayName)
-        }
+        let mutableAttributedString = self.mentionsTextView.attributedText.mutableCopy()
+        mutableAttributedString.mutableString.replaceCharactersInRange(
+            self.currentMentionRange!,
+            withString: displayName)
 
         self.adjustMentions(self.currentMentionRange!, text: mention.szMentionName)
 
@@ -377,11 +380,11 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
 
         let attribute = self.mentionTextAttributes[0]
         let effectiveRange = NSRangePointer.init(bitPattern: 0)
-
-        return (textView.attributedText.attribute(
+        let textViewAttribute = textView.attributedText.attribute(
             attribute.attributeName,
             atIndex: index,
-            effectiveRange: effectiveRange)?.isEqual(attribute.attributeValue))!
+            effectiveRange: effectiveRange)
+        return textViewAttribute?.isEqual(attribute.attributeValue).boolValue == true
     }
 
     private func mentionBeingEdited(range: NSRange) -> SZMention? {
@@ -494,8 +497,8 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
     public func textViewDidChangeSelection(textView: UITextView) {
         if editingMention == false {
             self.adjust(textView, range: textView.selectedRange, text: "")
+            self.delegate?.textViewDidChangeSelection?(textView)
         }
-        self.delegate?.textViewDidChangeSelection?(textView)
     }
     
     public func textViewDidEndEditing(textView: UITextView) {
