@@ -288,7 +288,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             self.currentMentionRange!,
             withString: displayName)
 
-        self.adjustMentions(self.currentMentionRange!, text: mention.szMentionName)
+        self.adjustMentions(self.currentMentionRange!, text: displayName)
 
         self.currentMentionRange = NSMakeRange(
             self.currentMentionRange!.location,
