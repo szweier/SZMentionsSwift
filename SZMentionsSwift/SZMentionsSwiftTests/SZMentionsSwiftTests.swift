@@ -116,6 +116,53 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 0)
     }
 
+    func testMentionLocationIsAdjustedProperlyWhenAMentionIsInsertsBehindAMentionSpaceAfterMentionIsFalse() {
+        textView.insertText("@t")
+        var mention = SZExampleMention.init()
+        mention.szMentionName = "Steven"
+        mentionsListener?.addMention(mention)
+
+        XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 0)
+        XCTAssert(mentionsListener?.mentions.first?.mentionRange.length == 6)
+
+        textView.selectedRange = NSMakeRange(0, 0)
+
+        if mentionsListener?.textView(textView, shouldChangeTextInRange: NSMakeRange(0, 0), replacementText: "@t").boolValue == true {
+            textView.insertText("@t")
+        }
+        mention = SZExampleMention.init()
+        mention.szMentionName = "Steven Zweier"
+        mentionsListener?.addMention(mention)
+
+        XCTAssert(mentionsListener?.mentions[1].mentionRange.location == 0)
+        XCTAssert(mentionsListener?.mentions[1].mentionRange.length == 13)
+        XCTAssert(mentionsListener?.mentions[0].mentionRange.location == 13)
+    }
+
+    func testMentionLocationIsAdjustedProperlyWhenAMentionIsInsertsBehindAMentionSpaceAfterMentionIsTrue() {
+        mentionsListener?.spaceAfterMention = true
+        textView.insertText("@t")
+        var mention = SZExampleMention.init()
+        mention.szMentionName = "Steven"
+        mentionsListener?.addMention(mention)
+
+        XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 0)
+        XCTAssert(mentionsListener?.mentions.first?.mentionRange.length == 6)
+
+        textView.selectedRange = NSMakeRange(0, 0)
+
+        if mentionsListener?.textView(textView, shouldChangeTextInRange: NSMakeRange(0, 0), replacementText: "@t").boolValue == true {
+            textView.insertText("@t")
+        }
+        mention = SZExampleMention.init()
+        mention.szMentionName = "Steven Zweier"
+        mentionsListener?.addMention(mention)
+
+        XCTAssert(mentionsListener?.mentions[1].mentionRange.location == 0)
+        XCTAssert(mentionsListener?.mentions[1].mentionRange.length == 13)
+        XCTAssert(mentionsListener?.mentions[0].mentionRange.location == 14)
+    }
+
     func testEditingTheMiddleOfTheMentionRemovesTheMention() {
         textView.insertText("Testing @t")
         let mention = SZExampleMention.init()
