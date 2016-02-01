@@ -96,7 +96,7 @@ Example:
 
 ## Unit Tests
 
-SZMentionsSwift includes unit tests which can be run on the SZMentionsSwift example project.
+SZMentionsSwift includes unit tests which can be run on the SZMentionsSwift framework.
 
 ## Credits
 
