@@ -122,7 +122,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     // MARK: TextView Adjustment
 
-    private func resetEmpty(textView: UITextView, text: String, range: NSRange) -> Bool {
+    private func resetEmpty(textView: UITextView, text: String, range: NSRange) {
         mutableMentions.removeAll()
         let mutableAttributedString = textView.attributedText.mutableCopy()
         mutableAttributedString.mutableString.replaceCharactersInRange(range, withString: text)
@@ -130,17 +130,6 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             self.defaultTextAttributes,
             range: NSRange(location: range.location, length: text.characters.count),
             mutableAttributedString: mutableAttributedString as! NSMutableAttributedString)
-        self.settingText = true
-        textView.attributedText = mutableAttributedString as! NSAttributedString
-        self.settingText = false
-
-        self.delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text)
-
-        self.textViewDidChange(textView)
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            UITextViewTextDidChangeNotification, object: textView)
-
-        return false
     }
 
     private func adjust(textView: UITextView, range: NSRange, text: String) {
@@ -186,7 +175,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     private func shouldAdjust(textView: UITextView, range: NSRange, text: String) -> Bool {
         if (textView.text.characters.count == 0) {
-            return self.resetEmpty(textView, text: text, range: range)
+            self.resetEmpty(textView, text: text, range: range)
         }
 
         if (SZMentionHelper.shouldHideMentions(text)) {
