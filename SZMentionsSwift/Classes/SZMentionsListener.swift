@@ -33,24 +33,6 @@ public protocol SZCreateMentionProtocol {
 public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     /**
-     @brief Default color
-     */
-    class private var defaultColor: SZAttribute {
-        return SZAttribute.init(
-            attributeName: NSForegroundColorAttributeName,
-            attributeValue: UIColor.greenColor())
-    }
-
-    /**
-     @brief Mention color
-     */
-    class private var mentionColor: SZAttribute {
-        return SZAttribute.init(
-            attributeName: NSForegroundColorAttributeName,
-            attributeValue: UIColor.greenColor())
-    }
-
-    /**
      @brief Trigger to start a mention. Default: @
      */
     public var trigger: String = "@"
@@ -58,12 +40,11 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
     /**
      @brief Text attributes to be applied to all text excluding mentions.
      */
-    public var defaultTextAttributes: [SZAttribute] = [defaultColor]
-
+    public var defaultTextAttributes: [SZAttribute] = SZDefaultAttributes.defaultTextAttributes()
     /**
      @brief Text attributes to be applied to mentions.
      */
-    public var mentionTextAttributes: [SZAttribute] = [mentionColor]
+    public var mentionTextAttributes: [SZAttribute] = SZDefaultAttributes.defaultMentionAttributes()
 
     /**
      @brief The UITextView being handled by the SZMentionsListener
@@ -145,7 +126,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         mutableMentions.removeAll()
         let mutableAttributedString = textView.attributedText.mutableCopy()
         mutableAttributedString.mutableString.replaceCharactersInRange(range, withString: text)
-        self.apply(
+        SZAttributedStringHelper.apply(
             self.defaultTextAttributes,
             range: NSRange(location: range.location, length: text.characters.count),
             mutableAttributedString: mutableAttributedString as! NSMutableAttributedString)
@@ -208,7 +189,9 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             return self.resetEmpty(textView, text: text, range: range)
         }
 
-        self.showHideMentionsList(textView, text: text)
+        if (SZMentionHelper.shouldHideMentions(text)) {
+            self.mentionsManager.hideMentionsList()
+        }
 
         self.editingMention = false
         let mention = self.mentionBeingEdited(range)
@@ -220,7 +203,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             }
         }
 
-        self.adjustMentions(range, text: text)
+        SZMentionHelper.adjustMentions(range, text: text, mentions: self.mentions)
 
         self.delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text)
 
@@ -228,7 +211,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             return self.handleEditingMention(mention!, textView: textView, range: range, text: text)
         }
 
-        if self.needsToChangeToDefaultColor(textView, range: range) {
+        if SZMentionHelper.needsToChangeToDefaultColor(textView, range: range, mentions: self.mentions) {
             return self.forceDefaultColor(textView, range: range, text: text)
         }
 
@@ -241,7 +224,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         let mutableAttributedString = textView.attributedText.mutableCopy() as! NSMutableAttributedString
         mutableAttributedString.mutableString.replaceCharactersInRange(range, withString: text)
 
-        self.apply(
+        SZAttributedStringHelper.apply(
             self.defaultTextAttributes,
             range: NSRange.init(location: range.location, length: text.characters.count),
             mutableAttributedString: mutableAttributedString)
@@ -258,15 +241,6 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         textView.selectedRange = newRange
 
         return false
-    }
-
-    private func needsToChangeToDefaultColor(textView: UITextView, range: NSRange) -> Bool {
-        let isAheadOfMention = range.location > 0 &&
-            self.isMentionAt(range.location - 1, textView: textView)
-        let isAtStartOfTextViewAndIsTouchingMention = range.location == 0 &&
-            self.isMentionAt(range.location + 1, textView: textView)
-
-        return isAheadOfMention || isAtStartOfTextViewAndIsTouchingMention
     }
 
     // MARK: Mention management
@@ -288,19 +262,19 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             self.currentMentionRange!,
             withString: displayName)
 
-        self.adjustMentions(self.currentMentionRange!, text: displayName)
+        SZMentionHelper.adjustMentions(self.currentMentionRange!, text: displayName, mentions: self.mentions)
 
         self.currentMentionRange = NSMakeRange(
             self.currentMentionRange!.location,
             mention.szMentionName.characters.count)
 
-        self.apply(
+        SZAttributedStringHelper.apply(
             self.mentionTextAttributes,
             range: self.currentMentionRange!,
             mutableAttributedString: mutableAttributedString as! NSMutableAttributedString)
 
         let newRange = NSMakeRange(self.currentMentionRange!.location + self.currentMentionRange!.length - 1, 0)
-        self.apply(
+        SZAttributedStringHelper.apply(
             self.defaultTextAttributes,
             range: newRange,
             mutableAttributedString: mutableAttributedString as! NSMutableAttributedString)
@@ -324,39 +298,10 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         self.mutableMentions.append(szmention)
     }
 
-    private func adjustMentions(range : NSRange, text : String) {
-        for mention in self.mentionsAfterTextEntry(range) {
-
-            var rangeAdjustment = -(range.length > 0 ? range.length : 0)
-
-            if text.characters.count > 0 {
-                rangeAdjustment = text.characters.count - (range.length > 0 ? range.length : 0)
-            }
-            mention.mentionRange = NSRange.init(
-                location: mention.mentionRange.location + rangeAdjustment,
-                length: mention.mentionRange.length)
-        }
-    }
-
-    private func mentionsAfterTextEntry(range: NSRange) -> [SZMention] {
-        var mentionsAfterTextEntry = [SZMention]()
-
-        for mention in self.mentions {
-
-            if range.location + range.length <= mention.mentionRange.location {
-                mentionsAfterTextEntry.append(mention)
-            }
-        }
-
-        let immutableMentionsAfterTextEntry = mentionsAfterTextEntry
-
-        return immutableMentionsAfterTextEntry
-    }
-
     private func handleEditingMention(mention: SZMention, textView: UITextView, range: NSRange, text: String) -> Bool {
         let mutableAttributedString = textView.attributedText.mutableCopy()
 
-        self.apply(
+        SZAttributedStringHelper.apply(
             self.defaultTextAttributes,
             range: mention.mentionRange,
             mutableAttributedString: mutableAttributedString as! NSMutableAttributedString)
@@ -371,20 +316,6 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         self.delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text)
 
         return false
-    }
-
-    private func isMentionAt(index: NSInteger, textView: UITextView) -> Bool {
-        if (index < 0 || textView.attributedText.length <= index) {
-            return false
-        }
-
-        let attribute = self.mentionTextAttributes[0]
-        let effectiveRange = NSRangePointer.init(bitPattern: 0)
-        let textViewAttribute = textView.attributedText.attribute(
-            attribute.attributeName,
-            atIndex: index,
-            effectiveRange: effectiveRange)
-        return textViewAttribute?.isEqual(attribute.attributeValue).boolValue == true
     }
 
     private func mentionBeingEdited(range: NSRange) -> SZMention? {
@@ -402,25 +333,6 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         }
 
         return editedMention
-    }
-
-    private func showHideMentionsList(textView: UITextView, text: String) {
-
-        if (text == " " ||
-            (text.characters.count > 0 &&
-                text.characters.last! == " ")) {
-                    self.mentionsManager.hideMentionsList()
-        }
-    }
-
-    // MARK: Attributes
-    private func apply(attributes: [SZAttribute], range: NSRange, mutableAttributedString: NSMutableAttributedString) {
-        for attribute in attributes {
-            mutableAttributedString.addAttribute(
-                attribute.attributeName,
-                value: attribute.attributeValue,
-                range: range)
-        }
     }
 
     // MARK: Timer

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA0401461C602C3E003A95A6 /* SZAttributedStringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0401451C602C3E003A95A6 /* SZAttributedStringHelper.swift */; };
+		AA0401481C602D39003A95A6 /* SZDefaultAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0401471C602D39003A95A6 /* SZDefaultAttributes.swift */; };
+		AA04014A1C602E70003A95A6 /* SZMentionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0401491C602E70003A95A6 /* SZMentionHelper.swift */; };
 		DB0403C11C44A017000904DB /* SZMentionsSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = DB0403C01C44A017000904DB /* SZMentionsSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB0403DB1C44A02D000904DB /* SZAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403D81C44A02D000904DB /* SZAttribute.swift */; };
 		DB0403DC1C44A02D000904DB /* SZMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403D91C44A02D000904DB /* SZMention.swift */; };
@@ -29,6 +32,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AA0401451C602C3E003A95A6 /* SZAttributedStringHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZAttributedStringHelper.swift; sourceTree = "<group>"; };
+		AA0401471C602D39003A95A6 /* SZDefaultAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZDefaultAttributes.swift; sourceTree = "<group>"; };
+		AA0401491C602E70003A95A6 /* SZMentionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMentionHelper.swift; sourceTree = "<group>"; };
 		DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SZMentionsSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0403C01C44A017000904DB /* SZMentionsSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SZMentionsSwift.h; sourceTree = "<group>"; };
 		DB0403C21C44A017000904DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -93,6 +99,9 @@
 				DB0403D81C44A02D000904DB /* SZAttribute.swift */,
 				DB0403D91C44A02D000904DB /* SZMention.swift */,
 				DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */,
+				AA0401451C602C3E003A95A6 /* SZAttributedStringHelper.swift */,
+				AA0401471C602D39003A95A6 /* SZDefaultAttributes.swift */,
+				AA0401491C602E70003A95A6 /* SZMentionHelper.swift */,
 			);
 			path = Classes;
 			sourceTree = SOURCE_ROOT;
@@ -218,8 +227,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB0403DB1C44A02D000904DB /* SZAttribute.swift in Sources */,
+				AA0401461C602C3E003A95A6 /* SZAttributedStringHelper.swift in Sources */,
+				AA0401481C602D39003A95A6 /* SZDefaultAttributes.swift in Sources */,
 				DB0403DC1C44A02D000904DB /* SZMention.swift in Sources */,
 				DB0403DD1C44A02D000904DB /* SZMentionsListener.swift in Sources */,
+				AA04014A1C602E70003A95A6 /* SZMentionHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +423,7 @@
 				DBF2DF651C4B1067001B9788 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
