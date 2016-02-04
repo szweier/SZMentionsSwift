@@ -19,6 +19,11 @@ public class SZAttribute: NSObject {
      */
     var attributeValue: NSObject
 
+    /**
+     @brief initializer for creating an attribute
+     @param attributeName: the name of the attribute (example: NSForegroundColorAttributeName)
+     @param attributeValue: the value for the given attribute (example: UIColor.redColor)
+     */
     public init(attributeName: String, attributeValue: NSObject) {
         self.attributeName = attributeName
         self.attributeValue = attributeValue
