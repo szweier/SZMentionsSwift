@@ -50,11 +50,7 @@ Below is a quick run through of the objects used in this library but as always t
 This class manages the mention interaction.
 
 ##### Setup
-
-`trigger` : The string used to start a mention. Default is `@`
-
-`defaultTextAttributes` : Attributes (see: `SZAttribute`) to apply to the textview for all text that is not a mention.
-`mentionTextAttributes` : Attributes (see: `SZAttribute`) to apply to the textview for all mentions
+Use one of the many initializers to setup your mentions listener.  Parameters explained below:
 
 `mentionsTextView` : **required** The text view we are applying the mentions listener to. Note: it's delegate **must** be the mentions manager.
 
@@ -62,11 +58,21 @@ This class manages the mention interaction.
 
 `mentionsManager` : **required** The class that will be handling the mention interaction.
 
-`cooldownInterval` : **optional** The amount of time to wait between calling showMentionsList. Default is `0.5`
+`defaultTextAttributes` : Attributes (see: `SZAttribute`) to apply to the textview for all text that is not a mention.
+
+`mentionTextAttributes` : Attributes (see: `SZAttribute`) to apply to the textview for all mentions
 
 `spaceAfterMention` : **optional** Whether or not you would like a space to be added to the end of your mentions. Default is `NO`
 
+`trigger` : The string used to start a mention. Default is `@`
+
+`cooldownInterval` : **optional** The amount of time to wait between calling showMentionsList. Default is `0.5`
+
+##### Properties
+
 `mentions` : **readonly** Array of all mentions currently applied to the text view.
+
+##### Methods
 
 `public func addMention(mention: SZCreateMentionProtocol)` : Call this method while adding a mention to apply the mention to the current text.
 
