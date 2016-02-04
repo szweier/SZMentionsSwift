@@ -279,7 +279,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         }
 
         if SZMentionHelper.needsToChangeToDefaultAttributes(textView, range: range, mentions: self.mentions) {
-            return self.forceDefaultColor(textView, range: range, text: text)
+            return self.forceDefaultAttributes(textView, range: range, text: text)
         }
 
         return true
@@ -287,7 +287,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     // MARK: Color management
 
-    private func forceDefaultColor(textView: UITextView, range: NSRange, text: String) -> Bool {
+    private func forceDefaultAttributes(textView: UITextView, range: NSRange, text: String) -> Bool {
         let mutableAttributedString = textView.attributedText.mutableCopy() as! NSMutableAttributedString
         mutableAttributedString.mutableString.replaceCharactersInRange(range, withString: text)
 
