@@ -1,6 +1,6 @@
 //
 //  SZMentionsListener.swift
-//  SZMentions_Swift
+//  SZMentionsSwift
 //
 //  Created by Steven Zweier on 1/11/16.
 //  Copyright © 2016 Steven Zweier. All rights reserved.
@@ -367,7 +367,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         return true
     }
 
-    // MARK: Color management
+    // MARK: attribute management
 
     /**
     @brief Forces default attributes on a string of text
@@ -462,6 +462,8 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @brief Resets the attributes of the mention to default attributes
      @param mention: the mention being edited
      @param textView: the mention text view
+     @param range: the current range selected
+     @param text: text to replace range
      */
     private func handleEditingMention(mention: SZMention, textView: UITextView,
         range: NSRange, text: String) -> Bool {
