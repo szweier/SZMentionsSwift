@@ -535,7 +535,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
     }
 
     // MARK: TextView Delegate
-    
+
     public func textView(
         textView: UITextView,
         shouldChangeTextInRange range: NSRange,

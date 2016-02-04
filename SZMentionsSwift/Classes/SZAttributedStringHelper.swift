@@ -9,7 +9,7 @@
 import Foundation
 
 class SZAttributedStringHelper {
-    /** 
+    /**
      @brief Applies attributes to a given string and range
      @param attributes: the attributes to apply
      @param range: the range to apply the attributes to
@@ -17,11 +17,11 @@ class SZAttributedStringHelper {
      */
     class func apply(attributes: [SZAttribute], range: NSRange,
         mutableAttributedString: NSMutableAttributedString) {
-        for attribute in attributes {
-            mutableAttributedString.addAttribute(
-                attribute.attributeName,
-                value: attribute.attributeValue,
-                range: range)
-        }
+            for attribute in attributes {
+                mutableAttributedString.addAttribute(
+                    attribute.attributeName,
+                    value: attribute.attributeValue,
+                    range: range)
+            }
     }
 }

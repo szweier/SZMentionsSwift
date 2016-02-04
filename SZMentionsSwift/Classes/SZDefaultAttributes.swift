@@ -17,7 +17,7 @@ class SZDefaultAttributes {
             attributeName: NSForegroundColorAttributeName,
             attributeValue: UIColor.greenColor())
     }
-    
+
     /**
      @brief Mention color
      */
