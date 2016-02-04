@@ -29,11 +29,11 @@ class SZDefaultAttributes {
     
     class func defaultTextAttributes() -> [SZAttribute]
     {
-        return [self.defaultColor];
+        return [defaultColor];
     }
     
     class func defaultMentionAttributes() -> [SZAttribute]
     {
-        return [self.mentionColor];
+        return [mentionColor];
     }
 }

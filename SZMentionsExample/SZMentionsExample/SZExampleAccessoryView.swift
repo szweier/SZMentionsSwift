@@ -18,8 +18,7 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
     init(frame: CGRect, delegate: UITextViewDelegate) {
         super.init(frame: frame)
         let mentionsListener = SZMentionsListener.init(mentionTextView: textView,
-            mentionsManager: self)
-        mentionsListener.delegate = delegate
+            mentionsManager: self, textViewDelegate: delegate, mentionTextAttributes: mentionAttributes(), defaultTextAttributes: defaultAttributes())
 
         setupTextView(textView, delegate: mentionsListener)
         self.addSubview(textView)
@@ -30,9 +29,6 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
             mentionsListener: mentionsListener)
 
         setupTableView(mentionsTableView, dataManager: dataManager!)
-
-        mentionsListener.defaultTextAttributes = defaultAttributes()
-        mentionsListener.mentionTextAttributes = mentionAttributes()
         self.backgroundColor = UIColor.grayColor()
     }
 

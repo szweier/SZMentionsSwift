@@ -8,6 +8,8 @@
 
 import UIKit
 
+let attributeConsistencyError = "Default and mention attributes must contain the same attribute names: If default attributes specify NSForegroundColorAttributeName mention attributes must specify that same name as well. (Values do not need to match)"
+
 public protocol SZMentionsManagerProtocol {
     /**
      @brief Called when the UITextView is editing a mention.
@@ -33,52 +35,52 @@ public protocol SZCreateMentionProtocol {
 public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     /**
-     @brief Trigger to start a mention. Default: @
-     */
-    public var trigger: String = "@"
-
-    /**
-     @brief Text attributes to be applied to all text excluding mentions.
-     */
-    public var defaultTextAttributes: [SZAttribute] = SZDefaultAttributes.defaultTextAttributes()
-    /**
-     @brief Text attributes to be applied to mentions.
-     */
-    public var mentionTextAttributes: [SZAttribute] = SZDefaultAttributes.defaultMentionAttributes()
-
-    /**
-     @brief The UITextView being handled by the SZMentionsListener
-     */
-    public var mentionsTextView: UITextView
-
-    /**
-     @brief An optional delegate that can be used to handle all UITextView delegate
-     methods after they've been handled by the SZMentionsListener
-     */
-    public var delegate: UITextViewDelegate?
-
-    /**
-     @brief Manager in charge of handling the creation and dismissal of the mentions
-     list.
-     */
-    public var mentionsManager: SZMentionsManagerProtocol
-
-    /**
-     @brief Amount of time to delay between showMentions calls default:0.5
-     */
-    public var cooldownInterval: NSTimeInterval = 0.5
-
-    /**
-     @brief Whether or not we should add a space after the mention, default: false
-     */
-    public var spaceAfterMention: Bool = false
-
-    /**
      @brief Array of mentions currently added to the textview
      */
     public var mentions:[SZMention] {
         return mutableMentions
     }
+
+    /**
+     @brief Trigger to start a mention. Default: @
+     */
+    private var trigger: String = "@"
+
+    /**
+     @brief Text attributes to be applied to all text excluding mentions.
+     */
+    private var defaultTextAttributes: [SZAttribute] = SZDefaultAttributes.defaultTextAttributes()
+    /**
+     @brief Text attributes to be applied to mentions.
+     */
+    private var mentionTextAttributes: [SZAttribute] = SZDefaultAttributes.defaultMentionAttributes()
+
+    /**
+     @brief The UITextView being handled by the SZMentionsListener
+     */
+    private var mentionsTextView: UITextView
+
+    /**
+     @brief An optional delegate that can be used to handle all UITextView delegate
+     methods after they've been handled by the SZMentionsListener
+     */
+    private var delegate: UITextViewDelegate?
+
+    /**
+     @brief Manager in charge of handling the creation and dismissal of the mentions
+     list.
+     */
+    private var mentionsManager: SZMentionsManagerProtocol
+
+    /**
+     @brief Amount of time to delay between showMentions calls default:0.5
+     */
+    private var cooldownInterval: NSTimeInterval = 0.5
+
+    /**
+     @brief Whether or not we should add a space after the mention, default: false
+     */
+    internal var spaceAfterMention: Bool = false
 
     /**
      @brief Mutable array list of mentions managed by listener, accessible via the
@@ -113,23 +115,89 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     // MARK: Initialization
 
-    public init(mentionTextView: UITextView, mentionsManager: SZMentionsManagerProtocol) {
-        self.mentionsManager = mentionsManager
-        self.mentionsTextView = mentionTextView
-        super.init()
-        self.mentionsTextView.delegate = self
+    public convenience init(mentionTextView: UITextView, mentionsManager: SZMentionsManagerProtocol) {
+        self.init(mentionTextView: mentionTextView, mentionsManager: mentionsManager, textViewDelegate: nil)
+    }
+
+    public convenience init(mentionTextView: UITextView, mentionsManager: SZMentionsManagerProtocol, textViewDelegate: UITextViewDelegate?) {
+            self.init(mentionTextView: mentionTextView, mentionsManager: mentionsManager,
+                textViewDelegate: textViewDelegate, mentionTextAttributes:nil,
+                defaultTextAttributes: nil)
+    }
+
+    public convenience init(mentionTextView: UITextView, mentionsManager: SZMentionsManagerProtocol,
+        textViewDelegate: UITextViewDelegate?, mentionTextAttributes: [SZAttribute]?,
+        defaultTextAttributes: [SZAttribute]?) {
+            self.init(mentionTextView: mentionTextView, mentionsManager: mentionsManager,
+                textViewDelegate: textViewDelegate, mentionTextAttributes:mentionTextAttributes,
+                defaultTextAttributes: defaultTextAttributes, trigger: "@")
+    }
+
+    public convenience init(mentionTextView: UITextView, mentionsManager: SZMentionsManagerProtocol,
+        textViewDelegate: UITextViewDelegate?, mentionTextAttributes: [SZAttribute]?,
+        defaultTextAttributes: [SZAttribute]?, trigger: String) {
+            self.init(mentionTextView: mentionTextView, mentionsManager: mentionsManager,
+                textViewDelegate: textViewDelegate, mentionTextAttributes:mentionTextAttributes,
+                defaultTextAttributes: defaultTextAttributes, trigger: trigger, cooldownInterval: 0.5)
+    }
+
+    public init(mentionTextView: UITextView, mentionsManager: SZMentionsManagerProtocol,
+        textViewDelegate: UITextViewDelegate?, mentionTextAttributes: [SZAttribute]?,
+        defaultTextAttributes: [SZAttribute]?, trigger: String, cooldownInterval: NSTimeInterval) {
+            self.mentionsManager = mentionsManager
+            self.mentionsTextView = mentionTextView
+            self.delegate = textViewDelegate
+            self.trigger = trigger;
+            self.cooldownInterval = cooldownInterval
+            if (defaultTextAttributes != nil) {
+                self.defaultTextAttributes = defaultTextAttributes!
+            }
+
+            if (mentionTextAttributes != nil) {
+                self.mentionTextAttributes = mentionTextAttributes!
+            }
+            super.init()
+            assert(attributesSetCorrectly(self.mentionTextAttributes, defaultAttributes: self.defaultTextAttributes), attributeConsistencyError)
+            setDefaultAttributesFor(mentionTextView)
+            self.mentionsTextView.delegate = self
+    }
+
+    public func attributesSetCorrectly(mentionAttributes: [SZAttribute], defaultAttributes: [SZAttribute]) ->  Bool {
+
+        let attributeNamesToLoop = (defaultAttributes.count >= mentionAttributes.count) ? defaultAttributes.map({$0.attributeName}) :
+            mentionAttributes.map({$0.attributeName})
+
+        let attributeNamesToCompare = (defaultAttributes.count < mentionAttributes.count) ? defaultAttributes.map({$0.attributeName}) :
+            mentionAttributes.map({$0.attributeName})
+
+        var attributeHasMatch = true
+
+        for attributeName in attributeNamesToLoop {
+            attributeHasMatch = attributeNamesToCompare.contains(attributeName)
+
+            if (attributeHasMatch == false) {
+                break;
+            }
+        }
+
+        return attributeHasMatch;
     }
 
     // MARK: TextView Adjustment
 
+    private func setDefaultAttributesFor(textView: UITextView) {
+        textView.text = " "
+        let mutableAttributedString = textView.attributedText.mutableCopy()
+        for attribute in defaultTextAttributes {
+            mutableAttributedString.addAttribute(attribute.attributeName, value: attribute.attributeValue, range: NSMakeRange(0, 1))
+        }
+        textView.attributedText = mutableAttributedString as! NSAttributedString
+        textView.text = ""
+    }
+
     private func resetEmpty(textView: UITextView, text: String, range: NSRange) {
         mutableMentions.removeAll()
-        let mutableAttributedString = textView.attributedText.mutableCopy()
-        mutableAttributedString.mutableString.replaceCharactersInRange(range, withString: text)
-        SZAttributedStringHelper.apply(
-            self.defaultTextAttributes,
-            range: NSRange(location: range.location, length: text.characters.count),
-            mutableAttributedString: mutableAttributedString as! NSMutableAttributedString)
+        setDefaultAttributesFor(textView)
     }
 
     private func adjust(textView: UITextView, range: NSRange, text: String) {

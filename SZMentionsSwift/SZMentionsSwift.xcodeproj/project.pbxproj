@@ -40,7 +40,7 @@
 		DB0403C21C44A017000904DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB0403D81C44A02D000904DB /* SZAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZAttribute.swift; sourceTree = "<group>"; };
 		DB0403D91C44A02D000904DB /* SZMention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMention.swift; sourceTree = "<group>"; };
-		DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMentionsListener.swift; sourceTree = "<group>"; };
+		DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMentionsListener.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		DBF2DF5C1C4B1067001B9788 /* SZMentionsSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SZMentionsSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBF2DF5E1C4B1067001B9788 /* SZMentionsSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SZMentionsSwiftTests.swift; sourceTree = "<group>"; };
 		DBF2DF601C4B1067001B9788 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };

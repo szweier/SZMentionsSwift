@@ -14,7 +14,6 @@ class SZExampleMention: SZCreateMentionProtocol {
 }
 
 class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDelegate {
-
     var textView = UITextView.init()
     var hidingMentionsList = true
     var mentionString = ""
@@ -22,10 +21,28 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
     override func setUp() {
         super.setUp()
-        mentionsListener = SZMentionsListener.init(
-            mentionTextView: textView,
-            mentionsManager: self)
-        mentionsListener?.delegate = self
+        mentionsListener = SZMentionsListener.init(mentionTextView: textView,
+            mentionsManager: self, textViewDelegate: self)
+    }
+
+    func testThatAddingAttributesThatDoNotMatchThrowsAnError() {
+        let attribute = SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.redColor())
+        let attribute2 = SZAttribute.init(attributeName: NSBackgroundColorAttributeName, attributeValue: UIColor.blackColor())
+
+        let defaultAttributes = [attribute]
+        let mentionAttributes = [attribute, attribute2]
+
+        XCTAssert(mentionsListener!.attributesSetCorrectly(mentionAttributes, defaultAttributes: defaultAttributes) == false)
+    }
+
+    func testThatAddingAttributesThatDoMatchDoesNotThrowAnError() {
+        let attribute = SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.redColor())
+        let attribute2 = SZAttribute.init(attributeName: NSBackgroundColorAttributeName, attributeValue: UIColor.blackColor())
+
+        let defaultAttributes = [attribute, attribute2]
+        let mentionAttributes = [attribute2, attribute]
+
+        XCTAssert(mentionsListener!.attributesSetCorrectly(mentionAttributes, defaultAttributes: defaultAttributes) == true)
     }
 
     func testMentionListIsDisplayed() {
@@ -140,7 +157,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
     }
 
     func testMentionLocationIsAdjustedProperlyWhenAMentionIsInsertsBehindAMentionSpaceAfterMentionIsTrue() {
-        mentionsListener?.spaceAfterMention = true
+        mentionsListener?.setValue(true, forKey: "spaceAfterMention")
         textView.insertText("@t")
         var mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
