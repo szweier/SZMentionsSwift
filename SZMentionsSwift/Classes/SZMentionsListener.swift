@@ -116,10 +116,22 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     // MARK: Initialization
 
+
+    /**
+    @brief Initializer that allows for customization of text attributes for default text and mentions
+    @param mentionTextView: - the text view to manage mentions for
+    @param mentionsManager: - the object that will handle showing and hiding of the mentions picker
+    */
     public convenience init(mentionTextView: UITextView, mentionsManager: SZMentionsManagerProtocol) {
         self.init(mentionTextView: mentionTextView, mentionsManager: mentionsManager, textViewDelegate: nil)
     }
 
+    /**
+     @brief Initializer that allows for customization of text attributes for default text and mentions
+     @param mentionTextView: - the text view to manage mentions for
+     @param mentionsManager: - the object that will handle showing and hiding of the mentions picker
+     @param textViewDelegate: - the object that will handle textview delegate methods
+     */
     public convenience init(mentionTextView: UITextView, mentionsManager: SZMentionsManagerProtocol,
         textViewDelegate: UITextViewDelegate?) {
             self.init(mentionTextView: mentionTextView, mentionsManager: mentionsManager,
@@ -127,6 +139,14 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
                 defaultTextAttributes: nil)
     }
 
+    /**
+     @brief Initializer that allows for customization of text attributes for default text and mentions
+     @param mentionTextView: - the text view to manage mentions for
+     @param mentionsManager: - the object that will handle showing and hiding of the mentions picker
+     @param textViewDelegate: - the object that will handle textview delegate methods
+     @param mentionTextAttributes - text style to show for mentions
+     @param defaultTextAttributes - text style to show for default text
+     */
     public convenience init(mentionTextView: UITextView, mentionsManager: SZMentionsManagerProtocol,
         textViewDelegate: UITextViewDelegate?, mentionTextAttributes: [SZAttribute]?,
         defaultTextAttributes: [SZAttribute]?) {
@@ -135,6 +155,15 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
                 defaultTextAttributes: defaultTextAttributes, spaceAfterMention: false)
     }
 
+    /**
+     @brief Initializer that allows for customization of text attributes for default text and mentions
+     @param mentionTextView: - the text view to manage mentions for
+     @param mentionsManager: - the object that will handle showing and hiding of the mentions picker
+     @param textViewDelegate: - the object that will handle textview delegate methods
+     @param mentionTextAttributes - text style to show for mentions
+     @param defaultTextAttributes - text style to show for default text
+     @param spaceAfterMention - whether or not to add a space after adding a mention
+     */
     public convenience init(mentionTextView: UITextView, mentionsManager: SZMentionsManagerProtocol,
         textViewDelegate: UITextViewDelegate?, mentionTextAttributes: [SZAttribute]?,
         defaultTextAttributes: [SZAttribute]?, spaceAfterMention: Bool) {
@@ -144,6 +173,16 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
                 trigger: "@")
     }
 
+    /**
+     @brief Initializer that allows for customization of text attributes for default text and mentions
+     @param mentionTextView: - the text view to manage mentions for
+     @param mentionsManager: - the object that will handle showing and hiding of the mentions picker
+     @param textViewDelegate: - the object that will handle textview delegate methods
+     @param mentionTextAttributes - text style to show for mentions
+     @param defaultTextAttributes - text style to show for default text
+     @param spaceAfterMention - whether or not to add a space after adding a mention
+     @param trigger - what text triggers showing the mentions list
+     */
     public convenience init(mentionTextView: UITextView, mentionsManager: SZMentionsManagerProtocol,
         textViewDelegate: UITextViewDelegate?, mentionTextAttributes: [SZAttribute]?,
         defaultTextAttributes: [SZAttribute]?, spaceAfterMention: Bool, trigger: String) {
@@ -153,6 +192,17 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
                 trigger: trigger, cooldownInterval: 0.5)
     }
 
+    /**
+     @brief Initializer that allows for customization of text attributes for default text and mentions
+     @param mentionTextView: - the text view to manage mentions for
+     @param mentionsManager: - the object that will handle showing and hiding of the mentions picker
+     @param textViewDelegate: - the object that will handle textview delegate methods
+     @param mentionTextAttributes - text style to show for mentions
+     @param defaultTextAttributes - text style to show for default text
+     @param spaceAfterMention - whether or not to add a space after adding a mention
+     @param trigger - what text triggers showing the mentions list
+     @param cooldownInterval - amount of time between show / hide mentions calls
+     */
     public init(mentionTextView: UITextView, mentionsManager: SZMentionsManagerProtocol,
         textViewDelegate: UITextViewDelegate?, mentionTextAttributes: [SZAttribute]?,
         defaultTextAttributes: [SZAttribute]?, spaceAfterMention: Bool, trigger: String,

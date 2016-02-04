@@ -9,7 +9,8 @@
 import Foundation
 
 class SZAttributedStringHelper {
-    /** @brief Applies attributes to a given string and range
+    /** 
+     @brief Applies attributes to a given string and range
      @param attributes: the attributes to apply
      @param range: the range to apply the attributes to
      @param mutableAttributedString: the string to apply the attributes to
