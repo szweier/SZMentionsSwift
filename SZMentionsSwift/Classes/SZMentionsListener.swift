@@ -162,12 +162,17 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             assert(attributesSetCorrectly(self.mentionTextAttributes,
                 defaultAttributes: self.defaultTextAttributes),
                 attributeConsistencyError)
-            setDefaultAttributesFor(mentionTextView)
+            resetEmpty(self.mentionsTextView)
             self.mentionsTextView.delegate = self
     }
 
     // MARK: Attribute assert
 
+    /**
+    @brief Checks that attributes have existing counterparts for mentions and default
+    @param mentionAttributes: The attributes to apply to mention objects
+    @param defaultAttributes: The attributes to apply to default text
+    */
     public func attributesSetCorrectly(mentionAttributes: [SZAttribute],
         defaultAttributes: [SZAttribute]) ->  Bool {
 
@@ -194,7 +199,12 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     // MARK: TextView Adjustment
 
-    private func setDefaultAttributesFor(textView: UITextView) {
+    /**
+    @brief Resets the empty text view
+    @param textView: the text view to reset
+    */
+    private func resetEmpty(textView: UITextView) {
+        mutableMentions.removeAll()
         textView.text = " "
         let mutableAttributedString = textView.attributedText.mutableCopy()
         for attribute in defaultTextAttributes {
@@ -203,11 +213,6 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         }
         textView.attributedText = mutableAttributedString as! NSAttributedString
         textView.text = ""
-    }
-
-    private func resetEmpty(textView: UITextView, text: String, range: NSRange) {
-        mutableMentions.removeAll()
-        setDefaultAttributesFor(textView)
     }
 
     private func adjust(textView: UITextView, range: NSRange, text: String) {
@@ -253,7 +258,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     private func shouldAdjust(textView: UITextView, range: NSRange, text: String) -> Bool {
         if (textView.text.characters.count == 0) {
-            self.resetEmpty(textView, text: text, range: range)
+            self.resetEmpty(textView)
         }
 
         if (SZMentionHelper.shouldHideMentions(text)) {
@@ -312,6 +317,10 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     // MARK: Mention management
 
+    /**
+    @brief Adds a mention to the current mention range (determined by trigger + characters typed up to space or end of line)
+    @param mention: the mention object to apply
+    */
     public func addMention(mention: SZCreateMentionProtocol) {
         if (self.currentMentionRange == nil) {
             return
@@ -365,6 +374,11 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         self.mutableMentions.append(szmention)
     }
 
+    /**
+     @brief Resets the attributes of the mention to default attributes
+     @param mention: the mention being edited
+     @param textView: the mention text view
+     */
     private func handleEditingMention(mention: SZMention, textView: UITextView,
         range: NSRange, text: String) -> Bool {
             let mutableAttributedString = textView.attributedText.mutableCopy()
@@ -386,6 +400,11 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             return false
     }
 
+    /**
+     @brief returns the mention being edited (if a mention is being edited)
+     @param range: the range to look for a mention
+     @return SZMention?: the mention being edited (if one exists)
+     */
     private func mentionBeingEdited(range: NSRange) -> SZMention? {
         var editedMention: SZMention?
 
@@ -405,12 +424,19 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     // MARK: Timer
 
+    /**
+    @brief Calls show mentions if necessary when the timer fires
+    @param timer: the timer that called the method
+    */
     internal func cooldownTimerFired(timer: NSTimer) {
         if ((self.filterString?.characters.count) != nil) {
             self.mentionsManager.showMentionsListWithString(self.filterString!)
         }
     }
 
+    /**
+     @brief Activates a cooldown timer
+     */
     private func activateCooldownTimer() {
         self.cooldownTimer?.invalidate()
 
