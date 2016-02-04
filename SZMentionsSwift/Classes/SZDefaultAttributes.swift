@@ -26,12 +26,18 @@ class SZDefaultAttributes {
             attributeName: NSForegroundColorAttributeName,
             attributeValue: UIColor.greenColor())
     }
-    
+
+    /**
+     @brief the text attributes to be applied to default text (can be overridden using inits on SZMentionsListener)
+     */
     class func defaultTextAttributes() -> [SZAttribute]
     {
         return [defaultColor];
     }
-    
+
+    /**
+     @brief the text attributes to be applied to mention text (can be overridden using inits on SZMentionsListener)
+     */
     class func defaultMentionAttributes() -> [SZAttribute]
     {
         return [mentionColor];

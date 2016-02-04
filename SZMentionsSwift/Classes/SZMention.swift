@@ -19,6 +19,11 @@ public class SZMention: NSObject {
      */
     public var mentionObject: SZCreateMentionProtocol
 
+    /**
+     @brief initializer for creating a mention object
+     @param mentionRange: the range of the mention
+     @param mentionObject: the object of your mention (assuming you get extra data you need to store and retrieve later)
+     */
     public init(mentionRange: NSRange, mentionObject: SZCreateMentionProtocol) {
         self.mentionRange = mentionRange;
         self.mentionObject = mentionObject;

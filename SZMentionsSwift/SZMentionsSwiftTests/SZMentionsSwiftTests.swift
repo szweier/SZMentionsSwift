@@ -14,7 +14,7 @@ class SZExampleMention: SZCreateMentionProtocol {
 }
 
 class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDelegate {
-    var textView = UITextView.init()
+    let textView = UITextView.init()
     var hidingMentionsList = true
     var mentionString = ""
     var mentionsListener: SZMentionsListener?
