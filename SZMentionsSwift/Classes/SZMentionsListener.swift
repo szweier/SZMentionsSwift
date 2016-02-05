@@ -334,6 +334,8 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @return Bool: whether or not the textView should adjust the text itself
      */
     private func shouldAdjust(textView: UITextView, range: NSRange, text: String) -> Bool {
+        var shouldAdjust = true
+
         if (textView.text.characters.count == 0) {
             self.resetEmpty(textView)
         }
@@ -352,19 +354,19 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             }
         }
 
+        if editingMention == true {
+            shouldAdjust = self.handleEditingMention(mention!, textView: textView, range: range, text: text)
+        }
+
+        if SZMentionHelper.needsToChangeToDefaultAttributes(textView, range: range, mentions: self.mentions) {
+            shouldAdjust = self.forceDefaultAttributes(textView, range: range, text: text)
+        }
+
         SZMentionHelper.adjustMentions(range, text: text, mentions: self.mentions)
 
         self.delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text)
 
-        if editingMention == true {
-            return self.handleEditingMention(mention!, textView: textView, range: range, text: text)
-        }
-
-        if SZMentionHelper.needsToChangeToDefaultAttributes(textView, range: range, mentions: self.mentions) {
-            return self.forceDefaultAttributes(textView, range: range, text: text)
-        }
-
-        return true
+        return shouldAdjust
     }
 
     // MARK: attribute management
