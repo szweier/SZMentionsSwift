@@ -7,16 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA0401461C602C3E003A95A6 /* SZAttributedStringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0401451C602C3E003A95A6 /* SZAttributedStringHelper.swift */; };
-		AA0401481C602D39003A95A6 /* SZDefaultAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0401471C602D39003A95A6 /* SZDefaultAttributes.swift */; };
-		AA04014A1C602E70003A95A6 /* SZMentionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0401491C602E70003A95A6 /* SZMentionHelper.swift */; };
+		AA0401461C602C3E003A95A6 /* SZAttributedStringHelper.swift in Headers */ = {isa = PBXBuildFile; fileRef = AA0401451C602C3E003A95A6 /* SZAttributedStringHelper.swift */; };
+		AA0401481C602D39003A95A6 /* SZDefaultAttributes.swift in Headers */ = {isa = PBXBuildFile; fileRef = AA0401471C602D39003A95A6 /* SZDefaultAttributes.swift */; };
+		AA04014A1C602E70003A95A6 /* SZMentionHelper.swift in Headers */ = {isa = PBXBuildFile; fileRef = AA0401491C602E70003A95A6 /* SZMentionHelper.swift */; };
 		DB0403C11C44A017000904DB /* SZMentionsSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = DB0403C01C44A017000904DB /* SZMentionsSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DB0403DB1C44A02D000904DB /* SZAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403D81C44A02D000904DB /* SZAttribute.swift */; };
-		DB0403DC1C44A02D000904DB /* SZMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403D91C44A02D000904DB /* SZMention.swift */; };
-		DB0403DD1C44A02D000904DB /* SZMentionsListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */; };
 		DB0403E01C44A0DC000904DB /* SZAttribute.swift in Headers */ = {isa = PBXBuildFile; fileRef = DB0403D81C44A02D000904DB /* SZAttribute.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB0403E11C44A0DC000904DB /* SZMention.swift in Headers */ = {isa = PBXBuildFile; fileRef = DB0403D91C44A02D000904DB /* SZMention.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB0403E21C44A0DC000904DB /* SZMentionsListener.swift in Headers */ = {isa = PBXBuildFile; fileRef = DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		DBE8B3FA1C65594C0090EF32 /* SZAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403D81C44A02D000904DB /* SZAttribute.swift */; };
+		DBE8B3FB1C65594C0090EF32 /* SZMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403D91C44A02D000904DB /* SZMention.swift */; };
+		DBE8B3FC1C65594C0090EF32 /* SZMentionsListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */; };
+		DBE8B3FD1C65594C0090EF32 /* SZAttributedStringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0401451C602C3E003A95A6 /* SZAttributedStringHelper.swift */; };
+		DBE8B3FE1C65594C0090EF32 /* SZDefaultAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0401471C602D39003A95A6 /* SZDefaultAttributes.swift */; };
+		DBE8B3FF1C65594C0090EF32 /* SZMentionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0401491C602E70003A95A6 /* SZMentionHelper.swift */; };
 		DBF2DF5F1C4B1067001B9788 /* SZMentionsSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF2DF5E1C4B1067001B9788 /* SZMentionsSwiftTests.swift */; };
 		DBF2DF611C4B1067001B9788 /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */; };
 /* End PBXBuildFile section */
@@ -124,8 +127,11 @@
 			files = (
 				DB0403C11C44A017000904DB /* SZMentionsSwift.h in Headers */,
 				DB0403E01C44A0DC000904DB /* SZAttribute.swift in Headers */,
-				DB0403E11C44A0DC000904DB /* SZMention.swift in Headers */,
 				DB0403E21C44A0DC000904DB /* SZMentionsListener.swift in Headers */,
+				DB0403E11C44A0DC000904DB /* SZMention.swift in Headers */,
+				AA0401481C602D39003A95A6 /* SZDefaultAttributes.swift in Headers */,
+				AA04014A1C602E70003A95A6 /* SZMentionHelper.swift in Headers */,
+				AA0401461C602C3E003A95A6 /* SZAttributedStringHelper.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,12 +232,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB0403DB1C44A02D000904DB /* SZAttribute.swift in Sources */,
-				AA0401461C602C3E003A95A6 /* SZAttributedStringHelper.swift in Sources */,
-				AA0401481C602D39003A95A6 /* SZDefaultAttributes.swift in Sources */,
-				DB0403DC1C44A02D000904DB /* SZMention.swift in Sources */,
-				DB0403DD1C44A02D000904DB /* SZMentionsListener.swift in Sources */,
-				AA04014A1C602E70003A95A6 /* SZMentionHelper.swift in Sources */,
+				DBE8B3FA1C65594C0090EF32 /* SZAttribute.swift in Sources */,
+				DBE8B3FB1C65594C0090EF32 /* SZMention.swift in Sources */,
+				DBE8B3FC1C65594C0090EF32 /* SZMentionsListener.swift in Sources */,
+				DBE8B3FD1C65594C0090EF32 /* SZAttributedStringHelper.swift in Sources */,
+				DBE8B3FE1C65594C0090EF32 /* SZDefaultAttributes.swift in Sources */,
+				DBE8B3FF1C65594C0090EF32 /* SZMentionHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
