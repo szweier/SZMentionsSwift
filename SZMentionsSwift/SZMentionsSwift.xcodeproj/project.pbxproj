@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA0401461C602C3E003A95A6 /* SZAttributedStringHelper.swift in Headers */ = {isa = PBXBuildFile; fileRef = AA0401451C602C3E003A95A6 /* SZAttributedStringHelper.swift */; };
-		AA0401481C602D39003A95A6 /* SZDefaultAttributes.swift in Headers */ = {isa = PBXBuildFile; fileRef = AA0401471C602D39003A95A6 /* SZDefaultAttributes.swift */; };
-		AA04014A1C602E70003A95A6 /* SZMentionHelper.swift in Headers */ = {isa = PBXBuildFile; fileRef = AA0401491C602E70003A95A6 /* SZMentionHelper.swift */; };
+		AA0401461C602C3E003A95A6 /* SZAttributedStringHelper.swift in Headers */ = {isa = PBXBuildFile; fileRef = AA0401451C602C3E003A95A6 /* SZAttributedStringHelper.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		AA0401481C602D39003A95A6 /* SZDefaultAttributes.swift in Headers */ = {isa = PBXBuildFile; fileRef = AA0401471C602D39003A95A6 /* SZDefaultAttributes.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		AA04014A1C602E70003A95A6 /* SZMentionHelper.swift in Headers */ = {isa = PBXBuildFile; fileRef = AA0401491C602E70003A95A6 /* SZMentionHelper.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		DB0403C11C44A017000904DB /* SZMentionsSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = DB0403C01C44A017000904DB /* SZMentionsSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB0403E01C44A0DC000904DB /* SZAttribute.swift in Headers */ = {isa = PBXBuildFile; fileRef = DB0403D81C44A02D000904DB /* SZAttribute.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB0403E11C44A0DC000904DB /* SZMention.swift in Headers */ = {isa = PBXBuildFile; fileRef = DB0403D91C44A02D000904DB /* SZMention.swift */; settings = {ATTRIBUTES = (Public, ); }; };
