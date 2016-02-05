@@ -2,6 +2,12 @@
 
 --- 
 
+## [0.0.8](https://github.com/szweier/SZMentions/releases/tag/0.0.8) (2/4/2016)
+
+#### Added
+* Readonly attributes where necessary
+* Changelog
+
 ## [0.0.7](https://github.com/szweier/SZMentions/releases/tag/0.0.7) (2/4/2016)
 
 #### Fixed
