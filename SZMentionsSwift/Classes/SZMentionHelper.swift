@@ -17,16 +17,16 @@ class SZMentionHelper {
      */
     class func mentionsAfterTextEntry(range: NSRange, mentionsList: [SZMention]) -> [SZMention] {
         var mentionsAfterTextEntry = [SZMention]()
-        
+
         for mention in mentionsList {
-            
+
             if range.location + range.length <= mention.mentionRange.location {
                 mentionsAfterTextEntry.append(mention)
             }
         }
-        
+
         let immutableMentionsAfterTextEntry = mentionsAfterTextEntry
-        
+
         return immutableMentionsAfterTextEntry
     }
 
@@ -39,9 +39,9 @@ class SZMentionHelper {
     class func adjustMentions(range : NSRange, text : String, mentions: [SZMention]) {
         for mention in SZMentionHelper.mentionsAfterTextEntry(range, mentionsList: mentions)
         {
-            
+
             var rangeAdjustment = -(range.length > 0 ? range.length : 0)
-            
+
             if text.characters.count > 0 {
                 rangeAdjustment = text.characters.count - (range.length > 0 ? range.length : 0)
             }
@@ -58,7 +58,7 @@ class SZMentionHelper {
      @return Bool: Whether or not a mention exists at a specific location
      */
     class func mentionExistsAt(index: NSInteger, mentions: [SZMention]) -> Bool {
-        
+
         let mentionsList = mentions.filter {
             if let range = ($0 as SZMention).mentionRange as NSRange! {
                 return index >= range.location && index < range.location + range.length
@@ -66,7 +66,7 @@ class SZMentionHelper {
                 return false
             }
         }
-        
+
         return mentionsList.count > 0
     }
 
@@ -82,7 +82,7 @@ class SZMentionHelper {
             SZMentionHelper.mentionExistsAt(range.location - 1, mentions: mentions)
         let isAtStartOfTextViewAndIsTouchingMention = range.location == 0 &&
             SZMentionHelper.mentionExistsAt(range.location + 1, mentions: mentions)
-        
+
         return isAheadOfMention || isAtStartOfTextViewAndIsTouchingMention
     }
 

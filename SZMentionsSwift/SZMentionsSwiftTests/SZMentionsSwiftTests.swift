@@ -21,8 +21,14 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
     override func setUp() {
         super.setUp()
+        let attribute = SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.redColor())
+        let attribute2 = SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.blackColor())
+
         mentionsListener = SZMentionsListener.init(mentionTextView: textView,
-            mentionsManager: self, textViewDelegate: self)
+            mentionsManager: self,
+            textViewDelegate: self,
+            mentionTextAttributes: [attribute],
+            defaultTextAttributes: [attribute2])
     }
 
     func testThatAddingAttributesThatDoNotMatchThrowsAnError() {
@@ -231,6 +237,18 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         }
 
         XCTAssert(mentionsListener?.mentions.count == 1)
+    }
+
+    func testPastingTextBeforeLeadingMentionResetsAttributes() {
+        textView.insertText("@s")
+        let mention = SZExampleMention.init()
+        mention.szMentionName = "Steven"
+        mentionsListener?.addMention(mention)
+        textView.selectedRange = NSMakeRange(0, 0)
+        if mentionsListener?.textView(textView, shouldChangeTextInRange: textView.selectedRange, replacementText: "test").boolValue == true {
+            textView.insertText("test")
+        }
+        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: 0, effectiveRange: nil)!.isEqual( UIColor.blackColor()))
     }
 
     func hideMentionsList() {

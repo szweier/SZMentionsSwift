@@ -1,6 +1,6 @@
 //
 //  SZAttribute.swift
-//  SZMentions_Swift
+//  SZMentionsSwift
 //
 //  Created by Steven Zweier on 1/11/16.
 //  Copyright © 2016 Steven Zweier. All rights reserved.

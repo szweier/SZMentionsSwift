@@ -1,6 +1,6 @@
 //
 //  SZMentionsListener.swift
-//  SZMentions_Swift
+//  SZMentionsSwift
 //
 //  Created by Steven Zweier on 1/11/16.
 //  Copyright © 2016 Steven Zweier. All rights reserved.
@@ -334,6 +334,8 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @return Bool: whether or not the textView should adjust the text itself
      */
     private func shouldAdjust(textView: UITextView, range: NSRange, text: String) -> Bool {
+        var shouldAdjust = true
+
         if (textView.text.characters.count == 0) {
             self.resetEmpty(textView)
         }
@@ -352,22 +354,22 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             }
         }
 
+        if editingMention == true {
+            shouldAdjust = self.handleEditingMention(mention!, textView: textView, range: range, text: text)
+        }
+
+        if SZMentionHelper.needsToChangeToDefaultAttributes(textView, range: range, mentions: self.mentions) {
+            shouldAdjust = self.forceDefaultAttributes(textView, range: range, text: text)
+        }
+
         SZMentionHelper.adjustMentions(range, text: text, mentions: self.mentions)
 
         self.delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text)
 
-        if editingMention == true {
-            return self.handleEditingMention(mention!, textView: textView, range: range, text: text)
-        }
-
-        if SZMentionHelper.needsToChangeToDefaultAttributes(textView, range: range, mentions: self.mentions) {
-            return self.forceDefaultAttributes(textView, range: range, text: text)
-        }
-
-        return true
+        return shouldAdjust
     }
 
-    // MARK: Color management
+    // MARK: attribute management
 
     /**
     @brief Forces default attributes on a string of text
@@ -462,6 +464,8 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @brief Resets the attributes of the mention to default attributes
      @param mention: the mention being edited
      @param textView: the mention text view
+     @param range: the current range selected
+     @param text: text to replace range
      */
     private func handleEditingMention(mention: SZMention, textView: UITextView,
         range: NSRange, text: String) -> Bool {
@@ -535,7 +539,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
     }
 
     // MARK: TextView Delegate
-    
+
     public func textView(
         textView: UITextView,
         shouldChangeTextInRange range: NSRange,
