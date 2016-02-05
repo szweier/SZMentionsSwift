@@ -116,7 +116,6 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     // MARK: Initialization
 
-
     /**
     @brief Initializer that allows for customization of text attributes for default text and mentions
     @param mentionTextView: - the text view to manage mentions for
