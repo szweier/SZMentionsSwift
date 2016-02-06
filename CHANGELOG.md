@@ -1,6 +1,10 @@
 #Change Log
 
 --- 
+## [0.0.9](https://github.com/szweier/SZMentions/releases/tag/0.0.9) (2/5/2016)
+
+#### Fixed
+* Clean up project
 
 ## [0.0.8](https://github.com/szweier/SZMentions/releases/tag/0.0.8) (2/4/2016)
 
