@@ -10,5 +10,5 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '8.0'
   s.requires_arc = true
   s.source_files = 'SZMentionsSwift/Classes/**/*'
-  s.private_header_files = "SZMentionsSwift/Classes/Private/*.h"
+  s.private_header_files = "SZMentionsSwift/Classes/Private/*.swift"
 end
