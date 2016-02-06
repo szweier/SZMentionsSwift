@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SZMentionsSwift"
-  s.version          = "0.0.8"
+  s.version          = "0.0.9"
   s.summary          = "Highly customizable mentions library"
   s.description      = "Mentions library used to help manage mentions in a UITextView"
   s.homepage         = "http://www.stevenzweier.com"
@@ -10,9 +10,5 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '8.0'
   s.requires_arc = true
   s.source_files = 'SZMentionsSwift/Classes/**/*'
-
-  s.resource_bundles = {
-    'SZMentionsSwift' => ['SZMentionsSwift/Assets/*']
-    }
-
+  s.private_header_files = "SZMentionsSwift/Classes/Private/*.h"
 end
