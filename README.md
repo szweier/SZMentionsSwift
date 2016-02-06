@@ -97,7 +97,7 @@ This class is used to pass attributes to apply mentions text as well as regular 
 
 Example:
     
-    SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.blackColor())
+    SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.blackColor())
     
 
 ## Unit Tests
