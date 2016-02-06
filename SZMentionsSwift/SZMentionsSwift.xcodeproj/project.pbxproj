@@ -7,19 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AA0401461C602C3E003A95A6 /* SZAttributedStringHelper.swift in Headers */ = {isa = PBXBuildFile; fileRef = AA0401451C602C3E003A95A6 /* SZAttributedStringHelper.swift */; settings = {ATTRIBUTES = (Private, ); }; };
-		AA0401481C602D39003A95A6 /* SZDefaultAttributes.swift in Headers */ = {isa = PBXBuildFile; fileRef = AA0401471C602D39003A95A6 /* SZDefaultAttributes.swift */; settings = {ATTRIBUTES = (Private, ); }; };
-		AA04014A1C602E70003A95A6 /* SZMentionHelper.swift in Headers */ = {isa = PBXBuildFile; fileRef = AA0401491C602E70003A95A6 /* SZMentionHelper.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		DB0403C11C44A017000904DB /* SZMentionsSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = DB0403C01C44A017000904DB /* SZMentionsSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DB0403E01C44A0DC000904DB /* SZAttribute.swift in Headers */ = {isa = PBXBuildFile; fileRef = DB0403D81C44A02D000904DB /* SZAttribute.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		DB0403E11C44A0DC000904DB /* SZMention.swift in Headers */ = {isa = PBXBuildFile; fileRef = DB0403D91C44A02D000904DB /* SZMention.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		DB0403E21C44A0DC000904DB /* SZMentionsListener.swift in Headers */ = {isa = PBXBuildFile; fileRef = DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		DBE8B3FA1C65594C0090EF32 /* SZAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403D81C44A02D000904DB /* SZAttribute.swift */; };
-		DBE8B3FB1C65594C0090EF32 /* SZMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403D91C44A02D000904DB /* SZMention.swift */; };
-		DBE8B3FC1C65594C0090EF32 /* SZMentionsListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */; };
-		DBE8B3FD1C65594C0090EF32 /* SZAttributedStringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0401451C602C3E003A95A6 /* SZAttributedStringHelper.swift */; };
-		DBE8B3FE1C65594C0090EF32 /* SZDefaultAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0401471C602D39003A95A6 /* SZDefaultAttributes.swift */; };
-		DBE8B3FF1C65594C0090EF32 /* SZMentionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0401491C602E70003A95A6 /* SZMentionHelper.swift */; };
+		DBE8B4A11C657F200090EF32 /* SZAttributedStringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49B1C657F200090EF32 /* SZAttributedStringHelper.swift */; };
+		DBE8B4A21C657F200090EF32 /* SZDefaultAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */; };
+		DBE8B4A31C657F200090EF32 /* SZMentionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49D1C657F200090EF32 /* SZMentionHelper.swift */; };
+		DBE8B4A41C657F200090EF32 /* SZAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49E1C657F200090EF32 /* SZAttribute.swift */; };
+		DBE8B4A51C657F200090EF32 /* SZMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49F1C657F200090EF32 /* SZMention.swift */; };
+		DBE8B4A61C657F200090EF32 /* SZMentionsListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B4A01C657F200090EF32 /* SZMentionsListener.swift */; };
+		DBE8B4B41C6580360090EF32 /* SZAttribute.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49E1C657F200090EF32 /* SZAttribute.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		DBE8B4B51C6580360090EF32 /* SZMention.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49F1C657F200090EF32 /* SZMention.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		DBE8B4B61C6580360090EF32 /* SZMentionsListener.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B4A01C657F200090EF32 /* SZMentionsListener.swift */; settings = {ATTRIBUTES = (Public, ); }; };
+		DBE8B4B71C6580400090EF32 /* SZAttributedStringHelper.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49B1C657F200090EF32 /* SZAttributedStringHelper.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		DBE8B4B81C6580400090EF32 /* SZDefaultAttributes.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		DBE8B4B91C6580400090EF32 /* SZMentionHelper.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49D1C657F200090EF32 /* SZMentionHelper.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		DBF2DF5F1C4B1067001B9788 /* SZMentionsSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF2DF5E1C4B1067001B9788 /* SZMentionsSwiftTests.swift */; };
 		DBF2DF611C4B1067001B9788 /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */; };
 /* End PBXBuildFile section */
@@ -35,15 +35,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		AA0401451C602C3E003A95A6 /* SZAttributedStringHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZAttributedStringHelper.swift; sourceTree = "<group>"; };
-		AA0401471C602D39003A95A6 /* SZDefaultAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZDefaultAttributes.swift; sourceTree = "<group>"; };
-		AA0401491C602E70003A95A6 /* SZMentionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMentionHelper.swift; sourceTree = "<group>"; };
 		DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SZMentionsSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0403C01C44A017000904DB /* SZMentionsSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SZMentionsSwift.h; sourceTree = "<group>"; };
 		DB0403C21C44A017000904DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DB0403D81C44A02D000904DB /* SZAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZAttribute.swift; sourceTree = "<group>"; };
-		DB0403D91C44A02D000904DB /* SZMention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMention.swift; sourceTree = "<group>"; };
-		DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMentionsListener.swift; sourceTree = "<group>"; wrapsLines = 1; };
+		DBE8B49B1C657F200090EF32 /* SZAttributedStringHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZAttributedStringHelper.swift; sourceTree = "<group>"; };
+		DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZDefaultAttributes.swift; sourceTree = "<group>"; };
+		DBE8B49D1C657F200090EF32 /* SZMentionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMentionHelper.swift; sourceTree = "<group>"; };
+		DBE8B49E1C657F200090EF32 /* SZAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZAttribute.swift; sourceTree = "<group>"; };
+		DBE8B49F1C657F200090EF32 /* SZMention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMention.swift; sourceTree = "<group>"; };
+		DBE8B4A01C657F200090EF32 /* SZMentionsListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMentionsListener.swift; sourceTree = "<group>"; };
 		DBF2DF5C1C4B1067001B9788 /* SZMentionsSwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SZMentionsSwiftTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBF2DF5E1C4B1067001B9788 /* SZMentionsSwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SZMentionsSwiftTests.swift; sourceTree = "<group>"; };
 		DBF2DF601C4B1067001B9788 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -89,25 +89,33 @@
 		DB0403BF1C44A017000904DB /* SZMentionsSwift */ = {
 			isa = PBXGroup;
 			children = (
-				DB0403D71C44A02D000904DB /* Classes */,
+				DBE8B4991C657F200090EF32 /* Classes */,
 				DB0403C01C44A017000904DB /* SZMentionsSwift.h */,
 				DB0403C21C44A017000904DB /* Info.plist */,
 			);
 			path = SZMentionsSwift;
 			sourceTree = "<group>";
 		};
-		DB0403D71C44A02D000904DB /* Classes */ = {
+		DBE8B4991C657F200090EF32 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				DB0403D81C44A02D000904DB /* SZAttribute.swift */,
-				DB0403D91C44A02D000904DB /* SZMention.swift */,
-				DB0403DA1C44A02D000904DB /* SZMentionsListener.swift */,
-				AA0401451C602C3E003A95A6 /* SZAttributedStringHelper.swift */,
-				AA0401471C602D39003A95A6 /* SZDefaultAttributes.swift */,
-				AA0401491C602E70003A95A6 /* SZMentionHelper.swift */,
+				DBE8B49A1C657F200090EF32 /* Private */,
+				DBE8B49E1C657F200090EF32 /* SZAttribute.swift */,
+				DBE8B49F1C657F200090EF32 /* SZMention.swift */,
+				DBE8B4A01C657F200090EF32 /* SZMentionsListener.swift */,
 			);
 			path = Classes;
 			sourceTree = SOURCE_ROOT;
+		};
+		DBE8B49A1C657F200090EF32 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				DBE8B49B1C657F200090EF32 /* SZAttributedStringHelper.swift */,
+				DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */,
+				DBE8B49D1C657F200090EF32 /* SZMentionHelper.swift */,
+			);
+			path = Private;
+			sourceTree = "<group>";
 		};
 		DBF2DF5D1C4B1067001B9788 /* SZMentionsSwiftTests */ = {
 			isa = PBXGroup;
@@ -126,12 +134,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB0403C11C44A017000904DB /* SZMentionsSwift.h in Headers */,
-				DB0403E01C44A0DC000904DB /* SZAttribute.swift in Headers */,
-				DB0403E21C44A0DC000904DB /* SZMentionsListener.swift in Headers */,
-				DB0403E11C44A0DC000904DB /* SZMention.swift in Headers */,
-				AA0401481C602D39003A95A6 /* SZDefaultAttributes.swift in Headers */,
-				AA04014A1C602E70003A95A6 /* SZMentionHelper.swift in Headers */,
-				AA0401461C602C3E003A95A6 /* SZAttributedStringHelper.swift in Headers */,
+				DBE8B4B41C6580360090EF32 /* SZAttribute.swift in Headers */,
+				DBE8B4B51C6580360090EF32 /* SZMention.swift in Headers */,
+				DBE8B4B61C6580360090EF32 /* SZMentionsListener.swift in Headers */,
+				DBE8B4B71C6580400090EF32 /* SZAttributedStringHelper.swift in Headers */,
+				DBE8B4B81C6580400090EF32 /* SZDefaultAttributes.swift in Headers */,
+				DBE8B4B91C6580400090EF32 /* SZMentionHelper.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,12 +240,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DBE8B3FA1C65594C0090EF32 /* SZAttribute.swift in Sources */,
-				DBE8B3FB1C65594C0090EF32 /* SZMention.swift in Sources */,
-				DBE8B3FC1C65594C0090EF32 /* SZMentionsListener.swift in Sources */,
-				DBE8B3FD1C65594C0090EF32 /* SZAttributedStringHelper.swift in Sources */,
-				DBE8B3FE1C65594C0090EF32 /* SZDefaultAttributes.swift in Sources */,
-				DBE8B3FF1C65594C0090EF32 /* SZMentionHelper.swift in Sources */,
+				DBE8B4A51C657F200090EF32 /* SZMention.swift in Sources */,
+				DBE8B4A11C657F200090EF32 /* SZAttributedStringHelper.swift in Sources */,
+				DBE8B4A41C657F200090EF32 /* SZAttribute.swift in Sources */,
+				DBE8B4A21C657F200090EF32 /* SZDefaultAttributes.swift in Sources */,
+				DBE8B4A31C657F200090EF32 /* SZMentionHelper.swift in Sources */,
+				DBE8B4A61C657F200090EF32 /* SZMentionsListener.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
