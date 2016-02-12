@@ -260,6 +260,37 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         mentionString = mentionsString
     }
 
+    func testMentionsLibraryReplacesCorrectMentionRangeIfMultipleExistAndThatSelectedRangeWillBeCorrect()
+    {
+        textView.insertText(" @st")
+        textView.selectedRange = NSMakeRange(0, 0)
+        textView.insertText("@st")
+
+        let mention = SZExampleMention.init()
+        mention.szMentionName = "Steven"
+
+        mentionsListener?.addMention(mention)
+
+        XCTAssert(mentionsListener?.mentions[0].mentionRange.location == 0);
+        XCTAssert(self.textView.selectedRange.location == 6);
+    }
+
+    func testMentionsLibraryReplacesCorrectMentionRangeIfMultipleExistAndThatSelectedRangeWillBeCorrectWithSpaceAfterMentionEnabled()
+    {
+        mentionsListener?.setValue(true, forKey: "spaceAfterMention")
+        textView.insertText(" @st")
+        textView.selectedRange = NSMakeRange(0, 0)
+        textView.insertText("@st")
+
+        let mention = SZExampleMention.init()
+        mention.szMentionName = "Steven"
+
+        mentionsListener?.addMention(mention)
+
+        XCTAssert(mentionsListener?.mentions[0].mentionRange.location == 0);
+        XCTAssert(self.textView.selectedRange.location == 7);
+    }
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()

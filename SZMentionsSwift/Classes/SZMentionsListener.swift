@@ -308,7 +308,8 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             if mentionEnabled {
                 self.currentMentionRange = (textView.text as NSString).rangeOfString(
                     strings.last!,
-                    options: NSStringCompareOptions.BackwardsSearch)
+                    options: NSStringCompareOptions.BackwardsSearch,
+                    range: NSMakeRange(0, textView.selectedRange.location + textView.selectedRange.length))
                 let mentionString = strings.last!.stringByAppendingString(text)
                 self.filterString = mentionString.stringByReplacingOccurrencesOfString(
                     trigger as String,
@@ -429,6 +430,11 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             self.currentMentionRange!.location,
             mention.szMentionName.characters.count)
 
+        let szmention = SZMention.init(
+            mentionRange: self.currentMentionRange!,
+            mentionObject: mention)
+        self.mutableMentions.append(szmention)
+
         SZAttributedStringHelper.apply(
             self.mentionTextAttributes,
             range: self.currentMentionRange!,
@@ -441,9 +447,10 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
             mutableAttributedString: mutableAttributedString as! NSMutableAttributedString)
 
         self.settingText = true
-        self.mentionsTextView.attributedText = mutableAttributedString as! NSMutableAttributedString
 
         var selectedRange = NSMakeRange(self.currentMentionRange!.location + self.currentMentionRange!.length, 0)
+
+        self.mentionsTextView.attributedText = mutableAttributedString as! NSMutableAttributedString
 
         if self.spaceAfterMention {
             selectedRange.location++
@@ -452,11 +459,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         self.mentionsTextView.selectedRange = selectedRange
         self.settingText = false
 
-        let szmention = SZMention.init(
-            mentionRange: self.currentMentionRange!,
-            mentionObject: mention)
         self.mentionsManager.hideMentionsList()
-        self.mutableMentions.append(szmention)
     }
 
     /**
