@@ -1,6 +1,17 @@
 #Change Log
 
 --- 
+## [0.0.11](https://github.com/szweier/SZMentions/releases/tag/0.0.11) (2/12/2016)
+
+#### Cleaned
+* Unused methods
+* General organization
+
+## [0.0.10](https://github.com/szweier/SZMentions/releases/tag/0.0.10) (2/12/2016)
+
+#### Fixed
+* Issue with mention range setting
+
 ## [0.0.9](https://github.com/szweier/SZMentions/releases/tag/0.0.9) (2/5/2016)
 
 #### Fixed
