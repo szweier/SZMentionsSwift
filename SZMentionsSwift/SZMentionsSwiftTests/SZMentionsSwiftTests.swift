@@ -291,6 +291,20 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         XCTAssert(self.textView.selectedRange.location == 7);
     }
 
+    func testAddingTestImmediatelyAfterMentionChangesToDefaultText()
+    {
+        textView.insertText("@s")
+        let mention = SZExampleMention()
+        mention.szMentionName = "Steven"
+        self.mentionsListener?.addMention(mention)
+
+        if mentionsListener?.textView(textView, shouldChangeTextInRange: self.textView.selectedRange, replacementText: "test").boolValue == true {
+            textView.insertText("test")
+        }
+
+        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: textView.selectedRange.location - 1, effectiveRange: nil)!.isEqual( UIColor.blackColor()))
+    }
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
