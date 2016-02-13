@@ -15,7 +15,7 @@ class SZDefaultAttributes {
     class var defaultColor: SZAttribute {
         return SZAttribute.init(
             attributeName: NSForegroundColorAttributeName,
-            attributeValue: UIColor.greenColor())
+            attributeValue: UIColor.blackColor())
     }
 
     /**
@@ -24,7 +24,7 @@ class SZDefaultAttributes {
     class var mentionColor: SZAttribute {
         return SZAttribute.init(
             attributeName: NSForegroundColorAttributeName,
-            attributeValue: UIColor.greenColor())
+            attributeValue: UIColor.blueColor())
     }
 
     /**

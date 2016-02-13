@@ -37,14 +37,10 @@ class SZMentionHelper {
      @param mentions: the list of current mentions
      */
     class func adjustMentions(range : NSRange, text : String, mentions: [SZMention]) {
+        let rangeAdjustment = text.characters.count - range.length
+
         for mention in SZMentionHelper.mentionsAfterTextEntry(range, mentionsList: mentions)
         {
-
-            var rangeAdjustment = -(range.length > 0 ? range.length : 0)
-
-            if text.characters.count > 0 {
-                rangeAdjustment = text.characters.count - (range.length > 0 ? range.length : 0)
-            }
             mention.mentionRange = NSRange.init(
                 location: mention.mentionRange.location + rangeAdjustment,
                 length: mention.mentionRange.length)
@@ -77,21 +73,15 @@ class SZMentionHelper {
      @param mentions: the list of current mentions
      @return Bool: whether or not we need to change back to default attributes
      */
-    class func needsToChangeToDefaultAttributes(textView: UITextView, range: NSRange, mentions: [SZMention]) -> Bool {
+    class func needsToChangeToDefaultAttributes
+        (textView: UITextView,
+        range: NSRange,
+        mentions: [SZMention]) -> Bool {
         let isAheadOfMention = range.location > 0 &&
             SZMentionHelper.mentionExistsAt(range.location - 1, mentions: mentions)
         let isAtStartOfTextViewAndIsTouchingMention = range.location == 0 &&
             SZMentionHelper.mentionExistsAt(range.location + 1, mentions: mentions)
 
         return isAheadOfMention || isAtStartOfTextViewAndIsTouchingMention
-    }
-
-    /**
-     @brief Uses the text being entered into the view to determine whether or not we should hide the mentions list
-     @param text: the text being entered
-     @return Bool: whether or not we should hide the mentions list.
-     */
-    class func shouldHideMentions(text: String) -> Bool {
-        return (text == " " || (text.characters.count > 0 && text.characters.last! == " "))
     }
 }
