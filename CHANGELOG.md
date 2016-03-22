@@ -1,6 +1,11 @@
 #Change Log
 
 --- 
+## [0.1.0](https://github.com/szweier/SZMentions/releases/tag/0.1.0) (3/22/2016)
+
+#### Added
+* The ability to insert mentions to existing text
+
 ## [0.0.11](https://github.com/szweier/SZMentions/releases/tag/0.0.11) (2/12/2016)
 
 #### Cleaned
