@@ -30,6 +30,11 @@ public protocol SZCreateMentionProtocol {
      @brief The name of the mention to be added to the UITextView when selected.
      */
     var szMentionName: String {get}
+
+    /**
+    @brief The range to place the mention at (optional: if not set mention will be added to the current range being edited)
+    */
+    var szMentionRange: NSRange? {get}
 }
 
 public class SZMentionsListener: NSObject, UITextViewDelegate {
@@ -433,6 +438,37 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
     }
 
     // MARK: Mention management
+
+    /**
+    @brief Insert mentions into an existing textview.  This is provided assuming you are given text
+    along with a list of users mentioned in that text and want to prep the textview in advance.
+
+    @param mention the mention object adhereing to SZInsertMentionProtocol
+    szMentionName is used as the name to set for the mention.  This parameter
+    is returned in the mentions array in the object parameter of the SZMention object.
+    szMentionRange is used the range to place the metion at
+    */
+    public func insertExistingMentions(existingMentions: [SZCreateMentionProtocol]) {
+        let mutableAttributedString = mentionsTextView.attributedText.mutableCopy()
+
+        for mention in existingMentions {
+            if let range = mention.szMentionRange {
+            assert(mention.szMentionRange?.location != NSNotFound, "Mention must have a range to insert into")
+
+            let szMention = SZMention(mentionRange: range, mentionObject: mention)
+            mutableMentions.append(szMention)
+
+                SZAttributedStringHelper.apply(
+                    self.mentionTextAttributes,
+                    range:range,
+                    mutableAttributedString: mutableAttributedString as! NSMutableAttributedString)
+            }
+
+            settingText = true
+            mentionsTextView.attributedText = mutableAttributedString as! NSAttributedString
+            settingText = false
+        }
+    }
 
     /**
     @brief Adds a mention to the current mention range (determined by trigger + characters typed up to space or end of line)

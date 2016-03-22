@@ -11,4 +11,5 @@ import SZMentionsSwift
 
 class SZExampleMention: SZCreateMentionProtocol {
     var szMentionName: String = ""
+    var szMentionRange: NSRange?
 }

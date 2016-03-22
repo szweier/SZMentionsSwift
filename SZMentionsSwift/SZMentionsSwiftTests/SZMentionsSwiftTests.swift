@@ -11,6 +11,7 @@ import SZMentionsSwift
 
 class SZExampleMention: SZCreateMentionProtocol {
     var szMentionName: String = ""
+    var szMentionRange: NSRange?
 }
 
 class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDelegate {
@@ -61,6 +62,29 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         XCTAssert(hidingMentionsList == false)
         textView.insertText(" ")
         XCTAssert(hidingMentionsList == true)
+    }
+
+    func testMentionsCanBePlacedInAdvance() {
+        textView.text = "Testing Steven Zweier and Tiffany get mentioned correctly";
+
+        let mention = SZExampleMention()
+        mention.szMentionName = "Steve"
+        mention.szMentionRange = NSMakeRange(8, 13)
+
+        let mention2 = SZExampleMention()
+        mention2.szMentionName = "Tiff"
+        mention2.szMentionRange = NSMakeRange(26, 7)
+
+        let insertMentions : Array<SZCreateMentionProtocol> = [mention, mention2]
+
+        mentionsListener!.insertExistingMentions(insertMentions)
+
+        XCTAssert(mentionsListener!.mentions.count == 2)
+        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: 0, effectiveRange: nil)!.isEqual( UIColor.blackColor()))
+        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: 9, effectiveRange: nil)!.isEqual( UIColor.redColor()))
+        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: 21, effectiveRange: nil)!.isEqual( UIColor.blackColor()))
+        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: 27, effectiveRange: nil)!.isEqual( UIColor.redColor()))
+        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: 33, effectiveRange: nil)!.isEqual( UIColor.blackColor()))
     }
 
     func testMentionIsAdded() {
@@ -301,10 +325,10 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         if mentionsListener?.textView(textView, shouldChangeTextInRange: self.textView.selectedRange, replacementText: "test").boolValue == true {
             textView.insertText("test")
         }
-
+        
         XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: textView.selectedRange.location - 1, effectiveRange: nil)!.isEqual( UIColor.blackColor()))
     }
-
+    
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
