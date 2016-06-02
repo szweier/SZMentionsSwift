@@ -329,6 +329,36 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: textView.selectedRange.location - 1, effectiveRange: nil)!.isEqual( UIColor.blackColor()))
     }
     
+    func testMentionListOnNewlineIsDisplayed() {
+        textView.insertText("\n@t")
+        XCTAssert(hidingMentionsList == false)
+    }
+    
+    func testMentionListOnNewLineIsHidden() {
+        textView.insertText("\n@t")
+        XCTAssert(hidingMentionsList == false)
+        textView.insertText(" ")
+        XCTAssert(hidingMentionsList == true)
+    }
+    
+    func testMentionPositionIsCorrectToStartTextOnNewline() {
+        textView.insertText("\n@t")
+        let mention = SZExampleMention.init()
+        mention.szMentionName = "Steven"
+        mentionsListener?.addMention(mention)
+        
+        XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 1)
+    }
+    
+    func testMentionPositionIsCorrectInTheMidstOfNewlineText() {
+        textView.insertText("Testing \nnew line @t")
+        let mention = SZExampleMention.init()
+        mention.szMentionName = "Steven"
+        mentionsListener?.addMention(mention)
+        
+        XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 18)
+    }
+    
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
