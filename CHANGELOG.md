@@ -1,6 +1,11 @@
 #Change Log
 
 --- 
+## [0.1.1](https://github.com/szweier/SZMentions/releases/tag/0.1.1) (6/2/2016)
+
+#### Added
+* The ability to add a mention on a new line without the need for a leading space
+
 ## [0.1.0](https://github.com/szweier/SZMentions/releases/tag/0.1.0) (3/22/2016)
 
 #### Added
