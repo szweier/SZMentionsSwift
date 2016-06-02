@@ -342,30 +342,34 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
                 let substringRange = NSRange.init(location: location - 1, length: 1)
                 textBeforeTrigger = substring.substringWithRange(substringRange)
                 mentionEnabled = textBeforeTrigger == " " || textBeforeTrigger == "\n"
-              print(textBeforeTrigger)
             }
         }
 
         if mentionEnabled {
             if let stringBeingTyped = substring.componentsSeparatedByString(textBeforeTrigger).last {
-                if ((stringBeingTyped as NSString).rangeOfString(trigger as String).location != NSNotFound) {
-
-                    self.currentMentionRange = (textView.text as NSString).rangeOfString(
-                        stringBeingTyped,
-                        options: NSStringCompareOptions.BackwardsSearch,
-                        range: NSMakeRange(0, textView.selectedRange.location + textView.selectedRange.length))
+                if let stringForMention = stringBeingTyped.componentsSeparatedByString(" ").last {
+                
+                    if ((stringForMention as NSString).rangeOfString(trigger as String).location != NSNotFound) {
+                        
+                        self.currentMentionRange = (textView.text as NSString).rangeOfString(
+                            stringBeingTyped,
+                            options: NSStringCompareOptions.BackwardsSearch,
+                            range: NSMakeRange(0, textView.selectedRange.location + textView.selectedRange.length))
                         self.filterString = (stringBeingTyped as NSString).stringByReplacingOccurrencesOfString(
                             trigger as String,
                             withString: "")
-
-                    if self.filterString?.characters.count > 0 &&
-                        (self.cooldownTimer == nil || self.cooldownTimer?.valid == false) {
+                        
+                        if self.filterString?.characters.count > 0 &&
+                            (self.cooldownTimer == nil || self.cooldownTimer?.valid == false) {
                             let filter = self.filterString?.stringByReplacingOccurrencesOfString("\n", withString: "")
                             self.mentionsManager.showMentionsListWithString(filter!)
+                        }
+                        self.activateCooldownTimer()
+                        return
                     }
-                    self.activateCooldownTimer()
-                    return
                 }
+
+                
             }
         }
         self.mentionsManager.hideMentionsList()
@@ -517,7 +521,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         self.mentionsTextView.attributedText = mutableAttributedString as! NSMutableAttributedString
 
         if self.spaceAfterMention {
-            selectedRange.location++
+            selectedRange.location += 1
         }
 
         self.mentionsTextView.selectedRange = selectedRange
@@ -598,7 +602,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         let timer = NSTimer.init(
             timeInterval: self.cooldownInterval,
             target: self,
-            selector: Selector("cooldownTimerFired:"),
+            selector: #selector(SZMentionsListener.cooldownTimerFired(_:)),
             userInfo: nil,
             repeats: false)
         self.cooldownTimer = timer
