@@ -17,7 +17,7 @@ public class SZMention: NSObject {
     /**
      @brief Contains a reference to the object sent to the addMention: method
      */
-    private(set) public var mentionObject: SZCreateMentionProtocol
+    public private(set) var mentionObject: SZCreateMentionProtocol
 
     /**
      @brief initializer for creating a mention object
