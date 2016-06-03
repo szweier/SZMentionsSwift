@@ -32,7 +32,7 @@ let attributeConsistencyError = "Default and mention attributes must contain the
     var szMentionName: String {get}
 
     /**
-     @brief The range to place the mention at (optional: if not set mention will be added to the current range being edited)
+     @brief The range to place the mention at
      */
     var szMentionRange: NSRange {get}
 }
