@@ -18,7 +18,7 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
     init(frame: CGRect, delegate: UITextViewDelegate) {
         super.init(frame: frame)
         let mentionsListener = SZMentionsListener.init(mentionTextView: textView,
-            mentionsManager: self, textViewDelegate: delegate, mentionTextAttributes: mentionAttributes(), defaultTextAttributes: defaultAttributes())
+            mentionsManager: self, textViewDelegate: delegate, mentionTextAttributes: mentionAttributes(), defaultTextAttributes: defaultAttributes(),spaceAfterMention: true, addMentionOnReturnKey: true)
 
         setupTextView(textView, delegate: mentionsListener)
         self.addSubview(textView)
@@ -137,8 +137,16 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
         }
         dataManager?.filter(nil)
     }
-
+  
+  //**Optional function Called when user tap Return key you must init SZMentionsListener with addMentionOnReturnKey = true
+    func shouldAddMentionOnReturnKey() {
+      if let mention = dataManager?.firstMentionObject() {
+        dataManager?.addMention(mention)
+      }
+    }
+  
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
+

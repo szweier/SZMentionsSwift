@@ -29,7 +29,9 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
             mentionsManager: self,
             textViewDelegate: self,
             mentionTextAttributes: [attribute],
-            defaultTextAttributes: [attribute2])
+            defaultTextAttributes: [attribute2],
+            spaceAfterMention: false,
+            addMentionOnReturnKey: true)
     }
 
     func testThatAddingAttributesThatDoNotMatchThrowsAnError() {
@@ -63,7 +65,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         textView.insertText(" ")
         XCTAssert(hidingMentionsList == true)
     }
-
+  
     func testMentionsCanBePlacedInAdvance() {
         textView.text = "Testing Steven Zweier and Tiffany get mentioned correctly";
 
@@ -358,7 +360,28 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         
         XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 18)
     }
-    
+  
+    func testShouldAddMentionOnReturnKeyShouldCalledWhenHitReturnKey() {
+      
+      mentionsListener?.setValue(true, forKey: "addMentionAfterReturnKey")
+      
+      textView.insertText("@t")
+      XCTAssert(hidingMentionsList == false)
+
+      if mentionsListener?.textView(textView, shouldChangeTextInRange: self.textView.selectedRange, replacementText: "\n").boolValue == true {
+        textView.insertText("\n")
+      }
+      
+      XCTAssertTrue(shouldAddMentionOnReturnKeyCalled)
+      XCTAssert(hidingMentionsList == true)
+    }
+  
+    var shouldAddMentionOnReturnKeyCalled = false
+
+    func shouldAddMentionOnReturnKey() {
+      shouldAddMentionOnReturnKeyCalled = true
+    }
+  
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
