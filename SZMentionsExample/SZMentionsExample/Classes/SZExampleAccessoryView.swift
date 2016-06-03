@@ -137,14 +137,14 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
         }
         dataManager?.filter(nil)
     }
-
-  func shouldAddMentionOnReturnKey() {
-      print("shouldAddMentionOnReturnKey")
-    if let mention = dataManager?.firstMentionObject() {
-      dataManager?.addMention(mention)
+  
+  //**Optional function Called when user tap Return key you must init SZMentionsListener with addMentionOnReturnKey = true
+    func shouldAddMentionOnReturnKey() {
+      if let mention = dataManager?.firstMentionObject() {
+        dataManager?.addMention(mention)
+      }
     }
-    
-  }
+  
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
