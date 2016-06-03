@@ -59,7 +59,14 @@ class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UI
 
         return filteredMentions
     }
-
+  
+    func firstMentionObject() -> SZExampleMention? {
+      return mentionsList().first
+    }
+  
+    func addMention(mention: SZExampleMention) {
+      listener!.addMention(mention)
+    }
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -76,6 +83,6 @@ class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UI
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        listener!.addMention(mentionsList()[indexPath.row])
+      self.addMention(mentionsList()[indexPath.row])
     }
 }
