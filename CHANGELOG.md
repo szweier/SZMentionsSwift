@@ -1,6 +1,11 @@
 #Change Log
 
 --- 
+## [0.2.1](https://github.com/szweier/SZMentionsSwift/releases/tag/0.2.1) (6/8/2016)
+
+#### Added
+* The ability to add the topmost mention by hitting the return key
+
 ## [0.2.0](https://github.com/szweier/SZMentionsSwift/releases/tag/0.2.0) (6/3/2016)
 
 #### Added 
