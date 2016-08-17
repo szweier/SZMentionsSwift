@@ -125,6 +125,11 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
     private var filterString: String?
 
     /**
+     @brief String that has been sent to the showMentionsListWithString
+     */
+    private var stringCurrentlyBeingFiltered: String?
+
+    /**
      @brief Timer to space out mentions requests
      */
     private var cooldownTimer: NSTimer?
@@ -405,11 +410,12 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
                         self.filterString = (stringBeingTyped as NSString).stringByReplacingOccurrencesOfString(
                             trigger as String,
                             withString: "")
+                        self.filterString = self.filterString?.stringByReplacingOccurrencesOfString("\n", withString: "")
 
                         if self.filterString?.characters.count > 0 &&
                             (self.cooldownTimer == nil || self.cooldownTimer?.valid == false) {
-                            let filter = self.filterString?.stringByReplacingOccurrencesOfString("\n", withString: "")
-                            self.mentionsManager.showMentionsListWithString(filter!)
+                            self.stringCurrentlyBeingFiltered = filterString
+                            self.mentionsManager.showMentionsListWithString(filterString!)
                         }
                         self.activateCooldownTimer()
                         return
@@ -634,9 +640,9 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @param timer: the timer that called the method
      */
     internal func cooldownTimerFired(timer: NSTimer) {
-        if ((self.filterString?.characters.count) != nil) {
-            let filter = self.filterString?.stringByReplacingOccurrencesOfString("\n", withString: "")
-            self.mentionsManager.showMentionsListWithString(filter!)
+        if ((self.filterString?.characters.count) != nil  && self.filterString != self.stringCurrentlyBeingFiltered) {
+            self.stringCurrentlyBeingFiltered = filterString
+            self.mentionsManager.showMentionsListWithString(filterString!)
         }
     }
 
