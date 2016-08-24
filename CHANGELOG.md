@@ -1,6 +1,11 @@
 #Change Log
 
 --- 
+## [0.3.0](https://github.com/szweier/SZMentionsSwift/releases/tag/0.3.0) (8/17/2016)
+
+#### Fixed
+* Issue with timer hitting twice
+
 ## [0.2.1](https://github.com/szweier/SZMentionsSwift/releases/tag/0.2.1) (6/8/2016)
 
 #### Added
