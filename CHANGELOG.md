@@ -1,6 +1,11 @@
 #Change Log
 
 --- 
+## [0.3.1](https://github.com/szweier/SZMentionsSwift/releases/tag/0.3.1) (8/29/2016)
+
+#### Fixed
+* Fixed potential retain cycle (thanks @yuvalt)
+
 ## [0.3.0](https://github.com/szweier/SZMentionsSwift/releases/tag/0.3.0) (8/17/2016)
 
 #### Fixed
