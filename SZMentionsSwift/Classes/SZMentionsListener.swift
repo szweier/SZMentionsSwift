@@ -42,51 +42,51 @@ let attributeConsistencyError = "Default and mention attributes must contain the
     var szMentionRange: NSRange {get}
 }
 
-public class SZMentionsListener: NSObject, UITextViewDelegate {
+open class SZMentionsListener: NSObject, UITextViewDelegate {
 
     /**
      @brief Array of mentions currently added to the textview
      */
-    public var mentions:[SZMention] {
+    open var mentions:[SZMention] {
         return mutableMentions
     }
 
     /**
      @brief Trigger to start a mention. Default: @
      */
-    private var trigger: String = "@"
+    fileprivate var trigger: String = "@"
 
     /**
      @brief Text attributes to be applied to all text excluding mentions.
      */
-    private var defaultTextAttributes: [SZAttribute] = SZDefaultAttributes.defaultTextAttributes()
+    fileprivate var defaultTextAttributes: [SZAttribute] = SZDefaultAttributes.defaultTextAttributes()
 
     /**
      @brief Text attributes to be applied to mentions.
      */
-    private var mentionTextAttributes: [SZAttribute] = SZDefaultAttributes.defaultMentionAttributes()
+    fileprivate var mentionTextAttributes: [SZAttribute] = SZDefaultAttributes.defaultMentionAttributes()
 
     /**
      @brief The UITextView being handled by the SZMentionsListener
      */
-    private var mentionsTextView: UITextView
+    fileprivate var mentionsTextView: UITextView
 
     /**
      @brief An optional delegate that can be used to handle all UITextView delegate
      methods after they've been handled by the SZMentionsListener
      */
-    private var delegate: UITextViewDelegate?
+    fileprivate weak var delegate: UITextViewDelegate?
 
     /**
      @brief Manager in charge of handling the creation and dismissal of the mentions
      list.
      */
-    private var mentionsManager: SZMentionsManagerProtocol
+    fileprivate var mentionsManager: SZMentionsManagerProtocol
 
     /**
      @brief Amount of time to delay between showMentions calls default:0.5
      */
-    private var cooldownInterval: TimeInterval = 0.5
+    fileprivate var cooldownInterval: TimeInterval = 0.5
 
     /**
      @brief Whether or not we should add a space after the mention, default: false
@@ -102,32 +102,37 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @brief Mutable array list of mentions managed by listener, accessible via the
      public mentions property.
      */
-    private var mutableMentions: [SZMention] = []
+    fileprivate var mutableMentions: [SZMention] = []
 
     /**
      @brief Range of mention currently being edited.
      */
-    private var currentMentionRange: NSRange?
+    fileprivate var currentMentionRange: NSRange?
 
     /**
      @brief Whether or not we are currently editing a mention.
      */
-    private var editingMention: Bool = false
+    fileprivate var editingMention: Bool = false
 
     /**
      @brief Allow us to edit text internally without triggering delegate
      */
-    private var settingText: Bool = false
+    fileprivate var settingText: Bool = false
 
     /**
      @brief String to filter by
      */
-    private var filterString: String?
+    fileprivate var filterString: String?
+
+    /**
+     @brief String that has been sent to the showMentionsListWithString
+     */
+    fileprivate var stringCurrentlyBeingFiltered: String?
 
     /**
      @brief Timer to space out mentions requests
      */
-    private var cooldownTimer: Timer?
+    fileprivate var cooldownTimer: Timer?
 
     // MARK: Initialization
 
@@ -324,7 +329,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @param mentionAttributes: The attributes to apply to mention objects
      @param defaultAttributes: The attributes to apply to default text
      */
-    public func attributesSetCorrectly(_ mentionAttributes: [SZAttribute],
+    open func attributesSetCorrectly(_ mentionAttributes: [SZAttribute],
                                        defaultAttributes: [SZAttribute]) ->  Bool {
 
         let attributeNamesToLoop = (defaultAttributes.count >= mentionAttributes.count) ?
@@ -354,7 +359,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @brief Resets the empty text view
      @param textView: the text view to reset
      */
-    private func resetEmpty(_ textView: UITextView) {
+    fileprivate func resetEmpty(_ textView: UITextView) {
         mutableMentions.removeAll()
         textView.text = " "
         let mutableAttributedString = textView.attributedText.mutableCopy() as! NSMutableAttributedString
@@ -371,7 +376,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @param range: the selected range
      */
     var mentionEnabled = false
-    private func adjust(_ textView: UITextView, range: NSRange) {
+    fileprivate func adjust(_ textView: UITextView, range: NSRange) {
         let substring = (textView.text as NSString).substring(to: range.location) as NSString
 
 
@@ -402,16 +407,16 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
                             of: stringBeingTyped,
                             options: NSString.CompareOptions.backwards,
                             range: NSMakeRange(0, textView.selectedRange.location + textView.selectedRange.length))
+
                         self.filterString = (stringBeingTyped as NSString).replacingOccurrences(
                             of: trigger as String,
                             with: "")
+                        self.filterString = self.filterString?.replacingOccurrences(of: "\n", with: "")
 
-                        if let cooldownTimer = self.cooldownTimer {
-                            if (self.filterString?.characters.count)! > 0 &&
-                                cooldownTimer.isValid == false {
-                                let filter = self.filterString?.replacingOccurrences(of: "\n", with: "")
-                                self.mentionsManager.showMentionsListWithString(filter!)
-                            }
+                        if (self.filterString?.characters.count)! > 0 &&
+                            (self.cooldownTimer?.isValid == false || self.cooldownTimer == nil) {
+                            self.stringCurrentlyBeingFiltered = filterString
+                            self.mentionsManager.showMentionsListWithString(filterString!)
                         }
                         self.activateCooldownTimer()
                         return
@@ -432,7 +437,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @param text: the text to replace the range with
      @return Bool: whether or not the textView should adjust the text itself
      */
-    private func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
+    fileprivate func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
         var shouldAdjust = true
 
         if (textView.text.characters.count == 0) {
@@ -471,7 +476,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @param text: the text to replace the range with
      @return Bool: false (we do not want the text view handling text input in this case)
      */
-    private func forceDefaultAttributes(_ textView: UITextView, range: NSRange, text: String) -> Bool {
+    fileprivate func forceDefaultAttributes(_ textView: UITextView, range: NSRange, text: String) -> Bool {
         let mutableAttributedString = textView.attributedText.mutableCopy() as! NSMutableAttributedString
         mutableAttributedString.mutableString.replaceCharacters(in: range, with: text)
 
@@ -505,7 +510,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      is returned in the mentions array in the object parameter of the SZMention object.
      szMentionRange is used the range to place the metion at
      */
-    public func insertExistingMentions(_ existingMentions: [SZCreateMentionProtocol]) {
+    open func insertExistingMentions(_ existingMentions: [SZCreateMentionProtocol]) {
         let mutableAttributedString = mentionsTextView.attributedText.mutableCopy()
 
         for mention in existingMentions {
@@ -530,7 +535,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @brief Adds a mention to the current mention range (determined by trigger + characters typed up to space or end of line)
      @param mention: the mention object to apply
      */
-    public func addMention(_ mention: SZCreateMentionProtocol) {
+    open func addMention(_ mention: SZCreateMentionProtocol) {
         if (self.currentMentionRange == nil) {
             return
         }
@@ -586,7 +591,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @param range: the current range selected
      @param text: text to replace range
      */
-    private func handleEditingMention(_ mention: SZMention, textView: UITextView,
+    fileprivate func handleEditingMention(_ mention: SZMention, textView: UITextView,
                                       range: NSRange, text: String) -> Bool {
         let mutableAttributedString = textView.attributedText.mutableCopy() as! NSMutableAttributedString
 
@@ -612,7 +617,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @param range: the range to look for a mention
      @return SZMention?: the mention being edited (if one exists)
      */
-    private func mentionBeingEdited(_ range: NSRange) -> SZMention? {
+    fileprivate func mentionBeingEdited(_ range: NSRange) -> SZMention? {
         var editedMention: SZMention?
 
         for mention in self.mentions {
@@ -636,8 +641,9 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
      @param timer: the timer that called the method
      */
     internal func cooldownTimerFired(_ timer: Timer) {
-        if ((self.filterString?.characters.count) != nil) {
+        if ((self.filterString?.characters.count) != nil  && self.filterString != self.stringCurrentlyBeingFiltered) {
             let filter = self.filterString?.replacingOccurrences(of: "\n", with: "")
+            self.stringCurrentlyBeingFiltered = filter!
             self.mentionsManager.showMentionsListWithString(filter!)
         }
     }
@@ -645,7 +651,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
     /**
      @brief Activates a cooldown timer
      */
-    private func activateCooldownTimer() {
+    fileprivate func activateCooldownTimer() {
         self.cooldownTimer?.invalidate()
 
         let timer = Timer.init(
@@ -660,7 +666,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
 
     // MARK: TextView Delegate
 
-    public func textView(
+    open func textView(
         _ textView: UITextView,
         shouldChangeTextIn range: NSRange,
         replacementText text: String) -> Bool {
@@ -686,11 +692,11 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         return self.shouldAdjust(textView, range: range, text: text)
     }
 
-    public func textViewDidChange(_ textView: UITextView) {
+    open func textViewDidChange(_ textView: UITextView) {
         self.delegate?.textViewDidChange?(textView)
     }
 
-    public func textView(
+    open func textView(
         _ textView: UITextView,
         shouldInteractWith textAttachment: NSTextAttachment,
         in characterRange: NSRange) -> Bool {
@@ -703,7 +709,7 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         return true
     }
 
-    public func textView(
+    open func textView(
         _ textView: UITextView,
         shouldInteractWith URL: URL,
         in characterRange: NSRange) -> Bool {
@@ -713,30 +719,30 @@ public class SZMentionsListener: NSObject, UITextViewDelegate {
         return true
     }
 
-    public func textViewDidBeginEditing(_ textView: UITextView) {
+    open func textViewDidBeginEditing(_ textView: UITextView) {
         self.delegate?.textViewDidBeginEditing?(textView)
     }
 
-    public func textViewDidChangeSelection(_ textView: UITextView) {
+    open func textViewDidChangeSelection(_ textView: UITextView) {
         if editingMention == false {
             self.adjust(textView, range: textView.selectedRange)
             self.delegate?.textViewDidChangeSelection?(textView)
         }
     }
-    
-    public func textViewDidEndEditing(_ textView: UITextView) {
+
+    open func textViewDidEndEditing(_ textView: UITextView) {
         self.delegate?.textViewDidEndEditing?(textView)
     }
-    
-    public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+
+    open func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         if let shouldBeginEditing = self.delegate?.textViewShouldBeginEditing?(textView) {
             return shouldBeginEditing
         }
-        
+
         return true
     }
-    
-    public func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+
+    open func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         if let shouldEndEditing = self.delegate?.textViewShouldEndEditing?(textView) {
             return shouldEndEditing
         }
