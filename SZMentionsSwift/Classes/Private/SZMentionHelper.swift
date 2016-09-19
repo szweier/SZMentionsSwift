@@ -15,7 +15,7 @@ class SZMentionHelper {
      @param mentionsList: the list of current mentions
      @return [SZMention]: list of mentions that exist after the provided range
      */
-    class func mentionsAfterTextEntry(range: NSRange, mentionsList: [SZMention]) -> [SZMention] {
+    class func mentionsAfterTextEntry(_ range: NSRange, mentionsList: [SZMention]) -> [SZMention] {
         var mentionsAfterTextEntry = [SZMention]()
 
         for mention in mentionsList {
@@ -36,7 +36,7 @@ class SZMentionHelper {
      @param text: the text that was changed
      @param mentions: the list of current mentions
      */
-    class func adjustMentions(range : NSRange, text : String, mentions: [SZMention]) {
+    class func adjustMentions(_ range : NSRange, text : String, mentions: [SZMention]) {
         let rangeAdjustment = text.characters.count - range.length
 
         for mention in SZMentionHelper.mentionsAfterTextEntry(range, mentionsList: mentions)
@@ -53,7 +53,7 @@ class SZMentionHelper {
      @param mentions: the list of current mentions
      @return Bool: Whether or not a mention exists at a specific location
      */
-    class func mentionExistsAt(index: NSInteger, mentions: [SZMention]) -> Bool {
+    class func mentionExistsAt(_ index: NSInteger, mentions: [SZMention]) -> Bool {
 
         let mentionsList = mentions.filter {
             if let range = ($0 as SZMention).mentionRange as NSRange! {
@@ -74,7 +74,7 @@ class SZMentionHelper {
      @return Bool: whether or not we need to change back to default attributes
      */
     class func needsToChangeToDefaultAttributes
-        (textView: UITextView,
+        (_ textView: UITextView,
         range: NSRange,
         mentions: [SZMention]) -> Bool {
         let isAheadOfMention = range.location > 0 &&
