@@ -1,6 +1,11 @@
 #Change Log
 
 --- 
+## [0.3.2](https://github.com/szweier/SZMentionsSwift/releases/tag/0.3.2) (9/19/2016)
+
+#### Added
+* Support for Swift 3.0
+
 ## [0.3.1](https://github.com/szweier/SZMentionsSwift/releases/tag/0.3.1) (8/29/2016)
 
 #### Fixed
