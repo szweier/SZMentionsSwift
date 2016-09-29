@@ -22,8 +22,8 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
     override func setUp() {
         super.setUp()
-        let attribute = SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.redColor())
-        let attribute2 = SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.blackColor())
+        let attribute = SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
+        let attribute2 = SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.black)
 
         mentionsListener = SZMentionsListener.init(mentionTextView: textView,
             mentionsManager: self,
@@ -35,8 +35,8 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
     }
 
     func testThatAddingAttributesThatDoNotMatchThrowsAnError() {
-        let attribute = SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.redColor())
-        let attribute2 = SZAttribute.init(attributeName: NSBackgroundColorAttributeName, attributeValue: UIColor.blackColor())
+        let attribute = SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
+        let attribute2 = SZAttribute.init(attributeName: NSBackgroundColorAttributeName, attributeValue: UIColor.black)
 
         let defaultAttributes = [attribute]
         let mentionAttributes = [attribute, attribute2]
@@ -45,8 +45,8 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
     }
 
     func testThatAddingAttributesThatDoMatchDoesNotThrowAnError() {
-        let attribute = SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.redColor())
-        let attribute2 = SZAttribute.init(attributeName: NSBackgroundColorAttributeName, attributeValue: UIColor.blackColor())
+        let attribute = SZAttribute.init(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
+        let attribute2 = SZAttribute.init(attributeName: NSBackgroundColorAttributeName, attributeValue: UIColor.black)
 
         let defaultAttributes = [attribute, attribute2]
         let mentionAttributes = [attribute2, attribute]
@@ -82,11 +82,11 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         mentionsListener!.insertExistingMentions(insertMentions)
 
         XCTAssert(mentionsListener!.mentions.count == 2)
-        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: 0, effectiveRange: nil)!.isEqual( UIColor.blackColor()))
-        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: 9, effectiveRange: nil)!.isEqual( UIColor.redColor()))
-        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: 21, effectiveRange: nil)!.isEqual( UIColor.blackColor()))
-        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: 27, effectiveRange: nil)!.isEqual( UIColor.redColor()))
-        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: 33, effectiveRange: nil)!.isEqual( UIColor.blackColor()))
+        XCTAssert((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as AnyObject).isEqual( UIColor.black))
+        XCTAssert((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 9, effectiveRange: nil)! as AnyObject).isEqual( UIColor.red))
+        XCTAssert((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 21, effectiveRange: nil)! as AnyObject).isEqual( UIColor.black))
+        XCTAssert((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 27, effectiveRange: nil)! as AnyObject).isEqual( UIColor.red))
+        XCTAssert((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 33, effectiveRange: nil)! as AnyObject).isEqual( UIColor.black))
     }
 
     func testMentionIsAdded() {
@@ -141,25 +141,25 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 8)
 
         var beginning = textView.beginningOfDocument
-        var start = textView.positionFromPosition(beginning, offset: 0)
-        var end = textView.positionFromPosition(start!, offset: 3)
+        var start = textView.position(from: beginning, offset: 0)
+        var end = textView.position(from: start!, offset: 3)
 
-        var textRange = textView.textRangeFromPosition(start!, toPosition: end!)
+        var textRange = textView.textRange(from: start!, to: end!)
 
-        if mentionsListener?.textView(textView, shouldChangeTextInRange: NSMakeRange(0, 3), replacementText: "").boolValue == true {
-            textView.replaceRange(textRange!, withText: "")
+        if mentionsListener?.textView(textView, shouldChangeTextIn: NSMakeRange(0, 3), replacementText: "") == true {
+            textView.replace(textRange!, withText: "")
         }
 
         XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 5)
 
         beginning = textView.beginningOfDocument
-        start = textView.positionFromPosition(beginning, offset: 0)
-        end = textView.positionFromPosition(start!, offset: 5)
+        start = textView.position(from: beginning, offset: 0)
+        end = textView.position(from: start!, offset: 5)
 
-        textRange = textView.textRangeFromPosition(start!, toPosition: end!)
+        textRange = textView.textRange(from: start!, to: end!)
 
-        if mentionsListener?.textView(textView, shouldChangeTextInRange: NSMakeRange(0, 5), replacementText: "").boolValue == true {
-            textView.replaceRange(textRange!, withText: "")
+        if mentionsListener?.textView(textView, shouldChangeTextIn: NSMakeRange(0, 5), replacementText: "") == true {
+            textView.replace(textRange!, withText: "")
         }
 
         XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 0)
@@ -176,7 +176,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
         textView.selectedRange = NSMakeRange(0, 0)
 
-        if mentionsListener?.textView(textView, shouldChangeTextInRange: NSMakeRange(0, 0), replacementText: "@t").boolValue == true {
+        if mentionsListener?.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "@t") == true {
             textView.insertText("@t")
         }
         mention = SZExampleMention.init()
@@ -200,7 +200,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
         textView.selectedRange = NSMakeRange(0, 0)
 
-        if mentionsListener?.textView(textView, shouldChangeTextInRange: NSMakeRange(0, 0), replacementText: "@t").boolValue == true {
+        if mentionsListener?.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "@t") == true {
             textView.insertText("@t")
         }
         mention = SZExampleMention.init()
@@ -222,7 +222,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
         textView.selectedRange = NSMakeRange(11, 1)
 
-        if mentionsListener?.textView(textView, shouldChangeTextInRange: textView.selectedRange, replacementText: "").boolValue == true {
+        if mentionsListener?.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") == true {
             textView.deleteBackward()
         }
 
@@ -239,7 +239,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
         textView.selectedRange = NSMakeRange(13, 1)
 
-        if mentionsListener?.textView(textView, shouldChangeTextInRange: textView.selectedRange, replacementText: "").boolValue == true {
+        if mentionsListener?.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") == true {
             textView.deleteBackward()
         }
 
@@ -258,7 +258,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
         textView.selectedRange = NSMakeRange(14, 1)
 
-        if mentionsListener?.textView(textView, shouldChangeTextInRange: textView.selectedRange, replacementText: "").boolValue == true {
+        if mentionsListener?.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") == true {
             textView.deleteBackward()
         }
 
@@ -271,17 +271,17 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         mention.szMentionName = "Steven"
         mentionsListener?.addMention(mention)
         textView.selectedRange = NSMakeRange(0, 0)
-        if mentionsListener?.textView(textView, shouldChangeTextInRange: textView.selectedRange, replacementText: "test").boolValue == true {
+        if mentionsListener?.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "test") == true {
             textView.insertText("test")
         }
-        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: 0, effectiveRange: nil)!.isEqual( UIColor.blackColor()))
+        XCTAssert((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as AnyObject).isEqual( UIColor.black))
     }
 
     func hideMentionsList() {
         hidingMentionsList = true
     }
 
-    func showMentionsListWithString(mentionsString: String) {
+    func showMentionsListWithString(_ mentionsString: String) {
         hidingMentionsList = false
         mentionString = mentionsString
     }
@@ -324,11 +324,11 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         mention.szMentionName = "Steven"
         self.mentionsListener?.addMention(mention)
 
-        if mentionsListener?.textView(textView, shouldChangeTextInRange: self.textView.selectedRange, replacementText: "test").boolValue == true {
+        if mentionsListener?.textView(textView, shouldChangeTextIn: self.textView.selectedRange, replacementText: "test") == true {
             textView.insertText("test")
         }
         
-        XCTAssert(textView.attributedText.attribute(NSForegroundColorAttributeName, atIndex: textView.selectedRange.location - 1, effectiveRange: nil)!.isEqual( UIColor.blackColor()))
+        XCTAssert((textView.attributedText.attribute(NSForegroundColorAttributeName, at: textView.selectedRange.location - 1, effectiveRange: nil)! as AnyObject).isEqual( UIColor.black))
     }
     
     func testMentionListOnNewlineIsDisplayed() {
@@ -368,7 +368,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
       textView.insertText("@t")
       XCTAssert(hidingMentionsList == false)
 
-      if mentionsListener?.textView(textView, shouldChangeTextInRange: self.textView.selectedRange, replacementText: "\n").boolValue == true {
+      if mentionsListener?.textView(textView, shouldChangeTextIn: self.textView.selectedRange, replacementText: "\n") == true {
         textView.insertText("\n")
       }
       

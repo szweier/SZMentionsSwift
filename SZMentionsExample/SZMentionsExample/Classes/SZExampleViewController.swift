@@ -11,11 +11,11 @@ import SZMentionsSwift
 
 class SZExampleViewController: UIViewController, UITextViewDelegate {
 
-    private var myInputAccessoryView: UIView?
+    fileprivate var myInputAccessoryView: UIView?
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        let frame = CGRectMake(0, 0, self.view.frame.size.width, 40)
+        let frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 40)
         myInputAccessoryView = SZExampleAccessoryView.init(frame: frame, delegate: self)
     }
 
@@ -27,11 +27,11 @@ class SZExampleViewController: UIViewController, UITextViewDelegate {
         return myInputAccessoryView!
     }
 
-    override func canBecomeFirstResponder() -> Bool {
+    override var canBecomeFirstResponder : Bool {
         return true
     }
 
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.becomeFirstResponder()
     }

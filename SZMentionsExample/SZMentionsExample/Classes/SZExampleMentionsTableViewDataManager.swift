@@ -8,11 +8,31 @@
 
 import UIKit
 import SZMentionsSwift
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UITableViewDelegate {
 
-    private var listener: SZMentionsListener?
-    private var mentions: [SZExampleMention] {
+    fileprivate var listener: SZMentionsListener?
+    fileprivate var mentions: [SZExampleMention] {
         let names = [
             "Steven Zweier",
             "John Smith",
@@ -28,29 +48,29 @@ class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UI
 
         return tempMentions
     }
-    private var tableView: UITableView?
-    private var filterString: String?
+    fileprivate var tableView: UITableView?
+    fileprivate var filterString: String?
 
     init(mentionTableView: UITableView, mentionsListener: SZMentionsListener) {
         tableView = mentionTableView
-        tableView!.registerClass(
+        tableView!.register(
             UITableViewCell.classForCoder(),
             forCellReuseIdentifier: "Cell")
         listener = mentionsListener
     }
 
-    func filter(string: String?) {
+    func filter(_ string: String?) {
         filterString = string
         tableView?.reloadData()
     }
 
-    private func mentionsList() -> [SZExampleMention] {
+    fileprivate func mentionsList() -> [SZExampleMention] {
         var filteredMentions = mentions
 
         if (filterString?.characters.count > 0) {
             filteredMentions = mentions.filter() {
                 if let type = ($0 as SZExampleMention).szMentionName as String! {
-                    return type.lowercaseString.containsString(filterString!.lowercaseString)
+                    return type.lowercased().contains(filterString!.lowercased())
                 } else {
                     return false
                 }
@@ -64,25 +84,25 @@ class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UI
       return mentionsList().first
     }
   
-    func addMention(mention: SZExampleMention) {
+    func addMention(_ mention: SZExampleMention) {
       listener!.addMention(mention)
     }
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return mentionsList().count
     }
 
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell")
-        cell?.textLabel?.text = mentionsList()[indexPath.row].szMentionName as String
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
+        cell?.textLabel?.text = mentionsList()[(indexPath as NSIndexPath).row].szMentionName as String
 
         return cell!
     }
 
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-      self.addMention(mentionsList()[indexPath.row])
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+      self.addMention(mentionsList()[(indexPath as NSIndexPath).row])
     }
 }
