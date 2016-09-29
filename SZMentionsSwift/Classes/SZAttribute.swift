@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class SZAttribute: NSObject {
+open class SZAttribute: NSObject {
     /**
      @brief Name of the attribute to set on a string
      */

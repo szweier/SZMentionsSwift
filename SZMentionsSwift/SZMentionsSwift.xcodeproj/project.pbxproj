@@ -194,9 +194,12 @@
 				TargetAttributes = {
 					DB0403BC1C44A017000904DB = {
 						CreatedOnToolsVersion = 7.2;
+						LastSwiftMigration = 0800;
 					};
 					DBF2DF5B1C4B1067001B9788 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = K2V4RUXGKP;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -370,6 +373,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -386,26 +390,31 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
 		DBF2DF641C4B1067001B9788 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = K2V4RUXGKP;
 				INFOPLIST_FILE = SZMentionsSwiftTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		DBF2DF651C4B1067001B9788 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = K2V4RUXGKP;
 				INFOPLIST_FILE = SZMentionsSwiftTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

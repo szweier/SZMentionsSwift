@@ -8,16 +8,16 @@
 
 import UIKit
 
-public class SZMention: NSObject {
+open class SZMention: NSObject {
     /**
      @brief The location of the mention within the attributed string of the UITextView
      */
-    public var mentionRange: NSRange
+    open var mentionRange: NSRange
 
     /**
      @brief Contains a reference to the object sent to the addMention: method
      */
-    public private(set) var mentionObject: SZCreateMentionProtocol
+    open fileprivate(set) var mentionObject: SZCreateMentionProtocol
 
     /**
      @brief initializer for creating a mention object
