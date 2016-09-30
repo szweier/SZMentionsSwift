@@ -1,6 +1,11 @@
 #Change Log
 
 --- 
+## [0.4.1](https://github.com/szweier/SZMentionsSwift/releases/tag/0.4.1) (9/30/2016)
+
+#### Fixed
+* Setting swift 3.0 tag in build settings
+
 ## [0.4.0](https://github.com/szweier/SZMentionsSwift/releases/tag/0.4.0) (9/29/2016)
 
 #### Added
