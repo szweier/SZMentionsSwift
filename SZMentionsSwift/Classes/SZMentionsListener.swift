@@ -660,7 +660,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
      @param timer: the timer that called the method
      */
     internal func cooldownTimerFired(_ timer: Timer) {
-        if ((self.filterString?.characters.count) != nil  && self.filterString != self.stringCurrentlyBeingFiltered) {
+        if ((self.filterString?.characters.count) != nil  && self.filterString != self.stringCurrentlyBeingFiltered && self.mentionEnabled) {
             self.stringCurrentlyBeingFiltered = filterString
             self.mentionsManager.showMentionsListWithString(filterString!)
         }
