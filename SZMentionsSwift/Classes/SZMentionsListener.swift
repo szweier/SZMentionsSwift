@@ -432,7 +432,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
                             with: "")
                         self.filterString = self.filterString?.replacingOccurrences(of: "\n", with: "")
 
-                        if self.filterString?.characters.count > 0 &&
+                        if self.filterString != nil &&
                             (self.cooldownTimer == nil || self.cooldownTimer?.isValid == false) {
                             self.stringCurrentlyBeingFiltered = filterString
                             self.mentionsManager.showMentionsListWithString(filterString!)
@@ -476,7 +476,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
         }
 
         if SZMentionHelper.needsToChangeToDefaultAttributes(textView, range: range, mentions: self.mentions) {
-            shouldAdjust = self.forceDefaultAttributes(textView, range: range, text: text)
+            shouldAdjust = self.forceDefaultAttributes(textView, range: range, text: text, replaceCharacters: editingMention == false)
         }
 
         SZMentionHelper.adjustMentions(range, text: text, mentions: self.mentions)
@@ -495,9 +495,12 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
      @param text: the text to replace the range with
      @return Bool: false (we do not want the text view handling text input in this case)
      */
-    fileprivate func forceDefaultAttributes(_ textView: UITextView, range: NSRange, text: String) -> Bool {
+    fileprivate func forceDefaultAttributes(_ textView: UITextView, range: NSRange, text: String, replaceCharacters: Bool) -> Bool {
         let mutableAttributedString = textView.attributedText.mutableCopy() as! NSMutableAttributedString
-        mutableAttributedString.mutableString.replaceCharacters(in: range, with: text)
+
+        if replaceCharacters {
+            mutableAttributedString.mutableString.replaceCharacters(in: range, with: text)
+        }
 
         SZAttributedStringHelper.apply(
             self.defaultTextAttributes,
@@ -660,9 +663,25 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
      @param timer: the timer that called the method
      */
     internal func cooldownTimerFired(_ timer: Timer) {
-        if ((self.filterString?.characters.count) != nil  && self.filterString != self.stringCurrentlyBeingFiltered) {
+        if (self.filterString != nil && self.filterString != self.stringCurrentlyBeingFiltered) {
             self.stringCurrentlyBeingFiltered = filterString
-            self.mentionsManager.showMentionsListWithString(filterString!)
+
+            guard mentionsTextView.selectedRange.location >= 1 else { return }
+
+            var range = (mentionsTextView.text as NSString).range(
+                of: " ",
+                options: NSString.CompareOptions.backwards,
+                range: NSMakeRange(0, mentionsTextView.selectedRange.location + mentionsTextView.selectedRange.length))
+
+            if range.location == NSNotFound {
+                range = NSMakeRange(0, 0)
+            }
+
+            let trigger = (mentionsTextView.text as NSString).substring(with: NSMakeRange(range.location + 1, 1))
+
+            if trigger == self.trigger {
+                self.mentionsManager.showMentionsListWithString(filterString!)
+            }
         }
     }
 
