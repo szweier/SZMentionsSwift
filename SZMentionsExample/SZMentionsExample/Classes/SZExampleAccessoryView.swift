@@ -99,7 +99,7 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
     }
 
     func showMentionsListWithString(_ mentionsString: String) {
-        if (mentionsTableView.superview == nil) {
+        if mentionsTableView.superview == nil {
             self.addSubview(mentionsTableView)
             self.removeConstraints(self.constraints)
             self.addConstraints(

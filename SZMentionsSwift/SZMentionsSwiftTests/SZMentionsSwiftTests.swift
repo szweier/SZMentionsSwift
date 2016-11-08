@@ -351,14 +351,35 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         
         XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 1)
     }
-    
+
     func testMentionPositionIsCorrectInTheMidstOfNewlineText() {
         textView.insertText("Testing \nnew line @t")
         let mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
         mentionsListener?.addMention(mention)
-        
+
         XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 18)
+    }
+
+    func testTwoMentionsDeletedAtOnceDoesntCrash() {
+        textView.insertText("@St")
+        var mention = SZExampleMention.init()
+        mention.szMentionName = "Steven Zweier"
+        mentionsListener?.addMention(mention)
+
+        textView.insertText(" ")
+
+        textView.insertText("@Jo")
+        mention = SZExampleMention.init()
+        mention.szMentionName = "John Smith"
+        mentionsListener?.addMention(mention)
+
+        textView.selectedRange = NSMakeRange(0, textView.text.characters.count)
+
+        if mentionsListener?.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") == true {
+            textView.deleteBackward()
+        }
+        XCTAssert(textView.text.isEmpty)
     }
   
     func testShouldAddMentionOnReturnKeyShouldCalledWhenHitReturnKey() {
