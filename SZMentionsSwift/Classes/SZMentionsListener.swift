@@ -432,7 +432,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
                             with: "")
                         self.filterString = self.filterString?.replacingOccurrences(of: "\n", with: "")
 
-                        if self.filterString != nil  &&
+                        if self.filterString != nil &&
                             (self.cooldownTimer == nil || self.cooldownTimer?.isValid == false) {
                             self.stringCurrentlyBeingFiltered = filterString
                             self.mentionsManager.showMentionsListWithString(filterString!)
@@ -663,7 +663,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
      @param timer: the timer that called the method
      */
     internal func cooldownTimerFired(_ timer: Timer) {
-        if (self.filterString != nil  && self.filterString != self.stringCurrentlyBeingFiltered) {
+        if (self.filterString != nil && self.filterString != self.stringCurrentlyBeingFiltered) {
             self.stringCurrentlyBeingFiltered = filterString
 
             guard mentionsTextView.selectedRange.location >= 1 else { return }
