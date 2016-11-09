@@ -677,7 +677,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
                 range = NSMakeRange(0, 0)
             }
 
-            let trigger = (mentionsTextView.text as NSString).substring(with: NSMakeRange(range.location + 1, 1))
+            let trigger = (mentionsTextView.text as NSString).substring(with: NSMakeRange(range.location, 1))
 
             if trigger == self.trigger {
                 self.mentionsManager.showMentionsListWithString(filterString!)

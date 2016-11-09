@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import SZMentionsSwift
+@testable import SZMentionsSwift
 
 class SZExampleMention: SZCreateMentionProtocol {
     @objc var szMentionName: String = ""
@@ -327,8 +327,23 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         if mentionsListener?.textView(textView, shouldChangeTextIn: self.textView.selectedRange, replacementText: "test") == true {
             textView.insertText("test")
         }
-        
+
         XCTAssert((textView.attributedText.attribute(NSForegroundColorAttributeName, at: textView.selectedRange.location - 1, effectiveRange: nil)! as AnyObject).isEqual( UIColor.black))
+    }
+
+    func testCheckDeletingTextDuringMentionCreation()
+    {
+        textView.insertText("@")
+        textView.insertText("s")
+        textView.insertText("t")
+        textView.insertText("e")
+        textView.deleteBackward()
+        textView.deleteBackward()
+        mentionsListener?.cooldownTimerFired(Timer())
+        textView.deleteBackward()
+        mentionsListener?.cooldownTimerFired(Timer())
+
+        XCTAssert(textView.text.characters.count == 1)
     }
     
     func testMentionListOnNewlineIsDisplayed() {
