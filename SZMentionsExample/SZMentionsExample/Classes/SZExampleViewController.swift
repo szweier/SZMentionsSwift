@@ -11,12 +11,12 @@ import SZMentionsSwift
 
 class SZExampleViewController: UIViewController, UITextViewDelegate {
 
-    fileprivate var myInputAccessoryView: UIView?
+    private var myInputAccessoryView: UIView?
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        let frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 40)
-        myInputAccessoryView = SZExampleAccessoryView.init(frame: frame, delegate: self)
+        let frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: 40)
+        myInputAccessoryView = SZExampleAccessoryView(frame: frame, delegate: self)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -33,7 +33,7 @@ class SZExampleViewController: UIViewController, UITextViewDelegate {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.becomeFirstResponder()
+        becomeFirstResponder()
     }
 }
 

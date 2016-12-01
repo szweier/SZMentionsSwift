@@ -18,16 +18,13 @@ class SZMentionHelper {
     class func mentionsAfterTextEntry(_ range: NSRange, mentionsList: [SZMention]) -> [SZMention] {
         var mentionsAfterTextEntry = [SZMention]()
 
-        for mention in mentionsList {
-
+        mentionsList.forEach { mention in
             if range.location + range.length <= mention.mentionRange.location {
                 mentionsAfterTextEntry.append(mention)
             }
         }
 
-        let immutableMentionsAfterTextEntry = mentionsAfterTextEntry
-
-        return immutableMentionsAfterTextEntry
+        return mentionsAfterTextEntry
     }
 
     /**
@@ -39,9 +36,8 @@ class SZMentionHelper {
     class func adjustMentions(_ range : NSRange, text : String, mentions: [SZMention]) {
         let rangeAdjustment = text.characters.count - range.length
 
-        for mention in SZMentionHelper.mentionsAfterTextEntry(range, mentionsList: mentions)
-        {
-            mention.mentionRange = NSRange.init(
+        SZMentionHelper.mentionsAfterTextEntry(range, mentionsList: mentions).forEach { mention in
+            mention.mentionRange = NSRange(
                 location: mention.mentionRange.location + rangeAdjustment,
                 length: mention.mentionRange.length)
         }
@@ -56,11 +52,8 @@ class SZMentionHelper {
     class func mentionExistsAt(_ index: NSInteger, mentions: [SZMention]) -> Bool {
 
         let mentionsList = mentions.filter {
-            if let range = ($0 as SZMention).mentionRange as NSRange! {
-                return index >= range.location && index < range.location + range.length
-            } else {
-                return false
-            }
+            let range = $0.mentionRange
+            return index >= range.location && index < range.location + range.length
         }
 
         return mentionsList.count > 0

@@ -16,12 +16,12 @@ class SZAttributedStringHelper {
      @param mutableAttributedString: the string to apply the attributes to
      */
     class func apply(_ attributes: [SZAttribute], range: NSRange,
-        mutableAttributedString: NSMutableAttributedString) {
-            for attribute in attributes {
-                mutableAttributedString.addAttribute(
-                    attribute.attributeName,
-                    value: attribute.attributeValue,
-                    range: range)
-            }
+                     mutableAttributedString: NSMutableAttributedString) {
+        attributes.forEach { attribute in
+            mutableAttributedString.addAttribute(
+                attribute.attributeName,
+                value: attribute.attributeValue,
+                range: range)
+        }
     }
 }

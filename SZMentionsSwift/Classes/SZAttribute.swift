@@ -12,12 +12,12 @@ open class SZAttribute: NSObject {
     /**
      @brief Name of the attribute to set on a string
      */
-    var attributeName: String
+    internal private(set) var attributeName: String
 
     /**
      @brief Value of the attribute to set on a string
      */
-    var attributeValue: NSObject
+    internal private(set) var attributeValue: NSObject
 
     /**
      @brief initializer for creating an attribute
