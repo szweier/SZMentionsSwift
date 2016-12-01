@@ -1,6 +1,22 @@
 #Change Log
 
 --- 
+## [0.4.4](https://github.com/szweier/SZMentionsSwift/releases/tag/0.4.4) (11/30/2016)
+
+#### Cleaned
+* Cleaned codebase, improved use of internal & private
+
+## [0.4.3](https://github.com/szweier/SZMentionsSwift/releases/tag/0.4.3) (11/9/2016)
+
+#### Fixed
+* Crash when deleting text while adding mention
+
+## [0.4.2](https://github.com/szweier/SZMentionsSwift/releases/tag/0.4.2) (11/8/2016)
+
+#### Fixed
+* Crash when deleting full line of multiple mentions
+* Issue disallowing use of @ in mention name
+
 ## [0.4.1](https://github.com/szweier/SZMentionsSwift/releases/tag/0.4.1) (9/30/2016)
 
 #### Fixed
