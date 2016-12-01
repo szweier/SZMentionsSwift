@@ -91,12 +91,12 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
     /**
      @brief Whether or not we should add a space after the mention, default: false
      */
-    internal var spaceAfterMention: Bool
+    var spaceAfterMention: Bool
 
     /**
      @brief Tell listener for observer Return key, default: false
      */
-    internal var addMentionAfterReturnKey: Bool
+    var addMentionAfterReturnKey: Bool
 
     /**
      @brief Mutable array list of mentions managed by listener, accessible via the
@@ -165,7 +165,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
         mentionTextAttributes = mentionAttributes
         spaceAfterMention = spaceAfter
         addMentionAfterReturnKey = mentionOnReturn
-        trigger = mentionTrigger;
+        trigger = mentionTrigger
         cooldownInterval = interval
         super.init()
         assert(attributesSetCorrectly(mentionTextAttributes,
@@ -182,7 +182,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
      @param mentionAttributes: The attributes to apply to mention objects
      @param defaultAttributes: The attributes to apply to default text
      */
-    open func attributesSetCorrectly(_ mentionAttributes: [SZAttribute],
+    func attributesSetCorrectly(_ mentionAttributes: [SZAttribute],
                                      defaultAttributes: [SZAttribute]) ->  Bool {
 
         let attributeNamesToLoop = (defaultAttributes.count >= mentionAttributes.count) ?
@@ -199,11 +199,11 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
             attributeHasMatch = attributeNamesToCompare.contains(attributeName)
 
             if (attributeHasMatch == false) {
-                break;
+                break
             }
         }
 
-        return attributeHasMatch;
+        return attributeHasMatch
     }
 
     // MARK: TextView Adjustment
@@ -249,28 +249,27 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
         }
 
         if mentionEnabled {
-            if let stringBeingTyped = substring.components(separatedBy: textBeforeTrigger).last {
-                if let stringForMention = stringBeingTyped.components(separatedBy: " ").last {
+            if let stringBeingTyped = substring.components(separatedBy: textBeforeTrigger).last,
+                let stringForMention = stringBeingTyped.components(separatedBy: " ").last {
 
-                    if ((stringForMention as NSString).range(of: trigger).location != NSNotFound) {
+                if ((stringForMention as NSString).range(of: trigger).location != NSNotFound) {
 
-                        currentMentionRange = (textView.text as NSString).range(
-                            of: stringBeingTyped,
-                            options: NSString.CompareOptions.backwards,
-                            range: NSMakeRange(0, textView.selectedRange.location + textView.selectedRange.length))
-                        filterString = (stringBeingTyped as NSString).replacingOccurrences(
-                            of: trigger,
-                            with: "")
-                        filterString = filterString?.replacingOccurrences(of: "\n", with: "")
+                    currentMentionRange = (textView.text as NSString).range(
+                        of: stringBeingTyped,
+                        options: NSString.CompareOptions.backwards,
+                        range: NSMakeRange(0, textView.selectedRange.location + textView.selectedRange.length))
+                    filterString = (stringBeingTyped as NSString).replacingOccurrences(
+                        of: trigger,
+                        with: "")
+                    filterString = filterString?.replacingOccurrences(of: "\n", with: "")
 
-                        if filterString != nil &&
-                            (cooldownTimer == nil || cooldownTimer?.isValid == false) {
-                            stringCurrentlyBeingFiltered = filterString
-                            mentionsManager.showMentionsListWithString(filterString!)
-                        }
-                        activateCooldownTimer()
-                        return
+                    if filterString != nil &&
+                        (cooldownTimer == nil || cooldownTimer?.isValid == false) {
+                        stringCurrentlyBeingFiltered = filterString
+                        mentionsManager.showMentionsListWithString(filterString!)
                     }
+                    activateCooldownTimer()
+                    return
                 }
             }
         }
@@ -361,10 +360,10 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
      is returned in the mentions array in the object parameter of the SZMention object.
      szMentionRange is used the range to place the metion at
      */
-    open func insertExistingMentions(_ existingMentions: [SZCreateMentionProtocol]) {
+    func insertExistingMentions(_ existingMentions: [SZCreateMentionProtocol]) {
         let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as! NSMutableAttributedString
 
-        for mention in existingMentions {
+        existingMentions.forEach { mention in
             let range = mention.szMentionRange
             assert(range.location != NSNotFound, "Mention must have a range to insert into")
 
@@ -491,7 +490,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
      @brief Calls show mentions if necessary when the timer fires
      @param timer: the timer that called the method
      */
-    internal func cooldownTimerFired(_ timer: Timer) {
+    func cooldownTimerFired(_ timer: Timer) {
         if (filterString != nil && filterString != stringCurrentlyBeingFiltered) {
             stringCurrentlyBeingFiltered = filterString
 
