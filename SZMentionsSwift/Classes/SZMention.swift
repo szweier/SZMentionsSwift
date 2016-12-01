@@ -12,12 +12,12 @@ open class SZMention: NSObject {
     /**
      @brief The location of the mention within the attributed string of the UITextView
      */
-    open var mentionRange: NSRange
+    open internal(set) var mentionRange: NSRange
 
     /**
      @brief Contains a reference to the object sent to the addMention: method
      */
-    open fileprivate(set) var mentionObject: SZCreateMentionProtocol
+    open private(set) var mentionObject: SZCreateMentionProtocol
 
     /**
      @brief initializer for creating a mention object
@@ -25,7 +25,7 @@ open class SZMention: NSObject {
      @param mentionObject: the object of your mention (assuming you get extra data you need to store and retrieve later)
      */
     public init(mentionRange: NSRange, mentionObject: SZCreateMentionProtocol) {
-        self.mentionRange = mentionRange;
-        self.mentionObject = mentionObject;
+        self.mentionRange = mentionRange
+        self.mentionObject = mentionObject
     }
 }

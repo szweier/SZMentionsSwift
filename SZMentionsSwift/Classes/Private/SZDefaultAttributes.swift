@@ -13,7 +13,7 @@ class SZDefaultAttributes {
      @brief Default color
      */
     class var defaultColor: SZAttribute {
-        return SZAttribute.init(
+        return SZAttribute(
             attributeName: NSForegroundColorAttributeName,
             attributeValue: UIColor.black)
     }
@@ -22,7 +22,7 @@ class SZDefaultAttributes {
      @brief Mention color
      */
     class var mentionColor: SZAttribute {
-        return SZAttribute.init(
+        return SZAttribute(
             attributeName: NSForegroundColorAttributeName,
             attributeValue: UIColor.blue)
     }
@@ -32,7 +32,7 @@ class SZDefaultAttributes {
      */
     class func defaultTextAttributes() -> [SZAttribute]
     {
-        return [defaultColor];
+        return [defaultColor]
     }
 
     /**
@@ -40,6 +40,6 @@ class SZDefaultAttributes {
      */
     class func defaultMentionAttributes() -> [SZAttribute]
     {
-        return [mentionColor];
+        return [mentionColor]
     }
 }

@@ -8,31 +8,11 @@
 
 import UIKit
 import SZMentionsSwift
-fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 
 class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UITableViewDelegate {
 
-    fileprivate var listener: SZMentionsListener?
-    fileprivate var mentions: [SZExampleMention] {
+    private var listener: SZMentionsListener?
+    private var mentions: [SZExampleMention] {
         let names = [
             "Steven Zweier",
             "John Smith",
@@ -41,15 +21,16 @@ class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UI
         var tempMentions = [SZExampleMention]()
 
         for name in names {
-            let mention = SZExampleMention.init()
+            let mention = SZExampleMention()
             mention.szMentionName = name
             tempMentions.append(mention)
         }
 
         return tempMentions
     }
-    fileprivate var tableView: UITableView?
-    fileprivate var filterString: String?
+
+    private var tableView: UITableView?
+    private var filterString: String?
 
     init(mentionTableView: UITableView, mentionsListener: SZMentionsListener) {
         tableView = mentionTableView
@@ -64,10 +45,10 @@ class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UI
         tableView?.reloadData()
     }
 
-    fileprivate func mentionsList() -> [SZExampleMention] {
+    private func mentionsList() -> [SZExampleMention] {
         var filteredMentions = mentions
 
-        if (filterString?.characters.count > 0) {
+        if (filterString?.characters.count ?? 0 > 0) {
             filteredMentions = mentions.filter() {
                 if let type = ($0 as SZExampleMention).szMentionName as String! {
                     return type.lowercased().contains(filterString!.lowercased())
@@ -79,14 +60,15 @@ class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UI
 
         return filteredMentions
     }
-  
+
     func firstMentionObject() -> SZExampleMention? {
-      return mentionsList().first
+        return mentionsList().first
     }
-  
+
     func addMention(_ mention: SZExampleMention) {
-      listener!.addMention(mention)
+        listener!.addMention(mention)
     }
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -96,13 +78,13 @@ class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UI
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
-        cell?.textLabel?.text = mentionsList()[(indexPath as NSIndexPath).row].szMentionName as String
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") else { return UITableViewCell() }
+        cell.textLabel?.text = mentionsList()[indexPath.row].szMentionName
 
-        return cell!
+        return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-      self.addMention(mentionsList()[(indexPath as NSIndexPath).row])
+        self.addMention(mentionsList()[indexPath.row])
     }
 }

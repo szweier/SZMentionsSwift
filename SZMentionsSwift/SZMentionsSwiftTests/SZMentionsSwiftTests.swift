@@ -189,7 +189,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
     }
 
     func testMentionLocationIsAdjustedProperlyWhenAMentionIsInsertsBehindAMentionSpaceAfterMentionIsTrue() {
-        mentionsListener?.setValue(true, forKey: "spaceAfterMention")
+        mentionsListener?.spaceAfterMention = true
         textView.insertText("@t")
         var mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
@@ -303,7 +303,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
     func testMentionsLibraryReplacesCorrectMentionRangeIfMultipleExistAndThatSelectedRangeWillBeCorrectWithSpaceAfterMentionEnabled()
     {
-        mentionsListener?.setValue(true, forKey: "spaceAfterMention")
+        mentionsListener?.spaceAfterMention = true
         textView.insertText(" @st")
         textView.selectedRange = NSMakeRange(0, 0)
         textView.insertText("@st")
@@ -399,7 +399,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
   
     func testShouldAddMentionOnReturnKeyShouldCalledWhenHitReturnKey() {
       
-      mentionsListener?.setValue(true, forKey: "addMentionAfterReturnKey")
+      mentionsListener?.addMentionAfterReturnKey = true
       
       textView.insertText("@t")
       XCTAssert(hidingMentionsList == false)

@@ -10,6 +10,6 @@ import UIKit
 import SZMentionsSwift
 
 class SZExampleMention: SZCreateMentionProtocol {
-    @objc var szMentionName: String = ""
-    @objc var szMentionRange: NSRange = NSMakeRange(0, 0)
+    var szMentionName: String = ""
+    var szMentionRange: NSRange = NSMakeRange(0, 0)
 }
