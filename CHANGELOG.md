@@ -6,6 +6,9 @@
 #### Cleaned
 * Cleaned codebase, improved use of internal & private
 
+#### Removed
+* Objective-C cross compatibility
+
 ## [0.4.3](https://github.com/szweier/SZMentionsSwift/releases/tag/0.4.3) (11/9/2016)
 
 #### Fixed
