@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/szweier/SZMentionsSwift.svg?branch=master)](https://travis-ci.org/szweier/SZMentionsSwift)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SZMentionsSwift.svg)](https://img.shields.io/cocoapods/v/SZMentionsSwift.svg)
 [![Platform](https://img.shields.io/cocoapods/p/SZMentionsSwift.svg?style=flat)](http://cocoadocs.org/docsets/SZMentionsSwift)
 [![Twitter](https://img.shields.io/badge/twitter-@StevenZweier-blue.svg?style=flat)](http://twitter.com/StevenZweier)
