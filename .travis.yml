@@ -2,3 +2,4 @@ language: objective-c
 osx_image: xcode8.2
 xcode_workspace: SZMentions.xcworkspace # path to your xcodeproj folder
 xcode_scheme: SZMentionsSwift
+script: xcodebuild -workspace SZMentions.xcworkspace -scheme SZMentionsSwift -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO CODE_SIGN_IDENTITY=\"\" CODE_SIGNING_REQUIRED=NO -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.0' test
