@@ -396,30 +396,164 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         }
         XCTAssert(textView.text.isEmpty)
     }
-  
-    func testShouldAddMentionOnReturnKeyShouldCalledWhenHitReturnKey() {
-      
-      mentionsListener?.addMentionAfterReturnKey = true
-      
-      textView.insertText("@t")
-      XCTAssert(hidingMentionsList == false)
 
-      if mentionsListener?.textView(textView, shouldChangeTextIn: self.textView.selectedRange, replacementText: "\n") == true {
-        textView.insertText("\n")
-      }
-      
-      XCTAssertTrue(shouldAddMentionOnReturnKeyCalled)
-      XCTAssert(hidingMentionsList == true)
+    func testShouldAddMentionOnReturnKeyShouldCalledWhenHitReturnKey() {
+
+        mentionsListener?.addMentionAfterReturnKey = true
+
+        textView.insertText("@t")
+        XCTAssert(hidingMentionsList == false)
+
+        if mentionsListener?.textView(textView, shouldChangeTextIn: self.textView.selectedRange, replacementText: "\n") == true {
+            textView.insertText("\n")
+        }
+
+        XCTAssertTrue(shouldAddMentionOnReturnKeyCalled)
+        XCTAssert(hidingMentionsList == true)
     }
-  
+
+    func testShouldHaveCorrectDefaultColor() {
+        let attribute: SZAttribute = SZDefaultAttributes.defaultColor
+        XCTAssertTrue(attribute.attributeName == NSForegroundColorAttributeName)
+        XCTAssertTrue(attribute.attributeValue == UIColor.black)
+    }
+
+    func testShouldHaveCorrectMentionColor() {
+        let attribute: SZAttribute = SZDefaultAttributes.mentionColor
+        XCTAssertTrue(attribute.attributeName == NSForegroundColorAttributeName)
+        XCTAssertTrue(attribute.attributeValue == UIColor.blue)
+    }
+
+    func testShouldHaveCorrectDefaultTextAttributes() {
+        let attributes: [SZAttribute] = SZDefaultAttributes.defaultTextAttributes()
+        let attribute = attributes[0]
+        XCTAssertTrue(attributes.count == 1)
+        XCTAssertTrue(attribute.attributeName == NSForegroundColorAttributeName)
+        XCTAssertTrue(attribute.attributeValue == UIColor.black)
+    }
+
+    func testShouldHaveCorrectDefaultMentionAttributes() {
+        let attributes: [SZAttribute] = SZDefaultAttributes.defaultMentionAttributes()
+        let attribute = attributes[0]
+        XCTAssertTrue(attributes.count == 1)
+        XCTAssertTrue(attribute.attributeName == NSForegroundColorAttributeName)
+        XCTAssertTrue(attribute.attributeValue == UIColor.blue)
+    }
+
+    func testResetEmptyIsCalled() {
+        textView.insertText("@t")
+        let mention = SZExampleMention.init()
+        mention.szMentionName = "John Smith"
+        mentionsListener?.addMention(mention)
+        XCTAssertTrue(mentionsListener?.mentions.count == 1)
+        textView.attributedText = NSAttributedString(string: "test")
+        textView.text = ""
+        let _ = mentionsListener?.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "")
+        XCTAssertTrue(mentionsListener?.mentions.count == 0)
+    }
+
+    func testAddMentionStopsRunningIfCurrentMentionRangeIsNil() {
+        let mention = SZExampleMention.init()
+        mention.szMentionName = "John Smith"
+        XCTAssertTrue(mentionsListener?.addMention(mention) == false)
+    }
+
+    func testMentionListenerTextAttachmentDelegateReturnsTrue() {
+        XCTAssertTrue(mentionsListener?.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSMakeRange(0, 0)) == true)
+    }
+
+    func testMentionListenerURLDelegateReturnsTrue() {
+        XCTAssertTrue(mentionsListener?.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSMakeRange(0, 0)) == true)
+    }
+
+    func testMentionListenerShouldBeginEditingReturnsTrueWhenNotOverridden() {
+        XCTAssertTrue(mentionsListener?.textViewShouldBeginEditing(textView) == true)
+    }
+
+    func testMentionListenerShouldBeginEditingReturnsDelegateResponse() {
+        let delegate = testDelegate()
+        let mentionsListener = SZMentionsListener.init(mentionTextView: textView,
+                                                       mentionsManager: self,
+                                                       textViewDelegate: delegate,
+                                                       spaceAfterMention: false,
+                                                       addMentionOnReturnKey: true)
+        XCTAssertTrue(mentionsListener.textViewShouldBeginEditing(textView) == true)
+        delegate.shouldBeginEditing = false
+        XCTAssertTrue(mentionsListener.textViewShouldBeginEditing(textView) == false)
+    }
+
+    func testMentionListenerShouldEndEditingReturnsTrueWhenNotOverridden() {
+        XCTAssertTrue(mentionsListener?.textViewShouldEndEditing(textView) == true)
+    }
+
+    func testMentionListenerShouldEndEditingReturnsDelegateResponse() {
+        let delegate = testDelegate()
+        let mentionsListener = SZMentionsListener.init(mentionTextView: textView,
+                                                       mentionsManager: self,
+                                                       textViewDelegate: delegate,
+                                                       spaceAfterMention: false,
+                                                       addMentionOnReturnKey: true)
+        XCTAssertTrue(mentionsListener.textViewShouldEndEditing(textView) == true)
+        delegate.shouldEndEditing = false
+        XCTAssertTrue(mentionsListener.textViewShouldEndEditing(textView) == false)
+    }
+
+    func testMentionListenerDidBeginEditingReturnsDelegateResponse() {
+        let delegate = testDelegate()
+        let mentionsListener = SZMentionsListener.init(mentionTextView: textView,
+                                                       mentionsManager: self,
+                                                       textViewDelegate: delegate,
+                                                       spaceAfterMention: false,
+                                                       addMentionOnReturnKey: true)
+        XCTAssertTrue(delegate.triggeredDelegateMethod == false)
+        mentionsListener.textViewDidBeginEditing(textView)
+        XCTAssertTrue(delegate.triggeredDelegateMethod == true)
+    }
+
+    func testMentionListenerDidEndEditingReturnsDelegateResponse() {
+        let delegate = testDelegate()
+        let mentionsListener = SZMentionsListener.init(mentionTextView: textView,
+                                                       mentionsManager: self,
+                                                       textViewDelegate: delegate,
+                                                       spaceAfterMention: false,
+                                                       addMentionOnReturnKey: true)
+        XCTAssertTrue(delegate.triggeredDelegateMethod == false)
+        mentionsListener.textViewDidEndEditing(textView)
+        XCTAssertTrue(delegate.triggeredDelegateMethod == true)
+    }
+
     var shouldAddMentionOnReturnKeyCalled = false
 
     func shouldAddMentionOnReturnKey() {
       shouldAddMentionOnReturnKeyCalled = true
     }
-  
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+    }
+}
+
+class testDelegate: NSObject, UITextViewDelegate {
+    var shouldBeginEditing: Bool = true
+    var shouldEndEditing: Bool = true
+    var triggeredDelegateMethod: Bool = false
+
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        triggeredDelegateMethod = true
+        return shouldBeginEditing
+    }
+
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        triggeredDelegateMethod = true
+        return shouldEndEditing
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        triggeredDelegateMethod = true
+    }
+
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        triggeredDelegateMethod = true
     }
 }

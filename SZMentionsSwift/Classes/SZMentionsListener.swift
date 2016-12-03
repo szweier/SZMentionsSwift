@@ -122,7 +122,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
     /**
      @brief String to filter by
      */
-    private var filterString: String?
+    var filterString: String?
 
     /**
      @brief String that has been sent to the showMentionsListWithString
@@ -384,10 +384,11 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
     /**
      @brief Adds a mention to the current mention range (determined by trigger + characters typed up to space or end of line)
      @param mention: the mention object to apply
+     @return Bool: whether or not a mention was added
      */
-    open func addMention(_ mention: SZCreateMentionProtocol) {
+    @discardableResult open func addMention(_ mention: SZCreateMentionProtocol) -> Bool {
         if (currentMentionRange == nil) {
-            return
+            return false
         }
 
         filterString = nil
@@ -432,6 +433,8 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
         settingText = false
 
         mentionsManager.hideMentionsList()
+
+        return true
     }
 
     /**

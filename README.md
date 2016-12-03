@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/szweier/SZMentionsSwift/branch/master/graph/badge.svg)](https://codecov.io/gh/szweier/SZMentionsSwift)
+[![Build Status](https://travis-ci.org/szweier/SZMentionsSwift.svg?branch=master)](https://travis-ci.org/szweier/SZMentionsSwift)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SZMentionsSwift.svg)](https://img.shields.io/cocoapods/v/SZMentionsSwift.svg)
 [![Platform](https://img.shields.io/cocoapods/p/SZMentionsSwift.svg?style=flat)](http://cocoadocs.org/docsets/SZMentionsSwift)
 [![Twitter](https://img.shields.io/badge/twitter-@StevenZweier-blue.svg?style=flat)](http://twitter.com/StevenZweier)
@@ -6,7 +8,7 @@ SZMentionsSwift is a lightweight mentions library for iOS. This library was buil
 
 ## How To Get Started
 
-- [Download SZMentionsSwift](https://github.com/szweier/SZMentionsSwift/archive/master.zip) and try out the iOS example app. 
+- [Download SZMentionsSwift](https://github.com/stevenzweier/SZMentionsSwift/archive/master.zip) and try out the iOS example app. 
 
 ## Communication
 
@@ -34,12 +36,6 @@ Then, run the following command:
 ```bash
 $ pod install
 ```
-
-## Requirements
-
-| SZMentionsSwift Version | Minimum iOS Target |
-|:--------------------:|:---------------------------:||
-| 0.0.x | iOS 8.1 |
 
 ## Usage
 

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SZMentionsSwift"
-  s.version          = "0.4.4"
+  s.version          = "1.0.0"
   s.xcconfig         = { 'SWIFT_VERSION' => '3.0' }
   s.summary          = "Highly customizable mentions library"
   s.description      = "Mentions library used to help manage mentions in a UITextView"
