@@ -6,7 +6,7 @@ SZMentionsSwift is a lightweight mentions library for iOS. This library was buil
 
 ## How To Get Started
 
-- [Download SZMentionsSwift](https://github.com/szweier/SZMentionsSwift/archive/master.zip) and try out the iOS example app. 
+- [Download SZMentionsSwift](https://github.com/stevenzweier/SZMentionsSwift/archive/master.zip) and try out the iOS example app. 
 
 ## Communication
 
@@ -34,12 +34,6 @@ Then, run the following command:
 ```bash
 $ pod install
 ```
-
-## Requirements
-
-| SZMentionsSwift Version | Minimum iOS Target |
-|:--------------------:|:---------------------------:||
-| 0.0.x | iOS 8.1 |
 
 ## Usage
 

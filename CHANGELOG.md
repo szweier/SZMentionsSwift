@@ -1,6 +1,12 @@
 #Change Log
 
 --- 
+## [1.0.0](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.0) (12/2/2016)
+
+#### Added
+* More test coverage
+
+
 ## [0.4.4](https://github.com/szweier/SZMentionsSwift/releases/tag/0.4.4) (11/30/2016)
 
 #### Cleaned
