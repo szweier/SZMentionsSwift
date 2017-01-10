@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DBCFB3871C449874007E3722 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBCFB3851C449874007E3722 /* Main.storyboard */; };
 		DBCFB3891C449874007E3722 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBCFB3881C449874007E3722 /* Assets.xcassets */; };
 		DBCFB38C1C449874007E3722 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBCFB38A1C449874007E3722 /* LaunchScreen.storyboard */; };
 		DBE8B4A81C657F720090EF32 /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBE8B4A71C657F720090EF32 /* SZMentionsSwift.framework */; };
@@ -20,7 +19,6 @@
 
 /* Begin PBXFileReference section */
 		DBCFB37E1C449874007E3722 /* SZMentionsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SZMentionsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DBCFB3861C449874007E3722 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DBCFB3881C449874007E3722 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DBCFB38B1C449874007E3722 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DBCFB38D1C449874007E3722 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -65,7 +63,6 @@
 			isa = PBXGroup;
 			children = (
 				DBE8B4A91C657FC60090EF32 /* Classes */,
-				DBCFB3851C449874007E3722 /* Main.storyboard */,
 				DBCFB3881C449874007E3722 /* Assets.xcassets */,
 				DBCFB38A1C449874007E3722 /* LaunchScreen.storyboard */,
 				DBCFB38D1C449874007E3722 /* Info.plist */,
@@ -155,7 +152,6 @@
 			files = (
 				DBCFB38C1C449874007E3722 /* LaunchScreen.storyboard in Resources */,
 				DBCFB3891C449874007E3722 /* Assets.xcassets in Resources */,
-				DBCFB3871C449874007E3722 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,14 +173,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		DBCFB3851C449874007E3722 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DBCFB3861C449874007E3722 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		DBCFB38A1C449874007E3722 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

@@ -8,8 +8,6 @@
 
 import UIKit
 
-let attributeConsistencyError = "Default and mention attributes must contain the same attribute names: If default attributes specify NSForegroundColorAttributeName mention attributes must specify that same name as well. (Values do not need to match)"
-
 public protocol SZMentionsManagerProtocol {
     /**
      @brief Called when the UITextView is editing a mention.
@@ -158,6 +156,8 @@ open class SZMentionsListener: NSObject {
         addMentionOnReturnKey mentionOnReturn: Bool = false,
         trigger mentionTrigger: String = "@",
         cooldownInterval interval: TimeInterval = 0.5) {
+        SZVerifier.verifySetup(withDefaultTextAttributes: defaultAttributes,
+                               mentionTextAttributes: mentionAttributes)
         mentionsTextView = textView
         mentionsManager = manager
         delegate = textViewDelegate
@@ -168,42 +168,8 @@ open class SZMentionsListener: NSObject {
         trigger = mentionTrigger
         cooldownInterval = interval
         super.init()
-        assert(attributesSetCorrectly(mentionTextAttributes,
-                                      defaultAttributes: defaultTextAttributes),
-               attributeConsistencyError)
         resetEmpty(mentionsTextView)
         mentionsTextView.delegate = self
-    }
-
-    // MARK: Attribute assert
-
-    /**
-     @brief Checks that attributes have existing counterparts for mentions and default
-     @param mentionAttributes: The attributes to apply to mention objects
-     @param defaultAttributes: The attributes to apply to default text
-     */
-    func attributesSetCorrectly(_ mentionAttributes: [SZAttribute],
-                                     defaultAttributes: [SZAttribute]) ->  Bool {
-
-        let attributeNamesToLoop = (defaultAttributes.count >= mentionAttributes.count) ?
-            defaultAttributes.map({$0.attributeName}) :
-            mentionAttributes.map({$0.attributeName})
-
-        let attributeNamesToCompare = (defaultAttributes.count < mentionAttributes.count) ?
-            defaultAttributes.map({$0.attributeName}) :
-            mentionAttributes.map({$0.attributeName})
-
-        var attributeHasMatch = true
-
-        for attributeName in attributeNamesToLoop {
-            attributeHasMatch = attributeNamesToCompare.contains(attributeName)
-
-            if (attributeHasMatch == false) {
-                break
-            }
-        }
-
-        return attributeHasMatch
     }
 
     // MARK: TextView Adjustment
@@ -292,15 +258,14 @@ open class SZMentionsListener: NSObject {
         }
 
         editingMention = false
-        let editedMention = mentionBeingEdited(range)
 
-        if (editedMention != nil) {
-            if let index = mutableMentions.index(of: editedMention!) {
+        if let editedMention = SZMentionHelper.mentionBeingEdited(range, mentionsList: mentions) {
+            if let index = mutableMentions.index(of: editedMention) {
                 editingMention = true
                 mutableMentions.remove(at: index)
             }
 
-            shouldAdjust = handleEditingMention(editedMention!, textView: textView, range: range, text: text)
+            shouldAdjust = handleEditingMention(editedMention, textView: textView, range: range, text: text)
         }
 
         if SZMentionHelper.needsToChangeToDefaultAttributes(textView, range: range, mentions: mentions) {
@@ -465,15 +430,6 @@ open class SZMentionsListener: NSObject {
         return false
     }
 
-    /**
-     @brief returns the mention being edited (if a mention is being edited)
-     @param range: the range to look for a mention
-     @return SZMention?: the mention being edited (if one exists)
-     */
-    private func mentionBeingEdited(_ range: NSRange) -> SZMention? {
-        return mentions.filter{ NSIntersectionRange(range, $0.mentionRange).length > 0 || (range.length == 0 && range.location > $0.mentionRange.length && range.location < $0.mentionRange.length + $0.mentionRange.location) }.first
-    }
-
     // MARK: Timer
 
     /**
@@ -520,8 +476,9 @@ open class SZMentionsListener: NSObject {
     }
 }
 
+// MARK: TextView Delegate
+
 extension SZMentionsListener: UITextViewDelegate {
-    // MARK: TextView Delegate
 
     open func textView(
         _ textView: UITextView,

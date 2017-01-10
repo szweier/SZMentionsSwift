@@ -41,7 +41,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         let defaultAttributes = [attribute]
         let mentionAttributes = [attribute, attribute2]
 
-        XCTAssert(mentionsListener!.attributesSetCorrectly(mentionAttributes, defaultAttributes: defaultAttributes) == false)
+        XCTAssert(SZVerifier.attributesSetCorrectly(mentionAttributes, defaultAttributes: defaultAttributes) == false)
     }
 
     func testThatAddingAttributesThatDoMatchDoesNotThrowAnError() {
@@ -51,7 +51,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         let defaultAttributes = [attribute, attribute2]
         let mentionAttributes = [attribute2, attribute]
 
-        XCTAssert(mentionsListener!.attributesSetCorrectly(mentionAttributes, defaultAttributes: defaultAttributes) == true)
+        XCTAssert(SZVerifier.attributesSetCorrectly(mentionAttributes, defaultAttributes: defaultAttributes) == true)
     }
 
     func testMentionListIsDisplayed() {

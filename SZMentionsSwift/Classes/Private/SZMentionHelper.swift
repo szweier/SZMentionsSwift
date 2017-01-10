@@ -18,6 +18,15 @@ internal class SZMentionHelper {
     }
 
     /**
+     @brief returns the mention being edited (if a mention is being edited)
+     @param range: the range to look for a mention
+     @return SZMention?: the mention being edited (if one exists)
+     */
+    class func mentionBeingEdited(_ range: NSRange, mentionsList: [SZMention]) -> SZMention? {
+        return mentionsList.filter{ NSIntersectionRange(range, $0.mentionRange).length > 0 || (range.length == 0 && range.location > $0.mentionRange.length && range.location < $0.mentionRange.length + $0.mentionRange.location) }.first
+    }
+
+    /**
      @brief adjusts the positioning of mentions that exist after the range where text was edited
      @param range: the range where text was changed
      @param text: the text that was changed
