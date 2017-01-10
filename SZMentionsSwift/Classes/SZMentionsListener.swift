@@ -62,12 +62,12 @@ open class SZMentionsListener: NSObject {
     /**
      @brief Text attributes to be applied to mentions.
      */
-    private var mentionTextAttributes: [SZAttribute]
+    fileprivate var mentionTextAttributes: [SZAttribute]
 
     /**
      @brief The UITextView being handled by the SZMentionsListener
      */
-    private var mentionsTextView: UITextView
+    fileprivate var mentionsTextView: UITextView
 
     /**
      @brief An optional delegate that can be used to handle all UITextView delegate
@@ -100,12 +100,12 @@ open class SZMentionsListener: NSObject {
      @brief Mutable array list of mentions managed by listener, accessible via the
      public mentions property.
      */
-    private var mutableMentions: [SZMention] = []
+    fileprivate var mutableMentions: [SZMention] = []
 
     /**
      @brief Range of mention currently being edited.
      */
-    private var currentMentionRange: NSRange?
+    fileprivate var currentMentionRange: NSRange?
 
     /**
      @brief Whether or not we are currently editing a mention.
@@ -120,7 +120,7 @@ open class SZMentionsListener: NSObject {
     /**
      @brief String to filter by
      */
-    private var filterString: String?
+    fileprivate var filterString: String?
 
     /**
      @brief String that has been sent to the showMentionsListWithString
@@ -171,8 +171,6 @@ open class SZMentionsListener: NSObject {
         resetEmpty(mentionsTextView)
         mentionsTextView.delegate = self
     }
-
-    // MARK: TextView Adjustment
 
     /**
      @brief Resets the empty text view
@@ -279,8 +277,6 @@ open class SZMentionsListener: NSObject {
         return shouldAdjust
     }
 
-    // MARK: attribute management
-
     /**
      @brief Forces default attributes on a string of text
      @param textView: the mentions text view
@@ -314,8 +310,83 @@ open class SZMentionsListener: NSObject {
         return false
     }
 
-    // MARK: Mention management
+    /**
+     @brief Resets the attributes of the mention to default attributes
+     @param mention: the mention being edited
+     @param textView: the mention text view
+     @param range: the current range selected
+     @param text: text to replace range
+     */
+    private func handleEditingMention(_ mention: SZMention, textView: UITextView,
+                                          range: NSRange, text: String) -> Bool {
+        let mutableAttributedString = textView.attributedText.mutableCopy() as! NSMutableAttributedString
 
+        SZAttributedStringHelper.apply(
+            defaultTextAttributes,
+            range: mention.mentionRange,
+            mutableAttributedString: mutableAttributedString)
+
+        (mutableAttributedString as AnyObject).mutableString.replaceCharacters(in: range, with: text)
+
+        settingText = true
+        textView.attributedText = mutableAttributedString
+        settingText = false
+        textView.selectedRange = NSMakeRange(range.location + text.characters.count, 0)
+
+        _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
+
+        return false
+    }
+
+    // MARK: Timer
+
+    /**
+     @brief Calls show mentions if necessary when the timer fires
+     @param timer: the timer that called the method
+     */
+    internal func cooldownTimerFired(_ timer: Timer) {
+        if (filterString != nil && filterString != stringCurrentlyBeingFiltered) {
+            stringCurrentlyBeingFiltered = filterString
+
+            guard mentionsTextView.selectedRange.location >= 1 else { return }
+
+            var range = (mentionsTextView.text as NSString).range(
+                of: " ",
+                options: NSString.CompareOptions.backwards,
+                range: NSMakeRange(0, mentionsTextView.selectedRange.location + mentionsTextView.selectedRange.length))
+
+            if range.location == NSNotFound {
+                range = NSMakeRange(0, 0)
+            }
+
+            let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSMakeRange(range.location, 1))
+
+            if substringTrigger == trigger {
+                mentionsManager.showMentionsListWithString(filterString!)
+            }
+        }
+    }
+
+    /**
+     @brief Activates a cooldown timer
+     */
+    private func activateCooldownTimer() {
+        cooldownTimer?.invalidate()
+
+        let timer = Timer(
+            timeInterval: cooldownInterval,
+            target: self,
+            selector: #selector(SZMentionsListener.cooldownTimerFired(_:)),
+            userInfo: nil,
+            repeats: false)
+        cooldownTimer = timer
+        RunLoop.main.add(timer, forMode: RunLoopMode.defaultRunLoopMode)
+    }
+}
+
+// MARK: Public methods
+
+extension SZMentionsListener {
     /**
      @brief Insert mentions into an existing textview.  This is provided assuming you are given text
      along with a list of users mentioned in that text and want to prep the textview in advance.
@@ -396,84 +467,12 @@ open class SZMentionsListener: NSObject {
 
         mentionsTextView.selectedRange = selectedRange
         settingText = false
-
+        
         mentionsManager.hideMentionsList()
-
+        
         return true
     }
 
-    /**
-     @brief Resets the attributes of the mention to default attributes
-     @param mention: the mention being edited
-     @param textView: the mention text view
-     @param range: the current range selected
-     @param text: text to replace range
-     */
-    private func handleEditingMention(_ mention: SZMention, textView: UITextView,
-                                          range: NSRange, text: String) -> Bool {
-        let mutableAttributedString = textView.attributedText.mutableCopy() as! NSMutableAttributedString
-
-        SZAttributedStringHelper.apply(
-            defaultTextAttributes,
-            range: mention.mentionRange,
-            mutableAttributedString: mutableAttributedString)
-
-        (mutableAttributedString as AnyObject).mutableString.replaceCharacters(in: range, with: text)
-
-        settingText = true
-        textView.attributedText = mutableAttributedString
-        settingText = false
-        textView.selectedRange = NSMakeRange(range.location + text.characters.count, 0)
-
-        _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
-
-        return false
-    }
-
-    // MARK: Timer
-
-    /**
-     @brief Calls show mentions if necessary when the timer fires
-     @param timer: the timer that called the method
-     */
-    func cooldownTimerFired(_ timer: Timer) {
-        if (filterString != nil && filterString != stringCurrentlyBeingFiltered) {
-            stringCurrentlyBeingFiltered = filterString
-
-            guard mentionsTextView.selectedRange.location >= 1 else { return }
-
-            var range = (mentionsTextView.text as NSString).range(
-                of: " ",
-                options: NSString.CompareOptions.backwards,
-                range: NSMakeRange(0, mentionsTextView.selectedRange.location + mentionsTextView.selectedRange.length))
-
-            if range.location == NSNotFound {
-                range = NSMakeRange(0, 0)
-            }
-
-            let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSMakeRange(range.location, 1))
-
-            if substringTrigger == trigger {
-                mentionsManager.showMentionsListWithString(filterString!)
-            }
-        }
-    }
-
-    /**
-     @brief Activates a cooldown timer
-     */
-    private func activateCooldownTimer() {
-        cooldownTimer?.invalidate()
-
-        let timer = Timer(
-            timeInterval: cooldownInterval,
-            target: self,
-            selector: #selector(SZMentionsListener.cooldownTimerFired(_:)),
-            userInfo: nil,
-            repeats: false)
-        cooldownTimer = timer
-        RunLoop.main.add(timer, forMode: RunLoopMode.defaultRunLoopMode)
-    }
 }
 
 // MARK: TextView Delegate
