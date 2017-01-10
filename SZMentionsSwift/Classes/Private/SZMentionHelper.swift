@@ -6,9 +6,7 @@
 //  Copyright © 2016 Steven Zweier. All rights reserved.
 //
 
-import Foundation
-
-class SZMentionHelper {
+internal class SZMentionHelper {
     /**
      @brief Determines what mentions exist after a given range
      @param range: the range where text was changed
@@ -16,15 +14,7 @@ class SZMentionHelper {
      @return [SZMention]: list of mentions that exist after the provided range
      */
     class func mentionsAfterTextEntry(_ range: NSRange, mentionsList: [SZMention]) -> [SZMention] {
-        var mentionsAfterTextEntry = [SZMention]()
-
-        mentionsList.forEach { mention in
-            if range.location + range.length <= mention.mentionRange.location {
-                mentionsAfterTextEntry.append(mention)
-            }
-        }
-
-        return mentionsAfterTextEntry
+        return mentionsList.filter{ $0.mentionRange.location >= range.location + range.length }
     }
 
     /**
@@ -50,11 +40,7 @@ class SZMentionHelper {
      @return Bool: Whether or not a mention exists at a specific location
      */
     class func mentionExistsAt(_ index: NSInteger, mentions: [SZMention]) -> Bool {
-
-        let mentionsList = mentions.filter {
-            let range = $0.mentionRange
-            return index >= range.location && index < range.location + range.length
-        }
+        let mentionsList = mentions.filter{ index >= $0.mentionRange.location && index < $0.mentionRange.location + $0.mentionRange.length }
 
         return mentionsList.count > 0
     }

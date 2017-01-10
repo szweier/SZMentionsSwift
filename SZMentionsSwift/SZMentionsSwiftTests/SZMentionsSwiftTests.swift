@@ -448,7 +448,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         XCTAssertTrue(mentionsListener?.mentions.count == 1)
         textView.attributedText = NSAttributedString(string: "test")
         textView.text = ""
-        let _ = mentionsListener?.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "")
+        _ = mentionsListener?.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "")
         XCTAssertTrue(mentionsListener?.mentions.count == 0)
     }
 

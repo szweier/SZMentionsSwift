@@ -42,7 +42,7 @@ public protocol SZCreateMentionProtocol {
     var szMentionRange: NSRange {get}
 }
 
-open class SZMentionsListener: NSObject, UITextViewDelegate {
+open class SZMentionsListener: NSObject {
 
     /**
      @brief Array of mentions currently added to the textview
@@ -75,13 +75,13 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
      @brief An optional delegate that can be used to handle all UITextView delegate
      methods after they've been handled by the SZMentionsListener
      */
-    private weak var delegate: UITextViewDelegate?
+    fileprivate weak var delegate: UITextViewDelegate?
 
     /**
      @brief Manager in charge of handling the creation and dismissal of the mentions
      list.
      */
-    private var mentionsManager: SZMentionsManagerProtocol
+    fileprivate var mentionsManager: SZMentionsManagerProtocol
 
     /**
      @brief Amount of time to delay between showMentions calls default:0.5
@@ -91,12 +91,12 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
     /**
      @brief Whether or not we should add a space after the mention, default: false
      */
-    var spaceAfterMention: Bool
+    internal var spaceAfterMention: Bool
 
     /**
      @brief Tell listener for observer Return key, default: false
      */
-    var addMentionAfterReturnKey: Bool
+    internal var addMentionAfterReturnKey: Bool
 
     /**
      @brief Mutable array list of mentions managed by listener, accessible via the
@@ -112,17 +112,17 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
     /**
      @brief Whether or not we are currently editing a mention.
      */
-    private var editingMention: Bool = false
+    fileprivate var editingMention: Bool = false
 
     /**
      @brief Allow us to edit text internally without triggering delegate
      */
-    private var settingText: Bool = false
+    fileprivate var settingText: Bool = false
 
     /**
      @brief String to filter by
      */
-    var filterString: String?
+    private var filterString: String?
 
     /**
      @brief String that has been sent to the showMentionsListWithString
@@ -229,7 +229,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
      @param range: the selected range
      */
     var mentionEnabled = false
-    private func adjust(_ textView: UITextView, range: NSRange) {
+    fileprivate func adjust(_ textView: UITextView, range: NSRange) {
         let substring = (textView.text as NSString).substring(to: range.location) as NSString
         var textBeforeTrigger = " "
         let location = substring.range(
@@ -242,7 +242,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
             if location > 0 {
                 //Determine whether or not a space exists before the trigger.
                 //(in the case of an @ trigger this avoids showing the mention list for an email address)
-                let substringRange = NSRange.init(location: location - 1, length: 1)
+                let substringRange = NSRange(location: location - 1, length: 1)
                 textBeforeTrigger = substring.substring(with: substringRange)
                 mentionEnabled = textBeforeTrigger == " " || textBeforeTrigger == "\n"
             }
@@ -284,7 +284,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
      @param text: the text to replace the range with
      @return Bool: whether or not the textView should adjust the text itself
      */
-    private func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
+    fileprivate func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
         var shouldAdjust = true
 
         if (textView.text.characters.count == 0) {
@@ -309,7 +309,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
 
         SZMentionHelper.adjustMentions(range, text: text, mentions: mentions)
 
-        let _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
+        _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
         return shouldAdjust
     }
@@ -460,7 +460,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
         settingText = false
         textView.selectedRange = NSMakeRange(range.location + text.characters.count, 0)
 
-        let _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
+        _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
         return false
     }
@@ -471,20 +471,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
      @return SZMention?: the mention being edited (if one exists)
      */
     private func mentionBeingEdited(_ range: NSRange) -> SZMention? {
-        var editedMention: SZMention?
-
-        mentions.forEach { mention in
-            let currentMentionRange = mention.mentionRange
-            if (NSIntersectionRange(range, currentMentionRange).length > 0 ||
-                (range.length == 0 &&
-                    range.location > currentMentionRange.location &&
-                    range.location < currentMentionRange.length + currentMentionRange.location))
-            {
-                editedMention = mention
-            }
-        }
-
-        return editedMention
+        return mentions.filter{ NSIntersectionRange(range, $0.mentionRange).length > 0 || (range.length == 0 && range.location > $0.mentionRange.length && range.location < $0.mentionRange.length + $0.mentionRange.location) }.first
     }
 
     // MARK: Timer
@@ -531,7 +518,9 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
         cooldownTimer = timer
         RunLoop.main.add(timer, forMode: RunLoopMode.defaultRunLoopMode)
     }
+}
 
+extension SZMentionsListener: UITextViewDelegate {
     // MARK: TextView Delegate
 
     open func textView(
@@ -548,7 +537,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
 
             return false
         }
-        let _ = delegate?.textView?(
+        _ = delegate?.textView?(
             textView,
             shouldChangeTextIn: range,
             replacementText: text)
@@ -569,7 +558,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
         shouldInteractWith textAttachment: NSTextAttachment,
         in characterRange: NSRange) -> Bool {
 
-        let _ = delegate?.textView?(
+        _ = delegate?.textView?(
             textView,
             shouldInteractWith: textAttachment,
             in: characterRange)
@@ -582,7 +571,7 @@ open class SZMentionsListener: NSObject, UITextViewDelegate {
         shouldInteractWith URL: URL,
         in characterRange: NSRange) -> Bool {
 
-        let _ = delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange)
+        _ = delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange)
 
         return true
     }

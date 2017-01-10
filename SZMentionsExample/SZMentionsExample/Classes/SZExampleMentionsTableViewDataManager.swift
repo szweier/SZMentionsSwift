@@ -9,7 +9,7 @@
 import UIKit
 import SZMentionsSwift
 
-class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UITableViewDelegate {
+class SZExampleMentionsTableViewDataManager: UITableViewDataSource, UITableViewDelegate {
 
     private var listener: SZMentionsListener?
     private var mentions: [SZExampleMention] {

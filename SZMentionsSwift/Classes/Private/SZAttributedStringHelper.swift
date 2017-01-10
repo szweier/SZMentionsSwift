@@ -6,9 +6,7 @@
 //  Copyright © 2016 Steven Zweier. All rights reserved.
 //
 
-import Foundation
-
-class SZAttributedStringHelper {
+internal class SZAttributedStringHelper {
     /**
      @brief Applies attributes to a given string and range
      @param attributes: the attributes to apply
