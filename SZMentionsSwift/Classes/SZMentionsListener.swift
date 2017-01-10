@@ -52,17 +52,17 @@ open class SZMentionsListener: NSObject {
     /**
      @brief Trigger to start a mention. Default: @
      */
-    private var trigger: String
+    fileprivate var trigger: String
 
     /**
      @brief Text attributes to be applied to all text excluding mentions.
      */
-    private var defaultTextAttributes: [SZAttribute]
+    fileprivate var defaultTextAttributes: [SZAttribute]
 
     /**
      @brief Text attributes to be applied to mentions.
      */
-    fileprivate var mentionTextAttributes: [SZAttribute]
+    private var mentionTextAttributes: [SZAttribute]
 
     /**
      @brief The UITextView being handled by the SZMentionsListener
@@ -84,7 +84,7 @@ open class SZMentionsListener: NSObject {
     /**
      @brief Amount of time to delay between showMentions calls default:0.5
      */
-    private var cooldownInterval: TimeInterval
+    fileprivate var cooldownInterval: TimeInterval
 
     /**
      @brief Whether or not we should add a space after the mention, default: false
@@ -125,14 +125,17 @@ open class SZMentionsListener: NSObject {
     /**
      @brief String that has been sent to the showMentionsListWithString
      */
-    private var stringCurrentlyBeingFiltered: String?
+    fileprivate var stringCurrentlyBeingFiltered: String?
 
     /**
      @brief Timer to space out mentions requests
      */
-    private var cooldownTimer: Timer?
+    fileprivate var cooldownTimer: Timer?
 
-    // MARK: Initialization
+    /**
+     @brief Whether or not a mention is currently being edited
+     */
+    fileprivate var mentionEnabled = false
 
     /**
      @brief Initializer that allows for customization of text attributes for default text and mentions
@@ -173,10 +176,100 @@ open class SZMentionsListener: NSObject {
     }
 
     /**
+     @brief Insert mentions into an existing textview.  This is provided assuming you are given text
+     along with a list of users mentioned in that text and want to prep the textview in advance.
+
+     @param mention the mention object adhereing to SZInsertMentionProtocol
+     szMentionName is used as the name to set for the mention.  This parameter
+     is returned in the mentions array in the object parameter of the SZMention object.
+     szMentionRange is used the range to place the metion at
+     */
+    func insertExistingMentions(_ existingMentions: [SZCreateMentionProtocol]) {
+        let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as! NSMutableAttributedString
+
+        existingMentions.forEach { mention in
+            let range = mention.szMentionRange
+            assert(range.location != NSNotFound, "Mention must have a range to insert into")
+
+            let szMention = SZMention(mentionRange: range, mentionObject: mention)
+            mutableMentions.append(szMention)
+
+            SZAttributedStringHelper.apply(
+                mentionTextAttributes,
+                range:range,
+                mutableAttributedString: mutableAttributedString)
+        }
+
+        settingText = true
+        mentionsTextView.attributedText = mutableAttributedString
+        settingText = false
+    }
+
+    /**
+     @brief Adds a mention to the current mention range (determined by trigger + characters typed up to space or end of line)
+     @param mention: the mention object to apply
+     @return Bool: whether or not a mention was added
+     */
+    @discardableResult open func addMention(_ mention: SZCreateMentionProtocol) -> Bool {
+        if (currentMentionRange == nil) {
+            return false
+        }
+
+        filterString = nil
+        var displayName = mention.szMentionName
+
+        if spaceAfterMention {
+            displayName = displayName + " "
+        }
+
+        let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as! NSMutableAttributedString
+        (mutableAttributedString as AnyObject).mutableString.replaceCharacters(
+            in: currentMentionRange!,
+            with: displayName)
+
+        SZMentionHelper.adjustMentions(currentMentionRange!, text: displayName, mentions: mentions)
+
+        currentMentionRange = NSMakeRange(
+            currentMentionRange!.location,
+            mention.szMentionName.characters.count)
+
+        let szmention = SZMention(
+            mentionRange: currentMentionRange!,
+            mentionObject: mention)
+        mutableMentions.append(szmention)
+
+        SZAttributedStringHelper.apply(
+            mentionTextAttributes,
+            range: currentMentionRange!,
+            mutableAttributedString: mutableAttributedString)
+
+        settingText = true
+
+        var selectedRange = NSMakeRange(currentMentionRange!.location + currentMentionRange!.length, 0)
+
+        mentionsTextView.attributedText = mutableAttributedString
+
+        if spaceAfterMention {
+            selectedRange.location += 1
+        }
+
+        mentionsTextView.selectedRange = selectedRange
+        settingText = false
+        
+        mentionsManager.hideMentionsList()
+        
+        return true
+    }
+}
+
+// MARK: Private methods
+
+extension SZMentionsListener {
+    /**
      @brief Resets the empty text view
      @param textView: the text view to reset
      */
-    private func resetEmpty(_ textView: UITextView) {
+    fileprivate func resetEmpty(_ textView: UITextView) {
         mutableMentions.removeAll()
         textView.text = " "
         let mutableAttributedString = textView.attributedText.mutableCopy() as! NSMutableAttributedString
@@ -192,7 +285,6 @@ open class SZMentionsListener: NSObject {
      @param textView: the mentions text view
      @param range: the selected range
      */
-    var mentionEnabled = false
     fileprivate func adjust(_ textView: UITextView, range: NSRange) {
         let substring = (textView.text as NSString).substring(to: range.location) as NSString
         var textBeforeTrigger = " "
@@ -318,7 +410,7 @@ open class SZMentionsListener: NSObject {
      @param text: text to replace range
      */
     private func handleEditingMention(_ mention: SZMention, textView: UITextView,
-                                          range: NSRange, text: String) -> Bool {
+                                      range: NSRange, text: String) -> Bool {
         let mutableAttributedString = textView.attributedText.mutableCopy() as! NSMutableAttributedString
 
         SZAttributedStringHelper.apply(
@@ -338,8 +430,6 @@ open class SZMentionsListener: NSObject {
         return false
     }
 
-    // MARK: Timer
-
     /**
      @brief Calls show mentions if necessary when the timer fires
      @param timer: the timer that called the method
@@ -350,16 +440,18 @@ open class SZMentionsListener: NSObject {
 
             guard mentionsTextView.selectedRange.location >= 1 else { return }
 
-            var range = (mentionsTextView.text as NSString).range(
+            let range = (mentionsTextView.text as NSString).range(
                 of: " ",
                 options: NSString.CompareOptions.backwards,
                 range: NSMakeRange(0, mentionsTextView.selectedRange.location + mentionsTextView.selectedRange.length))
 
-            if range.location == NSNotFound {
-                range = NSMakeRange(0, 0)
+            var location: Int = 0
+
+            if range.location != NSNotFound {
+                location = range.location + 1
             }
 
-            let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSMakeRange(range.location, 1))
+            let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSMakeRange(location, 1))
 
             if substringTrigger == trigger {
                 mentionsManager.showMentionsListWithString(filterString!)
@@ -382,97 +474,6 @@ open class SZMentionsListener: NSObject {
         cooldownTimer = timer
         RunLoop.main.add(timer, forMode: RunLoopMode.defaultRunLoopMode)
     }
-}
-
-// MARK: Public methods
-
-extension SZMentionsListener {
-    /**
-     @brief Insert mentions into an existing textview.  This is provided assuming you are given text
-     along with a list of users mentioned in that text and want to prep the textview in advance.
-
-     @param mention the mention object adhereing to SZInsertMentionProtocol
-     szMentionName is used as the name to set for the mention.  This parameter
-     is returned in the mentions array in the object parameter of the SZMention object.
-     szMentionRange is used the range to place the metion at
-     */
-    func insertExistingMentions(_ existingMentions: [SZCreateMentionProtocol]) {
-        let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as! NSMutableAttributedString
-
-        existingMentions.forEach { mention in
-            let range = mention.szMentionRange
-            assert(range.location != NSNotFound, "Mention must have a range to insert into")
-
-            let szMention = SZMention(mentionRange: range, mentionObject: mention)
-            mutableMentions.append(szMention)
-
-            SZAttributedStringHelper.apply(
-                mentionTextAttributes,
-                range:range,
-                mutableAttributedString: mutableAttributedString)
-        }
-
-        settingText = true
-        mentionsTextView.attributedText = mutableAttributedString
-        settingText = false
-    }
-
-    /**
-     @brief Adds a mention to the current mention range (determined by trigger + characters typed up to space or end of line)
-     @param mention: the mention object to apply
-     @return Bool: whether or not a mention was added
-     */
-    @discardableResult open func addMention(_ mention: SZCreateMentionProtocol) -> Bool {
-        if (currentMentionRange == nil) {
-            return false
-        }
-
-        filterString = nil
-        var displayName = mention.szMentionName
-
-        if spaceAfterMention {
-            displayName = displayName + " "
-        }
-
-        let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as! NSMutableAttributedString
-        (mutableAttributedString as AnyObject).mutableString.replaceCharacters(
-            in: currentMentionRange!,
-            with: displayName)
-
-        SZMentionHelper.adjustMentions(currentMentionRange!, text: displayName, mentions: mentions)
-
-        currentMentionRange = NSMakeRange(
-            currentMentionRange!.location,
-            mention.szMentionName.characters.count)
-
-        let szmention = SZMention(
-            mentionRange: currentMentionRange!,
-            mentionObject: mention)
-        mutableMentions.append(szmention)
-
-        SZAttributedStringHelper.apply(
-            mentionTextAttributes,
-            range: currentMentionRange!,
-            mutableAttributedString: mutableAttributedString)
-
-        settingText = true
-
-        var selectedRange = NSMakeRange(currentMentionRange!.location + currentMentionRange!.length, 0)
-
-        mentionsTextView.attributedText = mutableAttributedString
-
-        if spaceAfterMention {
-            selectedRange.location += 1
-        }
-
-        mentionsTextView.selectedRange = selectedRange
-        settingText = false
-        
-        mentionsManager.hideMentionsList()
-        
-        return true
-    }
-
 }
 
 // MARK: TextView Delegate
