@@ -45,9 +45,7 @@ open class SZMentionsListener: NSObject {
     /**
      @brief Array of mentions currently added to the textview
      */
-    open var mentions:[SZMention] {
-        return mutableMentions
-    }
+    open var mentions:[SZMention] { return mutableMentions }
 
     /**
      @brief Trigger to start a mention. Default: @
@@ -211,47 +209,41 @@ open class SZMentionsListener: NSObject {
      @return Bool: whether or not a mention was added
      */
     @discardableResult open func addMention(_ mention: SZCreateMentionProtocol) -> Bool {
-        if (currentMentionRange == nil) {
-            return false
-        }
+        guard var currentMentionRange = currentMentionRange else { return false }
 
         filterString = nil
         var displayName = mention.szMentionName
 
-        if spaceAfterMention {
-            displayName = displayName + " "
-        }
+        if spaceAfterMention { displayName = displayName + " " }
 
         let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as! NSMutableAttributedString
-        (mutableAttributedString as AnyObject).mutableString.replaceCharacters(
-            in: currentMentionRange!,
+        mutableAttributedString.mutableString.replaceCharacters(
+            in: currentMentionRange,
             with: displayName)
 
-        SZMentionHelper.adjustMentions(currentMentionRange!, text: displayName, mentions: mentions)
+        SZMentionHelper.adjustMentions(currentMentionRange, text: displayName, mentions: mentions)
 
         currentMentionRange = NSMakeRange(
-            currentMentionRange!.location,
+            currentMentionRange.location,
             mention.szMentionName.characters.count)
 
         let szmention = SZMention(
-            mentionRange: currentMentionRange!,
+            mentionRange: currentMentionRange,
             mentionObject: mention)
         mutableMentions.append(szmention)
 
         SZAttributedStringHelper.apply(
             mentionTextAttributes,
-            range: currentMentionRange!,
+            range: currentMentionRange,
             mutableAttributedString: mutableAttributedString)
 
         settingText = true
 
-        var selectedRange = NSMakeRange(currentMentionRange!.location + currentMentionRange!.length, 0)
+        var selectedRange = NSMakeRange(currentMentionRange.location + currentMentionRange.length, 0)
 
         mentionsTextView.attributedText = mutableAttributedString
 
-        if spaceAfterMention {
-            selectedRange.location += 1
-        }
+        if spaceAfterMention { selectedRange.location += 1 }
 
         mentionsTextView.selectedRange = selectedRange
         settingText = false
@@ -306,27 +298,25 @@ extension SZMentionsListener {
 
         if mentionEnabled {
             if let stringBeingTyped = substring.components(separatedBy: textBeforeTrigger).last,
-                let stringForMention = stringBeingTyped.components(separatedBy: " ").last {
+                let stringForMention = stringBeingTyped.components(separatedBy: " ").last,
+                (stringForMention as NSString).range(of: trigger).location != NSNotFound {
 
-                if ((stringForMention as NSString).range(of: trigger).location != NSNotFound) {
+                currentMentionRange = (textView.text as NSString).range(
+                    of: stringBeingTyped,
+                    options: NSString.CompareOptions.backwards,
+                    range: NSMakeRange(0, textView.selectedRange.location + textView.selectedRange.length))
+                filterString = (stringBeingTyped as NSString).replacingOccurrences(
+                    of: trigger,
+                    with: "")
+                filterString = filterString?.replacingOccurrences(of: "\n", with: "")
 
-                    currentMentionRange = (textView.text as NSString).range(
-                        of: stringBeingTyped,
-                        options: NSString.CompareOptions.backwards,
-                        range: NSMakeRange(0, textView.selectedRange.location + textView.selectedRange.length))
-                    filterString = (stringBeingTyped as NSString).replacingOccurrences(
-                        of: trigger,
-                        with: "")
-                    filterString = filterString?.replacingOccurrences(of: "\n", with: "")
-
-                    if filterString != nil &&
-                        (cooldownTimer == nil || cooldownTimer?.isValid == false) {
-                        stringCurrentlyBeingFiltered = filterString
-                        mentionsManager.showMentionsListWithString(filterString!)
-                    }
-                    activateCooldownTimer()
-                    return
+                if filterString != nil &&
+                    (cooldownTimer == nil || cooldownTimer?.isValid == false) {
+                    stringCurrentlyBeingFiltered = filterString
+                    mentionsManager.showMentionsListWithString(filterString!)
                 }
+                activateCooldownTimer()
+                return
             }
         }
         mentionEnabled = false
@@ -343,9 +333,7 @@ extension SZMentionsListener {
     fileprivate func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
         var shouldAdjust = true
 
-        if (textView.text.characters.count == 0) {
-            resetEmpty(textView)
-        }
+        if textView.text.isEmpty { resetEmpty(textView) }
 
         editingMention = false
 
@@ -379,9 +367,7 @@ extension SZMentionsListener {
     private func forceDefaultAttributes(_ textView: UITextView, range: NSRange, text: String, replaceCharacters: Bool) -> Bool {
         let mutableAttributedString = textView.attributedText.mutableCopy() as! NSMutableAttributedString
 
-        if replaceCharacters {
-            mutableAttributedString.mutableString.replaceCharacters(in: range, with: text)
-        }
+        if replaceCharacters { mutableAttributedString.mutableString.replaceCharacters(in: range, with: text) }
 
         SZAttributedStringHelper.apply(
             defaultTextAttributes,
@@ -393,9 +379,7 @@ extension SZMentionsListener {
 
         var newRange = NSRange(location: range.location, length: 0)
 
-        if newRange.length <= 0 {
-            newRange.location = range.location + text.characters.count
-        }
+        if newRange.length <= 0 { newRange.location = range.location + text.characters.count }
 
         textView.selectedRange = newRange
 
@@ -418,7 +402,7 @@ extension SZMentionsListener {
             range: mention.mentionRange,
             mutableAttributedString: mutableAttributedString)
 
-        (mutableAttributedString as AnyObject).mutableString.replaceCharacters(in: range, with: text)
+        mutableAttributedString.mutableString.replaceCharacters(in: range, with: text)
 
         settingText = true
         textView.attributedText = mutableAttributedString
@@ -435,7 +419,7 @@ extension SZMentionsListener {
      @param timer: the timer that called the method
      */
     internal func cooldownTimerFired(_ timer: Timer) {
-        if (filterString != nil && filterString != stringCurrentlyBeingFiltered) {
+        if filterString != nil, filterString != stringCurrentlyBeingFiltered {
             stringCurrentlyBeingFiltered = filterString
 
             guard mentionsTextView.selectedRange.location >= 1 else { return }
@@ -487,7 +471,7 @@ extension SZMentionsListener: UITextViewDelegate {
         assert((textView.delegate?.isEqual(self))!,
                "Textview delegate must be set equal to SZMentionsListener")
 
-        if text == "\n" && addMentionAfterReturnKey && mentionEnabled {
+        if text == "\n", addMentionAfterReturnKey, mentionEnabled {
             mentionsManager.shouldAddMentionOnReturnKey()
             mentionEnabled = false
             mentionsManager.hideMentionsList()
@@ -499,9 +483,7 @@ extension SZMentionsListener: UITextViewDelegate {
             shouldChangeTextIn: range,
             replacementText: text)
 
-        if settingText {
-            return false
-        }
+        if settingText { return false }
 
         return shouldAdjust(textView, range: range, text: text)
     }
