@@ -18,7 +18,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
     let textView = UITextView.init()
     var hidingMentionsList = true
     var mentionString = ""
-    var mentionsListener: SZMentionsListener?
+    var mentionsListener: SZMentionsListener!
 
     override func setUp() {
         super.setUp()
@@ -41,7 +41,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         let defaultAttributes = [attribute]
         let mentionAttributes = [attribute, attribute2]
 
-        XCTAssert(mentionsListener!.attributesSetCorrectly(mentionAttributes, defaultAttributes: defaultAttributes) == false)
+        XCTAssert(SZVerifier.attributesSetCorrectly(mentionAttributes, defaultAttributes: defaultAttributes) == false)
     }
 
     func testThatAddingAttributesThatDoMatchDoesNotThrowAnError() {
@@ -51,7 +51,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         let defaultAttributes = [attribute, attribute2]
         let mentionAttributes = [attribute2, attribute]
 
-        XCTAssert(mentionsListener!.attributesSetCorrectly(mentionAttributes, defaultAttributes: defaultAttributes) == true)
+        XCTAssert(SZVerifier.attributesSetCorrectly(mentionAttributes, defaultAttributes: defaultAttributes) == true)
     }
 
     func testMentionListIsDisplayed() {
@@ -79,9 +79,9 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
         let insertMentions : Array<SZCreateMentionProtocol> = [mention, mention2]
 
-        mentionsListener!.insertExistingMentions(insertMentions)
+        mentionsListener.insertExistingMentions(insertMentions)
 
-        XCTAssert(mentionsListener!.mentions.count == 2)
+        XCTAssert(mentionsListener.mentions.count == 2)
         XCTAssert((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as AnyObject).isEqual( UIColor.black))
         XCTAssert((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 9, effectiveRange: nil)! as AnyObject).isEqual( UIColor.red))
         XCTAssert((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 21, effectiveRange: nil)! as AnyObject).isEqual( UIColor.black))
@@ -93,52 +93,52 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         textView.insertText("@t")
         let mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions.count == 1)
+        XCTAssert(mentionsListener.mentions.count == 1)
     }
 
     func testMentionPositionIsCorrectToStartText() {
         textView.insertText("@t")
         let mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 0)
+        XCTAssert(mentionsListener.mentions.first?.mentionRange.location == 0)
     }
 
     func testMentionPositionIsCorrectInTheMidstOfText() {
         textView.insertText("Testing @t")
         let mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 8)
+        XCTAssert(mentionsListener.mentions.first?.mentionRange.location == 8)
     }
 
     func testMentionLengthIsCorrect() {
         textView.insertText("@t")
         var mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions.first?.mentionRange.length == 6)
+        XCTAssert(mentionsListener.mentions.first?.mentionRange.length == 6)
 
         textView.insertText("Testing @t")
         mention = SZExampleMention.init()
         mention.szMentionName = "Steven Zweier"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions[1].mentionRange.length == 13)
+        XCTAssert(mentionsListener.mentions[1].mentionRange.length == 13)
     }
 
     func testMentionLocationIsAdjustedProperly() {
         textView.insertText("Testing @t")
         let mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 8)
+        XCTAssert(mentionsListener.mentions.first?.mentionRange.location == 8)
 
         var beginning = textView.beginningOfDocument
         var start = textView.position(from: beginning, offset: 0)
@@ -146,11 +146,11 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
         var textRange = textView.textRange(from: start!, to: end!)
 
-        if mentionsListener?.textView(textView, shouldChangeTextIn: NSMakeRange(0, 3), replacementText: "") == true {
+        if mentionsListener.textView(textView, shouldChangeTextIn: NSMakeRange(0, 3), replacementText: "") == true {
             textView.replace(textRange!, withText: "")
         }
 
-        XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 5)
+        XCTAssert(mentionsListener.mentions.first?.mentionRange.location == 5)
 
         beginning = textView.beginningOfDocument
         start = textView.position(from: beginning, offset: 0)
@@ -158,120 +158,120 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
         textRange = textView.textRange(from: start!, to: end!)
 
-        if mentionsListener?.textView(textView, shouldChangeTextIn: NSMakeRange(0, 5), replacementText: "") == true {
+        if mentionsListener.textView(textView, shouldChangeTextIn: NSMakeRange(0, 5), replacementText: "") == true {
             textView.replace(textRange!, withText: "")
         }
 
-        XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 0)
+        XCTAssert(mentionsListener.mentions.first?.mentionRange.location == 0)
     }
 
     func testMentionLocationIsAdjustedProperlyWhenAMentionIsInsertsBehindAMentionSpaceAfterMentionIsFalse() {
         textView.insertText("@t")
         var mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 0)
-        XCTAssert(mentionsListener?.mentions.first?.mentionRange.length == 6)
+        XCTAssert(mentionsListener.mentions.first?.mentionRange.location == 0)
+        XCTAssert(mentionsListener.mentions.first?.mentionRange.length == 6)
 
         textView.selectedRange = NSMakeRange(0, 0)
 
-        if mentionsListener?.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "@t") == true {
+        if mentionsListener.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "@t") == true {
             textView.insertText("@t")
         }
         mention = SZExampleMention.init()
         mention.szMentionName = "Steven Zweier"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions[1].mentionRange.location == 0)
-        XCTAssert(mentionsListener?.mentions[1].mentionRange.length == 13)
-        XCTAssert(mentionsListener?.mentions[0].mentionRange.location == 13)
+        XCTAssert(mentionsListener.mentions[1].mentionRange.location == 0)
+        XCTAssert(mentionsListener.mentions[1].mentionRange.length == 13)
+        XCTAssert(mentionsListener.mentions[0].mentionRange.location == 13)
     }
 
     func testMentionLocationIsAdjustedProperlyWhenAMentionIsInsertsBehindAMentionSpaceAfterMentionIsTrue() {
-        mentionsListener?.spaceAfterMention = true
+        mentionsListener.spaceAfterMention = true
         textView.insertText("@t")
         var mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 0)
-        XCTAssert(mentionsListener?.mentions.first?.mentionRange.length == 6)
+        XCTAssert(mentionsListener.mentions.first?.mentionRange.location == 0)
+        XCTAssert(mentionsListener.mentions.first?.mentionRange.length == 6)
 
         textView.selectedRange = NSMakeRange(0, 0)
 
-        if mentionsListener?.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "@t") == true {
+        if mentionsListener.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "@t") == true {
             textView.insertText("@t")
         }
         mention = SZExampleMention.init()
         mention.szMentionName = "Steven Zweier"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions[1].mentionRange.location == 0)
-        XCTAssert(mentionsListener?.mentions[1].mentionRange.length == 13)
-        XCTAssert(mentionsListener?.mentions[0].mentionRange.location == 14)
+        XCTAssert(mentionsListener.mentions[1].mentionRange.location == 0)
+        XCTAssert(mentionsListener.mentions[1].mentionRange.length == 13)
+        XCTAssert(mentionsListener.mentions[0].mentionRange.location == 14)
     }
 
     func testEditingTheMiddleOfTheMentionRemovesTheMention() {
         textView.insertText("Testing @t")
         let mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions.count == 1)
+        XCTAssert(mentionsListener.mentions.count == 1)
 
         textView.selectedRange = NSMakeRange(11, 1)
 
-        if mentionsListener?.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") == true {
+        if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") == true {
             textView.deleteBackward()
         }
 
-        XCTAssert(mentionsListener?.mentions.count == 0)
+        XCTAssert(mentionsListener.mentions.isEmpty)
     }
 
     func testEditingTheEndOfTheMentionRemovesTheMention() {
         textView.insertText("Testing @t")
         let mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions.count == 1)
+        XCTAssert(mentionsListener.mentions.count == 1)
 
         textView.selectedRange = NSMakeRange(13, 1)
 
-        if mentionsListener?.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") == true {
+        if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") == true {
             textView.deleteBackward()
         }
 
-        XCTAssert(mentionsListener?.mentions.count == 0)
+        XCTAssert(mentionsListener.mentions.isEmpty)
     }
 
     func testEditingAfterTheMentionDoesNotDeleteTheMention() {
         textView.insertText("Testing @t")
         let mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
         textView.insertText(" ")
 
-        XCTAssert(mentionsListener?.mentions.count == 1)
+        XCTAssert(mentionsListener.mentions.count == 1)
 
         textView.selectedRange = NSMakeRange(14, 1)
 
-        if mentionsListener?.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") == true {
+        if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") == true {
             textView.deleteBackward()
         }
 
-        XCTAssert(mentionsListener?.mentions.count == 1)
+        XCTAssert(mentionsListener.mentions.count == 1)
     }
 
     func testPastingTextBeforeLeadingMentionResetsAttributes() {
         textView.insertText("@s")
         let mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
         textView.selectedRange = NSMakeRange(0, 0)
-        if mentionsListener?.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "test") == true {
+        if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "test") == true {
             textView.insertText("test")
         }
         XCTAssert((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as AnyObject).isEqual( UIColor.black))
@@ -295,15 +295,15 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         let mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
 
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions[0].mentionRange.location == 0);
+        XCTAssert(mentionsListener.mentions[0].mentionRange.location == 0);
         XCTAssert(self.textView.selectedRange.location == 6);
     }
 
     func testMentionsLibraryReplacesCorrectMentionRangeIfMultipleExistAndThatSelectedRangeWillBeCorrectWithSpaceAfterMentionEnabled()
     {
-        mentionsListener?.spaceAfterMention = true
+        mentionsListener.spaceAfterMention = true
         textView.insertText(" @st")
         textView.selectedRange = NSMakeRange(0, 0)
         textView.insertText("@st")
@@ -311,9 +311,9 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         let mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
 
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions[0].mentionRange.location == 0);
+        XCTAssert(mentionsListener.mentions[0].mentionRange.location == 0);
         XCTAssert(self.textView.selectedRange.location == 7);
     }
 
@@ -322,9 +322,9 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         textView.insertText("@s")
         let mention = SZExampleMention()
         mention.szMentionName = "Steven"
-        self.mentionsListener?.addMention(mention)
+        self.mentionsListener.addMention(mention)
 
-        if mentionsListener?.textView(textView, shouldChangeTextIn: self.textView.selectedRange, replacementText: "test") == true {
+        if mentionsListener.textView(textView, shouldChangeTextIn: self.textView.selectedRange, replacementText: "test") == true {
             textView.insertText("test")
         }
 
@@ -339,9 +339,9 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         textView.insertText("e")
         textView.deleteBackward()
         textView.deleteBackward()
-        mentionsListener?.cooldownTimerFired(Timer())
+        mentionsListener.cooldownTimerFired(Timer())
         textView.deleteBackward()
-        mentionsListener?.cooldownTimerFired(Timer())
+        mentionsListener.cooldownTimerFired(Timer())
 
         XCTAssert(textView.text.characters.count == 1)
     }
@@ -362,36 +362,36 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         textView.insertText("\n@t")
         let mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
         
-        XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 1)
+        XCTAssert(mentionsListener.mentions.first?.mentionRange.location == 1)
     }
 
     func testMentionPositionIsCorrectInTheMidstOfNewlineText() {
         textView.insertText("Testing \nnew line @t")
         let mention = SZExampleMention.init()
         mention.szMentionName = "Steven"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
-        XCTAssert(mentionsListener?.mentions.first?.mentionRange.location == 18)
+        XCTAssert(mentionsListener.mentions.first?.mentionRange.location == 18)
     }
 
     func testTwoMentionsDeletedAtOnceDoesntCrash() {
         textView.insertText("@St")
         var mention = SZExampleMention.init()
         mention.szMentionName = "Steven Zweier"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
         textView.insertText(" ")
 
         textView.insertText("@Jo")
         mention = SZExampleMention.init()
         mention.szMentionName = "John Smith"
-        mentionsListener?.addMention(mention)
+        mentionsListener.addMention(mention)
 
         textView.selectedRange = NSMakeRange(0, textView.text.characters.count)
 
-        if mentionsListener?.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") == true {
+        if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") == true {
             textView.deleteBackward()
         }
         XCTAssert(textView.text.isEmpty)
@@ -399,12 +399,12 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
     func testShouldAddMentionOnReturnKeyShouldCalledWhenHitReturnKey() {
 
-        mentionsListener?.addMentionAfterReturnKey = true
+        mentionsListener.addMentionAfterReturnKey = true
 
         textView.insertText("@t")
         XCTAssert(hidingMentionsList == false)
 
-        if mentionsListener?.textView(textView, shouldChangeTextIn: self.textView.selectedRange, replacementText: "\n") == true {
+        if mentionsListener.textView(textView, shouldChangeTextIn: self.textView.selectedRange, replacementText: "\n") == true {
             textView.insertText("\n")
         }
 
@@ -444,30 +444,30 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         textView.insertText("@t")
         let mention = SZExampleMention.init()
         mention.szMentionName = "John Smith"
-        mentionsListener?.addMention(mention)
-        XCTAssertTrue(mentionsListener?.mentions.count == 1)
+        mentionsListener.addMention(mention)
+        XCTAssertTrue(mentionsListener.mentions.count == 1)
         textView.attributedText = NSAttributedString(string: "test")
         textView.text = ""
-        let _ = mentionsListener?.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "")
-        XCTAssertTrue(mentionsListener?.mentions.count == 0)
+        _ = mentionsListener.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "")
+        XCTAssertTrue(mentionsListener.mentions.isEmpty)
     }
 
     func testAddMentionStopsRunningIfCurrentMentionRangeIsNil() {
         let mention = SZExampleMention.init()
         mention.szMentionName = "John Smith"
-        XCTAssertTrue(mentionsListener?.addMention(mention) == false)
+        XCTAssertTrue(mentionsListener.addMention(mention) == false)
     }
 
     func testMentionListenerTextAttachmentDelegateReturnsTrue() {
-        XCTAssertTrue(mentionsListener?.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSMakeRange(0, 0)) == true)
+        XCTAssertTrue(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSMakeRange(0, 0)) == true)
     }
 
     func testMentionListenerURLDelegateReturnsTrue() {
-        XCTAssertTrue(mentionsListener?.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSMakeRange(0, 0)) == true)
+        XCTAssertTrue(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSMakeRange(0, 0)) == true)
     }
 
     func testMentionListenerShouldBeginEditingReturnsTrueWhenNotOverridden() {
-        XCTAssertTrue(mentionsListener?.textViewShouldBeginEditing(textView) == true)
+        XCTAssertTrue(mentionsListener.textViewShouldBeginEditing(textView) == true)
     }
 
     func testMentionListenerShouldBeginEditingReturnsDelegateResponse() {
@@ -483,7 +483,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
     }
 
     func testMentionListenerShouldEndEditingReturnsTrueWhenNotOverridden() {
-        XCTAssertTrue(mentionsListener?.textViewShouldEndEditing(textView) == true)
+        XCTAssertTrue(mentionsListener.textViewShouldEndEditing(textView) == true)
     }
 
     func testMentionListenerShouldEndEditingReturnsDelegateResponse() {

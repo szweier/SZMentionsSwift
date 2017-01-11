@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DB0403C11C44A017000904DB /* SZMentionsSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = DB0403C01C44A017000904DB /* SZMentionsSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DB2330171E24832D00242C33 /* SZVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2330161E24832D00242C33 /* SZVerifier.swift */; };
 		DBE8B4A11C657F200090EF32 /* SZAttributedStringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49B1C657F200090EF32 /* SZAttributedStringHelper.swift */; };
 		DBE8B4A21C657F200090EF32 /* SZDefaultAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */; };
 		DBE8B4A31C657F200090EF32 /* SZMentionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49D1C657F200090EF32 /* SZMentionHelper.swift */; };
@@ -38,6 +39,7 @@
 		DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SZMentionsSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0403C01C44A017000904DB /* SZMentionsSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SZMentionsSwift.h; sourceTree = "<group>"; };
 		DB0403C21C44A017000904DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DB2330161E24832D00242C33 /* SZVerifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZVerifier.swift; sourceTree = "<group>"; };
 		DBE8B49B1C657F200090EF32 /* SZAttributedStringHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZAttributedStringHelper.swift; sourceTree = "<group>"; };
 		DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZDefaultAttributes.swift; sourceTree = "<group>"; };
 		DBE8B49D1C657F200090EF32 /* SZMentionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMentionHelper.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				DBE8B49B1C657F200090EF32 /* SZAttributedStringHelper.swift */,
 				DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */,
 				DBE8B49D1C657F200090EF32 /* SZMentionHelper.swift */,
+				DB2330161E24832D00242C33 /* SZVerifier.swift */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -245,6 +248,7 @@
 			files = (
 				DBE8B4A51C657F200090EF32 /* SZMention.swift in Sources */,
 				DBE8B4A11C657F200090EF32 /* SZAttributedStringHelper.swift in Sources */,
+				DB2330171E24832D00242C33 /* SZVerifier.swift in Sources */,
 				DBE8B4A41C657F200090EF32 /* SZAttribute.swift in Sources */,
 				DBE8B4A21C657F200090EF32 /* SZDefaultAttributes.swift in Sources */,
 				DBE8B4A31C657F200090EF32 /* SZMentionHelper.swift in Sources */,

@@ -6,9 +6,7 @@
 //  Copyright © 2016 Steven Zweier. All rights reserved.
 //
 
-import Foundation
-
-class SZDefaultAttributes {
+internal class SZDefaultAttributes {
     /**
      @brief Default color
      */
