@@ -1,6 +1,14 @@
 #Change Log
 
 --- 
+## [1.0.1](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.1) (1/10/2017)
+
+#### Cleaned
+* Refactored code abse
+
+#### Fixed
+* Issue with cooldown timer not being triggered correctly in certain cases
+
 ## [1.0.0](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.0) (12/2/2016)
 
 #### Added
