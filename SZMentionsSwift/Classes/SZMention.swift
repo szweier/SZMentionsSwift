@@ -12,12 +12,12 @@ public class SZMention: Equatable {
     /**
      @brief The location of the mention within the attributed string of the UITextView
      */
-    internal(set) var mentionRange: NSRange
+    public internal(set) var mentionRange: NSRange
 
     /**
      @brief Contains a reference to the object sent to the addMention: method
      */
-    private(set) var mentionObject: SZCreateMentionProtocol
+    public private(set) var mentionObject: SZCreateMentionProtocol
 
     /**
      @brief initializer for creating a mention object
