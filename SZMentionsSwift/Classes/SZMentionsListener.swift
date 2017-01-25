@@ -182,7 +182,7 @@ open class SZMentionsListener: NSObject {
      is returned in the mentions array in the object parameter of the SZMention object.
      szMentionRange is used the range to place the metion at
      */
-    func insertExistingMentions(_ existingMentions: [SZCreateMentionProtocol]) {
+    open func insertExistingMentions(_ existingMentions: [SZCreateMentionProtocol]) {
         let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as! NSMutableAttributedString
 
         existingMentions.forEach { mention in
