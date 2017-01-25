@@ -1,6 +1,11 @@
 #Change Log
 
 --- 
+## [1.0.2](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.2) (1/25/2017)
+
+#### Fixed
+* Issue reported by @raphaelcruzeiro https://github.com/szweier/SZMentionsSwift/issues/32
+
 ## [1.0.1](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.1) (1/10/2017)
 
 #### Cleaned
