@@ -40,12 +40,12 @@ public protocol SZCreateMentionProtocol {
     var szMentionRange: NSRange {get}
 }
 
-open class SZMentionsListener: NSObject {
+public class SZMentionsListener: NSObject {
 
     /**
      @brief Array of mentions currently added to the textview
      */
-    open var mentions:[SZMention] { return mutableMentions }
+    public var mentions:[SZMention] { return mutableMentions }
 
     /**
      @brief Trigger to start a mention. Default: @
@@ -182,7 +182,7 @@ open class SZMentionsListener: NSObject {
      is returned in the mentions array in the object parameter of the SZMention object.
      szMentionRange is used the range to place the metion at
      */
-    func insertExistingMentions(_ existingMentions: [SZCreateMentionProtocol]) {
+    public func insertExistingMentions(_ existingMentions: [SZCreateMentionProtocol]) {
         let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as! NSMutableAttributedString
 
         existingMentions.forEach { mention in
@@ -208,7 +208,7 @@ open class SZMentionsListener: NSObject {
      @param mention: the mention object to apply
      @return Bool: whether or not a mention was added
      */
-    @discardableResult open func addMention(_ mention: SZCreateMentionProtocol) -> Bool {
+    @discardableResult public func addMention(_ mention: SZCreateMentionProtocol) -> Bool {
         guard var currentMentionRange = currentMentionRange else { return false }
 
         filterString = nil
@@ -464,7 +464,7 @@ extension SZMentionsListener {
 
 extension SZMentionsListener: UITextViewDelegate {
 
-    open func textView(
+    public func textView(
         _ textView: UITextView,
         shouldChangeTextIn range: NSRange,
         replacementText text: String) -> Bool {
@@ -488,11 +488,11 @@ extension SZMentionsListener: UITextViewDelegate {
         return shouldAdjust(textView, range: range, text: text)
     }
 
-    open func textViewDidChange(_ textView: UITextView) {
+    public func textViewDidChange(_ textView: UITextView) {
         delegate?.textViewDidChange?(textView)
     }
 
-    open func textView(
+    public func textView(
         _ textView: UITextView,
         shouldInteractWith textAttachment: NSTextAttachment,
         in characterRange: NSRange) -> Bool {
@@ -505,7 +505,7 @@ extension SZMentionsListener: UITextViewDelegate {
         return true
     }
 
-    open func textView(
+    public func textView(
         _ textView: UITextView,
         shouldInteractWith URL: URL,
         in characterRange: NSRange) -> Bool {
@@ -515,22 +515,22 @@ extension SZMentionsListener: UITextViewDelegate {
         return true
     }
 
-    open func textViewDidBeginEditing(_ textView: UITextView) {
+    public func textViewDidBeginEditing(_ textView: UITextView) {
         delegate?.textViewDidBeginEditing?(textView)
     }
 
-    open func textViewDidChangeSelection(_ textView: UITextView) {
+    public func textViewDidChangeSelection(_ textView: UITextView) {
         if editingMention == false {
             adjust(textView, range: textView.selectedRange)
             delegate?.textViewDidChangeSelection?(textView)
         }
     }
     
-    open func textViewDidEndEditing(_ textView: UITextView) {
+    public func textViewDidEndEditing(_ textView: UITextView) {
         delegate?.textViewDidEndEditing?(textView)
     }
     
-    open func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+    public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         if let shouldBeginEditing = delegate?.textViewShouldBeginEditing?(textView) {
             return shouldBeginEditing
         }
@@ -538,7 +538,7 @@ extension SZMentionsListener: UITextViewDelegate {
         return true
     }
     
-    open func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+    public func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         if let shouldEndEditing = delegate?.textViewShouldEndEditing?(textView) {
             return shouldEndEditing
         }

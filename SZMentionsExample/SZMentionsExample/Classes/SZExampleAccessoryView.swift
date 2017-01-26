@@ -23,6 +23,13 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
         setupTextView(textView, delegate: mentionsListener)
         addSubview(textView)
         addConstraintsToTextView(textView)
+        textView.text = "Test Steven Zweier mention"
+
+        let mention = SZExampleMention()
+        mention.szMentionName = "Steven Zweier"
+        mention.szMentionRange = NSRange(location: 5, length: 13)
+
+        mentionsListener.insertExistingMentions([mention])
 
         dataManager = SZExampleMentionsTableViewDataManager(
             mentionTableView: mentionsTableView,
