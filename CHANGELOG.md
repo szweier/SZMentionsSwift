@@ -1,6 +1,11 @@
 #Change Log
 
 --- 
+## [1.0.3](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.3) (2/2/2017)
+
+#### Fixed
+* Issue where quickly typing an @mention with a space will result in a crash
+
 ## [1.0.2](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.2) (1/25/2017)
 
 #### Fixed
