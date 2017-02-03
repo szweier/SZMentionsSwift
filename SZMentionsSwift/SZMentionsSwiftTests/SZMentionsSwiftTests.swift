@@ -345,6 +345,17 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
         XCTAssert(textView.text.characters.count == 1)
     }
+
+    func testCrashWhenAddedSpacePostMention()
+    {
+        textView.insertText("@")
+        textView.insertText("s")
+        textView.insertText("t")
+        textView.insertText("e")
+        textView.insertText(" ")
+        mentionsListener.cooldownTimerFired(Timer())
+        XCTAssert(textView.text.characters.count == 5)
+    }
     
     func testMentionListOnNewlineIsDisplayed() {
         textView.insertText("\n@t")

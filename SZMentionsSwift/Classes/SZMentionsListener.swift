@@ -435,6 +435,10 @@ extension SZMentionsListener {
                 location = range.location + 1
             }
 
+            if (location + 1 >= mentionsTextView.text.characters.count) {
+                return
+            }
+            
             let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSMakeRange(location, 1))
 
             if substringTrigger == trigger {
