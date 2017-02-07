@@ -23,7 +23,7 @@ internal class SZMentionHelper {
      @return SZMention?: the mention being edited (if one exists)
      */
     class func mentionBeingEdited(_ range: NSRange, mentionsList: [SZMention]) -> SZMention? {
-        return mentionsList.filter{ NSIntersectionRange(range, $0.mentionRange).length > 0 || (range.length == 0 && range.location > $0.mentionRange.length && range.location < $0.mentionRange.length + $0.mentionRange.location) }.first
+        return mentionsList.filter{ NSIntersectionRange(range, $0.mentionRange).location > 0 }.first
     }
 
     /**
