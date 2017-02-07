@@ -1,6 +1,11 @@
 #Change Log
 
 --- 
+## [1.0.4](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.4) (2/7/2017)
+
+#### Fixed
+* Issue where the count was incorrect when using emojii thanks to @raphaelcruzeiro
+
 ## [1.0.3](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.3) (2/2/2017)
 
 #### Fixed
