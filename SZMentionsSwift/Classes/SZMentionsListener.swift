@@ -225,7 +225,7 @@ public class SZMentionsListener: NSObject {
 
         currentMentionRange = NSMakeRange(
             currentMentionRange.location,
-            mention.szMentionName.characters.count)
+            mention.szMentionName.utf16.count)
 
         let szmention = SZMention(
             mentionRange: currentMentionRange,
@@ -371,7 +371,7 @@ extension SZMentionsListener {
 
         SZAttributedStringHelper.apply(
             defaultTextAttributes,
-            range: NSRange(location: range.location, length: text.characters.count),
+            range: NSRange(location: range.location, length: text.utf16.count),
             mutableAttributedString: mutableAttributedString)
         settingText = true
         textView.attributedText = mutableAttributedString
@@ -379,7 +379,7 @@ extension SZMentionsListener {
 
         var newRange = NSRange(location: range.location, length: 0)
 
-        if newRange.length <= 0 { newRange.location = range.location + text.characters.count }
+        if newRange.length <= 0 { newRange.location = range.location + text.utf16.count }
 
         textView.selectedRange = newRange
 
@@ -407,7 +407,7 @@ extension SZMentionsListener {
         settingText = true
         textView.attributedText = mutableAttributedString
         settingText = false
-        textView.selectedRange = NSMakeRange(range.location + text.characters.count, 0)
+        textView.selectedRange = NSMakeRange(range.location + text.utf16.count, 0)
 
         _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
@@ -435,7 +435,7 @@ extension SZMentionsListener {
                 location = range.location + 1
             }
 
-            if (location + 1 >= mentionsTextView.text.characters.count) {
+            if (location + 1 >= mentionsTextView.text.utf16.count) {
                 return
             }
             
