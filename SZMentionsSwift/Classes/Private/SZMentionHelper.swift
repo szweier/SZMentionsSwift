@@ -33,7 +33,7 @@ internal class SZMentionHelper {
      @param mentions: the list of current mentions
      */
     class func adjustMentions(_ range : NSRange, text : String, mentions: [SZMention]) {
-        let rangeAdjustment = text.characters.count - range.length
+        let rangeAdjustment = text.utf16.count - range.length
 
         SZMentionHelper.mentionsAfterTextEntry(range, mentionsList: mentions).forEach { mention in
             mention.mentionRange = NSRange(

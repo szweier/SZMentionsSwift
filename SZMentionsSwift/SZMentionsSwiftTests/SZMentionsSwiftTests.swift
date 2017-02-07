@@ -343,7 +343,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         textView.deleteBackward()
         mentionsListener.cooldownTimerFired(Timer())
 
-        XCTAssert(textView.text.characters.count == 1)
+        XCTAssert(textView.text.utf16.count == 1)
     }
 
     func testCrashWhenAddedSpacePostMention()
@@ -354,7 +354,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         textView.insertText("e")
         textView.insertText(" ")
         mentionsListener.cooldownTimerFired(Timer())
-        XCTAssert(textView.text.characters.count == 5)
+        XCTAssert(textView.text.utf16.count == 5)
     }
     
     func testMentionListOnNewlineIsDisplayed() {
@@ -400,7 +400,7 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         mention.szMentionName = "John Smith"
         mentionsListener.addMention(mention)
 
-        textView.selectedRange = NSMakeRange(0, textView.text.characters.count)
+        textView.selectedRange = NSMakeRange(0, textView.text.utf16.count)
 
         if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") == true {
             textView.deleteBackward()
