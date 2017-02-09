@@ -374,15 +374,23 @@ extension SZMentionsListener {
             range: NSRange(location: range.location, length: text.utf16.count),
             mutableAttributedString: mutableAttributedString)
         settingText = true
+        mutableAttributedString.enumerateAttribute("NSOriginalFont", in: NSRange.init(location: 0, length: mutableAttributedString.string.utf16.count),
+                                                   options: NSAttributedString.EnumerationOptions.init(rawValue: 0)) { (value, range, stop) in
+                                                    if value != nil {
+                                                        mutableAttributedString.removeAttribute("NSOriginalFont",
+                                                                                                range: range)
+
+                                                    }
+        }
         textView.attributedText = mutableAttributedString
         settingText = false
 
         var newRange = NSRange(location: range.location, length: 0)
 
         if newRange.length <= 0 { newRange.location = range.location + text.utf16.count }
-
+        
         textView.selectedRange = newRange
-
+        
         return false
     }
 
