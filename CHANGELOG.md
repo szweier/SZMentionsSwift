@@ -1,6 +1,11 @@
 #Change Log
 
 --- 
+## [1.0.5](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.5) (2/10/2017)
+
+#### Fixed
+* Issue where emojii can result in an incorrect attributed string appearance thanks to @raphaelcruzeiro
+
 ## [1.0.4](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.4) (2/7/2017)
 
 #### Fixed
