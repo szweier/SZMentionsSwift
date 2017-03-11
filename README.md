@@ -1,4 +1,5 @@
 [![codecov](https://codecov.io/gh/szweier/SZMentionsSwift/branch/master/graph/badge.svg)](https://codecov.io/gh/szweier/SZMentionsSwift)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/szweier)
 [![Build Status](https://travis-ci.org/szweier/SZMentionsSwift.svg?branch=master)](https://travis-ci.org/szweier/SZMentionsSwift)
 [![CocoaPods Compatible](https://img.shields.io/cocoapods/v/SZMentionsSwift.svg)](https://img.shields.io/cocoapods/v/SZMentionsSwift.svg)
 [![Platform](https://img.shields.io/cocoapods/p/SZMentionsSwift.svg?style=flat)](http://cocoadocs.org/docsets/SZMentionsSwift)
