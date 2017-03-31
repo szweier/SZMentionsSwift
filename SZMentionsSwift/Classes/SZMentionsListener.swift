@@ -247,9 +247,9 @@ public class SZMentionsListener: NSObject {
 
         mentionsTextView.selectedRange = selectedRange
         settingText = false
-        
+
         mentionsManager.hideMentionsList()
-        
+
         return true
     }
 }
@@ -294,33 +294,32 @@ extension SZMentionsListener {
                 textBeforeTrigger = substring.substring(with: substringRange)
                 mentionEnabled = textBeforeTrigger == " " || textBeforeTrigger == "\n"
             }
+        } else {
+            mentionEnabled = false
         }
 
         if mentionEnabled {
-            if let stringBeingTyped = substring.components(separatedBy: textBeforeTrigger).last,
-                let stringForMention = stringBeingTyped.components(separatedBy: " ").last,
-                (stringForMention as NSString).range(of: trigger).location != NSNotFound {
+            let stringBeingTyped = substring.substring(with: NSRange(location: location, length: (textView.selectedRange.location - location) + textView.selectedRange.length))
+            currentMentionRange = (textView.text as NSString).range(
+                of: stringBeingTyped,
+                options: NSString.CompareOptions.backwards,
+                range: NSMakeRange(0, textView.selectedRange.location + textView.selectedRange.length))
+            filterString = (stringBeingTyped as NSString).replacingOccurrences(
+                of: trigger,
+                with: "")
+            filterString = filterString?.replacingOccurrences(of: "\n", with: "")
 
-                currentMentionRange = (textView.text as NSString).range(
-                    of: stringBeingTyped,
-                    options: NSString.CompareOptions.backwards,
-                    range: NSMakeRange(0, textView.selectedRange.location + textView.selectedRange.length))
-                filterString = (stringBeingTyped as NSString).replacingOccurrences(
-                    of: trigger,
-                    with: "")
-                filterString = filterString?.replacingOccurrences(of: "\n", with: "")
-
-                if filterString != nil &&
-                    (cooldownTimer == nil || cooldownTimer?.isValid == false) {
-                    stringCurrentlyBeingFiltered = filterString
-                    mentionsManager.showMentionsListWithString(filterString!)
-                }
-                activateCooldownTimer()
-                return
+            if filterString != nil &&
+                (cooldownTimer == nil || cooldownTimer?.isValid == false) {
+                stringCurrentlyBeingFiltered = filterString
+                mentionsManager.showMentionsListWithString(filterString!)
             }
+            activateCooldownTimer()
+            return
         }
-        mentionEnabled = false
+
         mentionsManager.hideMentionsList()
+        mentionEnabled = false
     }
 
     /**
@@ -388,9 +387,9 @@ extension SZMentionsListener {
         var newRange = NSRange(location: range.location, length: 0)
 
         if newRange.length <= 0 { newRange.location = range.location + text.utf16.count }
-        
+
         textView.selectedRange = newRange
-        
+
         return false
     }
 
@@ -446,7 +445,7 @@ extension SZMentionsListener {
             if (location + 1 >= mentionsTextView.text.utf16.count) {
                 return
             }
-            
+
             let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSMakeRange(location, 1))
 
             if substringTrigger == trigger {
@@ -537,7 +536,7 @@ extension SZMentionsListener: UITextViewDelegate {
             delegate?.textViewDidChangeSelection?(textView)
         }
     }
-    
+
     public func textViewDidEndEditing(_ textView: UITextView) {
         delegate?.textViewDidEndEditing?(textView)
     }
