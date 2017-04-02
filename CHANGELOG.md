@@ -1,6 +1,11 @@
 #Change Log
 
 --- 
+## [1.0.6](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.6) (4/02/2017)
+
+#### Added
+* Option to search mentions that contain spaces thanks to @camdengaba. https://github.com/szweier/SZMentionsSwift/issues/42
+
 ## [1.0.5](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.5) (2/10/2017)
 
 #### Fixed
