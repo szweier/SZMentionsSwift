@@ -452,14 +452,14 @@ extension SZMentionsListener {
             guard mentionsTextView.selectedRange.location >= 1 else { return }
 
             let range = (mentionsTextView.text as NSString).range(
-                of: " ",
+                of: trigger,
                 options: NSString.CompareOptions.backwards,
                 range: NSMakeRange(0, mentionsTextView.selectedRange.location + mentionsTextView.selectedRange.length))
 
             var location: Int = 0
 
             if range.location != NSNotFound {
-                location = range.location + 1
+                location = range.location
             }
 
             if (location + 1 >= mentionsTextView.text.utf16.count) {
