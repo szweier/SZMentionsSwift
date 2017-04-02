@@ -1,4 +1,6 @@
 coverage:
+  ignore:
+    - "SZMentionsSwift/SZMentionsSwiftTests"
   status:
     project: yes
     patch: yes

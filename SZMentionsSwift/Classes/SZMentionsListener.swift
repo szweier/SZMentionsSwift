@@ -95,6 +95,11 @@ public class SZMentionsListener: NSObject {
     internal var addMentionAfterReturnKey: Bool
 
     /**
+     @brief Tell listener that mention searchs can contain spaces, default: false
+     */
+    internal var searchSpacesInMentions: Bool
+
+    /**
      @brief Mutable array list of mentions managed by listener, accessible via the
      public mentions property.
      */
@@ -146,6 +151,7 @@ public class SZMentionsListener: NSObject {
      @param addMentionOnReturnKey - tell listener for observer Return key
      @param trigger - what text triggers showing the mentions list
      @param cooldownInterval - amount of time between show / hide mentions calls
+     @param searchSpacesInMentions - mention searchs can / cannot contain spaces
      */
     public init(
         mentionTextView textView: UITextView,
@@ -156,9 +162,11 @@ public class SZMentionsListener: NSObject {
         spaceAfterMention spaceAfter: Bool = false,
         addMentionOnReturnKey mentionOnReturn: Bool = false,
         trigger mentionTrigger: String = "@",
-        cooldownInterval interval: TimeInterval = 0.5) {
+        cooldownInterval interval: TimeInterval = 0.5,
+        searchSpaces: Bool = false) {
         SZVerifier.verifySetup(withDefaultTextAttributes: defaultAttributes,
                                mentionTextAttributes: mentionAttributes)
+        searchSpacesInMentions = searchSpaces
         mentionsTextView = textView
         mentionsManager = manager
         delegate = textViewDelegate
@@ -247,9 +255,9 @@ public class SZMentionsListener: NSObject {
 
         mentionsTextView.selectedRange = selectedRange
         settingText = false
-        
+
         mentionsManager.hideMentionsList()
-        
+
         return true
     }
 }
@@ -294,18 +302,28 @@ extension SZMentionsListener {
                 textBeforeTrigger = substring.substring(with: substringRange)
                 mentionEnabled = textBeforeTrigger == " " || textBeforeTrigger == "\n"
             }
+        } else {
+            mentionEnabled = false
         }
 
         if mentionEnabled {
-            if let stringBeingTyped = substring.components(separatedBy: textBeforeTrigger).last,
-                let stringForMention = stringBeingTyped.components(separatedBy: " ").last,
-                (stringForMention as NSString).range(of: trigger).location != NSNotFound {
+            var mentionString: String = ""
+            if searchSpacesInMentions {
+                mentionString = substring.substring(with: NSRange(location: location, length: (textView.selectedRange.location - location) + textView.selectedRange.length))
+            } else {
+                if let stringBeingTyped = substring.components(separatedBy: textBeforeTrigger).last,
+                    let stringForMention = stringBeingTyped.components(separatedBy: " ").last,
+                    (stringForMention as NSString).range(of: trigger).location != NSNotFound {
+                    mentionString = stringForMention
+                }
+            }
 
+            if !mentionString.isEmpty {
                 currentMentionRange = (textView.text as NSString).range(
-                    of: stringBeingTyped,
+                    of: mentionString,
                     options: NSString.CompareOptions.backwards,
                     range: NSMakeRange(0, textView.selectedRange.location + textView.selectedRange.length))
-                filterString = (stringBeingTyped as NSString).replacingOccurrences(
+                filterString = (mentionString as NSString).replacingOccurrences(
                     of: trigger,
                     with: "")
                 filterString = filterString?.replacingOccurrences(of: "\n", with: "")
@@ -319,8 +337,9 @@ extension SZMentionsListener {
                 return
             }
         }
-        mentionEnabled = false
+
         mentionsManager.hideMentionsList()
+        mentionEnabled = false
     }
 
     /**
@@ -388,9 +407,9 @@ extension SZMentionsListener {
         var newRange = NSRange(location: range.location, length: 0)
 
         if newRange.length <= 0 { newRange.location = range.location + text.utf16.count }
-        
+
         textView.selectedRange = newRange
-        
+
         return false
     }
 
@@ -433,20 +452,20 @@ extension SZMentionsListener {
             guard mentionsTextView.selectedRange.location >= 1 else { return }
 
             let range = (mentionsTextView.text as NSString).range(
-                of: " ",
+                of: trigger,
                 options: NSString.CompareOptions.backwards,
                 range: NSMakeRange(0, mentionsTextView.selectedRange.location + mentionsTextView.selectedRange.length))
 
             var location: Int = 0
 
             if range.location != NSNotFound {
-                location = range.location + 1
+                location = range.location
             }
 
             if (location + 1 >= mentionsTextView.text.utf16.count) {
                 return
             }
-            
+
             let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSMakeRange(location, 1))
 
             if substringTrigger == trigger {
@@ -537,7 +556,7 @@ extension SZMentionsListener: UITextViewDelegate {
             delegate?.textViewDidChangeSelection?(textView)
         }
     }
-    
+
     public func textViewDidEndEditing(_ textView: UITextView) {
         delegate?.textViewDidEndEditing?(textView)
     }
