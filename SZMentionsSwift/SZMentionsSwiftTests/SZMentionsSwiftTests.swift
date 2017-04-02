@@ -31,7 +31,8 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
             mentionTextAttributes: [attribute],
             defaultTextAttributes: [attribute2],
             spaceAfterMention: false,
-            addMentionOnReturnKey: true)
+            addMentionOnReturnKey: true,
+            searchSpaces: false)
     }
 
     func testThatAddingAttributesThatDoNotMatchThrowsAnError() {
@@ -56,6 +57,21 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
 
     func testMentionListIsDisplayed() {
         textView.insertText("@t")
+        XCTAssert(!hidingMentionsList)
+    }
+
+    func testMentionListIsHidden() {
+        textView.insertText("@t")
+        XCTAssert(!hidingMentionsList)
+        textView.insertText(" ")
+        XCTAssert(hidingMentionsList)
+    }
+
+    func testMentionListIsNotHiddenWhenSearchSpacesIsTrue() {
+        mentionsListener.searchSpacesInMentions = true
+        textView.insertText("@t")
+        XCTAssert(!hidingMentionsList)
+        textView.insertText(" ")
         XCTAssert(!hidingMentionsList)
     }
   
@@ -354,7 +370,22 @@ class SZMentionsSwiftTests: XCTestCase, SZMentionsManagerProtocol, UITextViewDel
         textView.insertText("\n@t")
         XCTAssert(!hidingMentionsList)
     }
-    
+
+    func testMentionListOnNewLineIsHidden() {
+        textView.insertText("\n@t")
+        XCTAssert(!hidingMentionsList)
+        textView.insertText(" ")
+        XCTAssert(hidingMentionsList)
+    }
+
+    func testMentionListOnNewLineIsNotHiddenWhenSearchSpacesIsTrue() {
+        mentionsListener.searchSpacesInMentions = true
+        textView.insertText("\n@t")
+        XCTAssert(!hidingMentionsList)
+        textView.insertText(" ")
+        XCTAssert(!hidingMentionsList)
+    }
+
     func testMentionPositionIsCorrectToStartTextOnNewline() {
         textView.insertText("\n@t")
         let mention = SZExampleMention()

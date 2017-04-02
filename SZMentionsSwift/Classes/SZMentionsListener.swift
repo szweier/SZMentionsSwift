@@ -95,6 +95,11 @@ public class SZMentionsListener: NSObject {
     internal var addMentionAfterReturnKey: Bool
 
     /**
+     @brief Tell listener that mention searchs can contain spaces, default: false
+     */
+    internal var searchSpacesInMentions: Bool
+
+    /**
      @brief Mutable array list of mentions managed by listener, accessible via the
      public mentions property.
      */
@@ -146,6 +151,7 @@ public class SZMentionsListener: NSObject {
      @param addMentionOnReturnKey - tell listener for observer Return key
      @param trigger - what text triggers showing the mentions list
      @param cooldownInterval - amount of time between show / hide mentions calls
+     @param searchSpacesInMentions - mention searchs can / cannot contain spaces
      */
     public init(
         mentionTextView textView: UITextView,
@@ -156,9 +162,11 @@ public class SZMentionsListener: NSObject {
         spaceAfterMention spaceAfter: Bool = false,
         addMentionOnReturnKey mentionOnReturn: Bool = false,
         trigger mentionTrigger: String = "@",
-        cooldownInterval interval: TimeInterval = 0.5) {
+        cooldownInterval interval: TimeInterval = 0.5,
+        searchSpaces: Bool = false) {
         SZVerifier.verifySetup(withDefaultTextAttributes: defaultAttributes,
                                mentionTextAttributes: mentionAttributes)
+        searchSpacesInMentions = searchSpaces
         mentionsTextView = textView
         mentionsManager = manager
         delegate = textViewDelegate
@@ -299,23 +307,35 @@ extension SZMentionsListener {
         }
 
         if mentionEnabled {
-            let stringBeingTyped = substring.substring(with: NSRange(location: location, length: (textView.selectedRange.location - location) + textView.selectedRange.length))
-            currentMentionRange = (textView.text as NSString).range(
-                of: stringBeingTyped,
-                options: NSString.CompareOptions.backwards,
-                range: NSMakeRange(0, textView.selectedRange.location + textView.selectedRange.length))
-            filterString = (stringBeingTyped as NSString).replacingOccurrences(
-                of: trigger,
-                with: "")
-            filterString = filterString?.replacingOccurrences(of: "\n", with: "")
-
-            if filterString != nil &&
-                (cooldownTimer == nil || cooldownTimer?.isValid == false) {
-                stringCurrentlyBeingFiltered = filterString
-                mentionsManager.showMentionsListWithString(filterString!)
+            var mentionString: String = ""
+            if searchSpacesInMentions {
+                mentionString = substring.substring(with: NSRange(location: location, length: (textView.selectedRange.location - location) + textView.selectedRange.length))
+            } else {
+                if let stringBeingTyped = substring.components(separatedBy: textBeforeTrigger).last,
+                    let stringForMention = stringBeingTyped.components(separatedBy: " ").last,
+                    (stringForMention as NSString).range(of: trigger).location != NSNotFound {
+                    mentionString = stringForMention
+                }
             }
-            activateCooldownTimer()
-            return
+
+            if !mentionString.isEmpty {
+                currentMentionRange = (textView.text as NSString).range(
+                    of: mentionString,
+                    options: NSString.CompareOptions.backwards,
+                    range: NSMakeRange(0, textView.selectedRange.location + textView.selectedRange.length))
+                filterString = (mentionString as NSString).replacingOccurrences(
+                    of: trigger,
+                    with: "")
+                filterString = filterString?.replacingOccurrences(of: "\n", with: "")
+
+                if filterString != nil &&
+                    (cooldownTimer == nil || cooldownTimer?.isValid == false) {
+                    stringCurrentlyBeingFiltered = filterString
+                    mentionsManager.showMentionsListWithString(filterString!)
+                }
+                activateCooldownTimer()
+                return
+            }
         }
 
         mentionsManager.hideMentionsList()
