@@ -1,6 +1,5 @@
-#Change Log
+# Change Log
 
---- 
 ## [1.0.6](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.6) (4/02/2017)
 
 #### Added
