@@ -95,7 +95,7 @@ public class SZMentionsListener: NSObject {
     internal var addMentionAfterReturnKey: Bool
 
     /**
-     @brief Tell listener that mention searchs can contain spaces, default: false
+     @brief Tell listener that mention searches can contain spaces, default: false
      */
     internal var searchSpacesInMentions: Bool
 
@@ -151,7 +151,7 @@ public class SZMentionsListener: NSObject {
      @param addMentionOnReturnKey - tell listener for observer Return key
      @param trigger - what text triggers showing the mentions list
      @param cooldownInterval - amount of time between show / hide mentions calls
-     @param searchSpacesInMentions - mention searchs can / cannot contain spaces
+     @param searchSpacesInMentions - mention searches can / cannot contain spaces
      */
     public init(
         mentionTextView textView: UITextView,
