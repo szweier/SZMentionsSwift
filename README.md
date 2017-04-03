@@ -65,6 +65,8 @@ Use one of the many initializers to setup your mentions listener.  Parameters ex
 
 `cooldownInterval` : **optional** The amount of time to wait between calling showMentionsList. Default is `0.5`
 
+`searchSpaces` : **optional** Mention searches can / cannot contain spaces
+
 ##### Properties
 
 `mentions` : **readonly** Array of all mentions currently applied to the text view.
@@ -94,7 +96,7 @@ This class is used to pass attributes to apply mentions text as well as regular 
 
 Example:
     
-    SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.blackColor())
+    SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.black)
     
 
 ## Unit Tests
@@ -104,3 +106,5 @@ SZMentionsSwift includes unit tests which can be run on the SZMentionsSwift fram
 ## Credits
 
 SZMentionsSwift was originally created by [Steven Zweier](http://twitter.com/StevenZweier)
+
+
