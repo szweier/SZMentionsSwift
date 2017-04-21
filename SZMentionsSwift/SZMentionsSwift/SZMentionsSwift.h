@@ -14,6 +14,6 @@ FOUNDATION_EXPORT double SZMentionsSwiftVersionNumber;
 //! Project version string for SZMentionsSwift.
 FOUNDATION_EXPORT const unsigned char SZMentionsSwiftVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <SZMentionsSwift/PublicHeader.h>
+// In this header, you should import all the public headers of your framework using statements like #import <SZMentionsSwift/PublicHeader.h> 
 
 
