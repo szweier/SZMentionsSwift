@@ -14,8 +14,8 @@ internal class SZVerifier {
      @param mentionAttributes: The attributes to apply to mention objects
      @param defaultAttributes: The attributes to apply to default text
      */
-    internal static func attributesSetCorrectly(_ mentionAttributes: [SZAttribute],
-                                defaultAttributes: [SZAttribute]) ->  Bool {
+    private static func attributesSetCorrectly(_ mentionAttributes: [SZAttribute],
+                                defaultAttributes: [SZAttribute]) -> Bool {
 
         let attributeNamesToLoop = (defaultAttributes.count >= mentionAttributes.count) ?
             defaultAttributes.map({$0.attributeName}) :
