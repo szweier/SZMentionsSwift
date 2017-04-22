@@ -39,7 +39,7 @@ class Attribute: QuickSpec {
             }
 
             it("Should have the correct default text attributes") {
-                let attributes: [SZAttribute] = SZDefaultAttributes.defaultTextAttributes()
+                let attributes: [SZAttribute] = SZDefaultAttributes.defaultTextAttributes
                 let attribute = attributes[0]
                 expect(attributes.count).to(equal(1))
                 expect(attribute.attributeName).to(equal(NSForegroundColorAttributeName))
@@ -47,7 +47,7 @@ class Attribute: QuickSpec {
             }
 
             it("Should have the correct default mention text attributes") {
-                let attributes: [SZAttribute] = SZDefaultAttributes.defaultMentionAttributes()
+                let attributes: [SZAttribute] = SZDefaultAttributes.defaultMentionAttributes
                 let attribute = attributes[0]
                 expect(attributes.count).to(equal(1))
                 expect(attribute.attributeName).to(equal(NSForegroundColorAttributeName))

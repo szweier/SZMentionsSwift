@@ -16,18 +16,18 @@
 		DB2330171E24832D00242C33 /* SZVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2330161E24832D00242C33 /* SZVerifier.swift */; };
 		DB3DB5DB1EA176FC004CBD91 /* MentionsDisplaySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */; };
 		DB3DB5DD1EA17EB8004CBD91 /* AddingMentionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsSpec.swift */; };
-		DBE8B4A11C657F200090EF32 /* SZAttributedStringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49B1C657F200090EF32 /* SZAttributedStringHelper.swift */; };
+		DBE8B4A11C657F200090EF32 /* NSMutableAttributedString+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49B1C657F200090EF32 /* NSMutableAttributedString+Attributes.swift */; };
 		DBE8B4A21C657F200090EF32 /* SZDefaultAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */; };
-		DBE8B4A31C657F200090EF32 /* SZMentionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49D1C657F200090EF32 /* SZMentionHelper.swift */; };
+		DBE8B4A31C657F200090EF32 /* SZMentionArray+AddOns.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49D1C657F200090EF32 /* SZMentionArray+AddOns.swift */; };
 		DBE8B4A41C657F200090EF32 /* SZAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49E1C657F200090EF32 /* SZAttribute.swift */; };
 		DBE8B4A51C657F200090EF32 /* SZMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49F1C657F200090EF32 /* SZMention.swift */; };
 		DBE8B4A61C657F200090EF32 /* SZMentionsListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B4A01C657F200090EF32 /* SZMentionsListener.swift */; };
 		DBE8B4B41C6580360090EF32 /* SZAttribute.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49E1C657F200090EF32 /* SZAttribute.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBE8B4B51C6580360090EF32 /* SZMention.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49F1C657F200090EF32 /* SZMention.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBE8B4B61C6580360090EF32 /* SZMentionsListener.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B4A01C657F200090EF32 /* SZMentionsListener.swift */; settings = {ATTRIBUTES = (Public, ); }; };
-		DBE8B4B71C6580400090EF32 /* SZAttributedStringHelper.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49B1C657F200090EF32 /* SZAttributedStringHelper.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		DBE8B4B71C6580400090EF32 /* NSMutableAttributedString+Attributes.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49B1C657F200090EF32 /* NSMutableAttributedString+Attributes.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		DBE8B4B81C6580400090EF32 /* SZDefaultAttributes.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */; settings = {ATTRIBUTES = (Private, ); }; };
-		DBE8B4B91C6580400090EF32 /* SZMentionHelper.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49D1C657F200090EF32 /* SZMentionHelper.swift */; settings = {ATTRIBUTES = (Private, ); }; };
+		DBE8B4B91C6580400090EF32 /* SZMentionArray+AddOns.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49D1C657F200090EF32 /* SZMentionArray+AddOns.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		DBF2DF611C4B1067001B9788 /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */; };
 /* End PBXBuildFile section */
 
@@ -56,9 +56,9 @@
 		DB2330161E24832D00242C33 /* SZVerifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZVerifier.swift; sourceTree = "<group>"; };
 		DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionsDisplaySpec.swift; sourceTree = "<group>"; };
 		DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddingMentionsSpec.swift; sourceTree = "<group>"; };
-		DBE8B49B1C657F200090EF32 /* SZAttributedStringHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZAttributedStringHelper.swift; sourceTree = "<group>"; };
+		DBE8B49B1C657F200090EF32 /* NSMutableAttributedString+Attributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Attributes.swift"; sourceTree = "<group>"; };
 		DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZDefaultAttributes.swift; sourceTree = "<group>"; };
-		DBE8B49D1C657F200090EF32 /* SZMentionHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMentionHelper.swift; sourceTree = "<group>"; };
+		DBE8B49D1C657F200090EF32 /* SZMentionArray+AddOns.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SZMentionArray+AddOns.swift"; sourceTree = "<group>"; };
 		DBE8B49E1C657F200090EF32 /* SZAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZAttribute.swift; sourceTree = "<group>"; };
 		DBE8B49F1C657F200090EF32 /* SZMention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMention.swift; sourceTree = "<group>"; };
 		DBE8B4A01C657F200090EF32 /* SZMentionsListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMentionsListener.swift; sourceTree = "<group>"; };
@@ -152,9 +152,9 @@
 		DBE8B49A1C657F200090EF32 /* Private */ = {
 			isa = PBXGroup;
 			children = (
-				DBE8B49B1C657F200090EF32 /* SZAttributedStringHelper.swift */,
+				DBE8B49B1C657F200090EF32 /* NSMutableAttributedString+Attributes.swift */,
+				DBE8B49D1C657F200090EF32 /* SZMentionArray+AddOns.swift */,
 				DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */,
-				DBE8B49D1C657F200090EF32 /* SZMentionHelper.swift */,
 				DB2330161E24832D00242C33 /* SZVerifier.swift */,
 			);
 			path = Private;
@@ -184,9 +184,9 @@
 				DBE8B4B41C6580360090EF32 /* SZAttribute.swift in Headers */,
 				DBE8B4B51C6580360090EF32 /* SZMention.swift in Headers */,
 				DBE8B4B61C6580360090EF32 /* SZMentionsListener.swift in Headers */,
-				DBE8B4B71C6580400090EF32 /* SZAttributedStringHelper.swift in Headers */,
+				DBE8B4B71C6580400090EF32 /* NSMutableAttributedString+Attributes.swift in Headers */,
 				DBE8B4B81C6580400090EF32 /* SZDefaultAttributes.swift in Headers */,
-				DBE8B4B91C6580400090EF32 /* SZMentionHelper.swift in Headers */,
+				DBE8B4B91C6580400090EF32 /* SZMentionArray+AddOns.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,7 +241,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Steven Zweier";
 				TargetAttributes = {
 					DB0403BC1C44A017000904DB = {
@@ -374,11 +374,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBE8B4A51C657F200090EF32 /* SZMention.swift in Sources */,
-				DBE8B4A11C657F200090EF32 /* SZAttributedStringHelper.swift in Sources */,
+				DBE8B4A11C657F200090EF32 /* NSMutableAttributedString+Attributes.swift in Sources */,
 				DB2330171E24832D00242C33 /* SZVerifier.swift in Sources */,
 				DBE8B4A41C657F200090EF32 /* SZAttribute.swift in Sources */,
 				DBE8B4A21C657F200090EF32 /* SZDefaultAttributes.swift in Sources */,
-				DBE8B4A31C657F200090EF32 /* SZMentionHelper.swift in Sources */,
+				DBE8B4A31C657F200090EF32 /* SZMentionArray+AddOns.swift in Sources */,
 				DBE8B4A61C657F200090EF32 /* SZMentionsListener.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -542,6 +542,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 32C74258CBE2BAA8B2F195D8 /* Pods-SZMentionsSwiftTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = K2V4RUXGKP;
 				INFOPLIST_FILE = SZMentionsSwiftTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -555,6 +556,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 89045CD48A859FFAFB2BC7C6 /* Pods-SZMentionsSwiftTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = K2V4RUXGKP;
 				INFOPLIST_FILE = SZMentionsSwiftTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

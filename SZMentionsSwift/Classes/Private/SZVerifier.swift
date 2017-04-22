@@ -4,9 +4,7 @@ internal class SZVerifier {
     static func verifySetup(withDefaultTextAttributes defaultTextAttributes: [SZAttribute],
                             mentionTextAttributes: [SZAttribute]) {
         assert(attributesSetCorrectly(mentionTextAttributes,
-                                      defaultAttributes: defaultTextAttributes),
-               SZVerifier.attributeConsistencyError)
-
+                                      defaultAttributes: defaultTextAttributes), attributeConsistencyError)
     }
 
     /**
@@ -16,7 +14,6 @@ internal class SZVerifier {
      */
     private static func attributesSetCorrectly(_ mentionAttributes: [SZAttribute],
                                 defaultAttributes: [SZAttribute]) -> Bool {
-
         let attributeNamesToLoop = (defaultAttributes.count >= mentionAttributes.count) ?
             defaultAttributes.map({$0.attributeName}) :
             mentionAttributes.map({$0.attributeName})
@@ -30,12 +27,9 @@ internal class SZVerifier {
         for attributeName in attributeNamesToLoop {
             attributeHasMatch = attributeNamesToCompare.contains(attributeName)
 
-            if (attributeHasMatch == false) {
-                break
-            }
+            if !attributeHasMatch { break }
         }
 
         return attributeHasMatch
     }
-
 }
