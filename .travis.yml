@@ -1,5 +1,5 @@
 language: objective-c
-osx_image: xcode8.2
+osx_image: xcode8.3
 script: 
   - xcodebuild -workspace SZMentions.xcworkspace -scheme SZMentionsSwift CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO -enableCodeCoverage YES -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.0' test  
 after_success:
