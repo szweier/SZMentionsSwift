@@ -126,6 +126,22 @@ class Delegates: QuickSpec {
                 expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 27, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
                 expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 33, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
             }
+
+            it("Should throw an assertion if the mention range is beyond the text length") {
+                textView.text = "Testing Steven Zweier"
+
+                let mention = SZExampleMention()
+                mention.szMentionName = "Steve"
+                mention.szMentionRange = NSMakeRange(8, 13)
+
+                let mention2 = SZExampleMention()
+                mention2.szMentionName = "Tiff"
+                mention2.szMentionRange = NSMakeRange(26, 7)
+
+                let insertMentions : Array<SZCreateMentionProtocol> = [mention, mention2]
+
+                expect(mentionsListener.insertExistingMentions(insertMentions)).to(throwAssertion())
+            }
         }
     }
 }

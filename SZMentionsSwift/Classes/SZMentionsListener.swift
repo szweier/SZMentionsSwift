@@ -190,21 +190,24 @@ public class SZMentionsListener: NSObject {
      szMentionRange is used the range to place the metion at
      */
     public func insertExistingMentions(_ existingMentions: [SZCreateMentionProtocol]) {
-        guard let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as? NSMutableAttributedString else { return }
+        if let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as? NSMutableAttributedString {
 
-        existingMentions.forEach { mention in
-            let range = mention.szMentionRange
-            assert(range.location != NSNotFound, "Mention must have a range to insert into")
+            existingMentions.forEach { mention in
+                let range = mention.szMentionRange
+                assert(range.location != NSNotFound, "Mention must have a range to insert into")
+                assert(range.location + range.length < mutableAttributedString.string.characters.count,
+                       "Mention range is out of bounds for the text length")
 
-            let szMention = SZMention(mentionRange: range, mentionObject: mention)
-            mutableMentions.append(szMention)
+                let szMention = SZMention(mentionRange: range, mentionObject: mention)
+                mutableMentions.append(szMention)
 
-            mutableAttributedString.apply(mentionTextAttributes, range:range)
+                mutableAttributedString.apply(mentionTextAttributes, range:range)
+            }
+
+            settingText = true
+            mentionsTextView.attributedText = mutableAttributedString
+            settingText = false
         }
-
-        settingText = true
-        mentionsTextView.attributedText = mutableAttributedString
-        settingText = false
     }
 
     /**
@@ -276,6 +279,7 @@ extension SZMentionsListener {
         let substring = (textView.text as NSString).substring(to: range.location) as NSString
         var textBeforeTrigger = " "
         let location = substring.range(of: trigger, options: NSString.CompareOptions.backwards).location
+        mentionEnabled = false
 
         if location != NSNotFound {
             mentionEnabled = location == 0
@@ -287,8 +291,6 @@ extension SZMentionsListener {
                 textBeforeTrigger = substring.substring(with: substringRange)
                 mentionEnabled = textBeforeTrigger == " " || textBeforeTrigger == "\n"
             }
-        } else {
-            mentionEnabled = false
         }
 
         if mentionEnabled {
@@ -364,28 +366,25 @@ extension SZMentionsListener {
      @return Bool: false (we do not want the text view handling text input in this case)
      */
     private func forceDefaultAttributes(_ textView: UITextView, range: NSRange, text: String, replaceCharacters: Bool) -> Bool {
-        guard let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString else { return false }
+        if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
 
-        if replaceCharacters { mutableAttributedString.mutableString.replaceCharacters(in: range, with: text) }
+            if replaceCharacters { mutableAttributedString.mutableString.replaceCharacters(in: range, with: text) }
 
-        mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: range.location, length: text.utf16.count))
-        settingText = true
-        mutableAttributedString.enumerateAttribute("NSOriginalFont", in: NSRange(location: 0, length: mutableAttributedString.string.utf16.count),
-                                                   options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) in
-                                                    if value != nil {
-                                                        mutableAttributedString.removeAttribute("NSOriginalFont",
-                                                                                                range: range)
+            mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: range.location, length: text.utf16.count))
+            settingText = true
+            mutableAttributedString.enumerateAttribute("NSOriginalFont", in: NSRange(location: 0, length: mutableAttributedString.string.utf16.count),
+                                                       options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) in
+                                                        if value != nil { mutableAttributedString.removeAttribute("NSOriginalFont", range: range) }
+            }
+            textView.attributedText = mutableAttributedString
+            settingText = false
 
-                                                    }
+            var newRange = NSRange(location: range.location, length: 0)
+
+            if newRange.length <= 0 { newRange.location = range.location + text.utf16.count }
+            
+            textView.selectedRange = newRange
         }
-        textView.attributedText = mutableAttributedString
-        settingText = false
-
-        var newRange = NSRange(location: range.location, length: 0)
-
-        if newRange.length <= 0 { newRange.location = range.location + text.utf16.count }
-
-        textView.selectedRange = newRange
 
         return false
     }
@@ -399,16 +398,17 @@ extension SZMentionsListener {
      */
     private func handleEditingMention(_ mention: SZMention, textView: UITextView,
                                       range: NSRange, text: String) -> Bool {
-        guard let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString else { return false }
-        mutableAttributedString.apply(defaultTextAttributes, range: mention.mentionRange)
-        mutableAttributedString.mutableString.replaceCharacters(in: range, with: text)
+        if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
+            mutableAttributedString.apply(defaultTextAttributes, range: mention.mentionRange)
+            mutableAttributedString.mutableString.replaceCharacters(in: range, with: text)
 
-        settingText = true
-        textView.attributedText = mutableAttributedString
-        settingText = false
-        textView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
+            settingText = true
+            textView.attributedText = mutableAttributedString
+            settingText = false
+            textView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
 
-        _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
+            _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
+        }
 
         return false
     }
@@ -421,23 +421,24 @@ extension SZMentionsListener {
         if let filterString = filterString, filterString != stringCurrentlyBeingFiltered {
             stringCurrentlyBeingFiltered = filterString
 
-            guard mentionsTextView.selectedRange.location >= 1 else { return }
+            if mentionsTextView.selectedRange.location >= 1 {
 
-            let range = (mentionsTextView.text as NSString).range(
-                of: trigger,
-                options: NSString.CompareOptions.backwards,
-                range: NSRange(location: 0, length: mentionsTextView.selectedRange.location + mentionsTextView.selectedRange.length))
+                let range = (mentionsTextView.text as NSString).range(
+                    of: trigger,
+                    options: NSString.CompareOptions.backwards,
+                    range: NSRange(location: 0, length: mentionsTextView.selectedRange.location + mentionsTextView.selectedRange.length))
 
-            var location: Int = 0
+                var location: Int = 0
 
-            if range.location != NSNotFound { location = range.location }
+                if range.location != NSNotFound { location = range.location }
 
-            if location + 1 >= mentionsTextView.text.utf16.count { return }
+                if location + 1 >= mentionsTextView.text.utf16.count { return }
 
-            let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSRange(location: location, length: 1))
+                let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSRange(location: location, length: 1))
 
-            if substringTrigger == trigger {
-                mentionsManager.showMentionsListWithString(filterString)
+                if substringTrigger == trigger {
+                    mentionsManager.showMentionsListWithString(filterString)
+                }
             }
         }
     }
@@ -461,8 +462,7 @@ extension SZMentionsListener: UITextViewDelegate {
 
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                          replacementText text: String) -> Bool {
-        assert((textView.delegate?.isEqual(self))!,
-               "Textview delegate must be set equal to SZMentionsListener")
+        assert((textView.delegate?.isEqual(self))!, "Textview delegate must be set equal to SZMentionsListener")
 
         if text == "\n", addMentionAfterReturnKey, mentionEnabled {
             mentionsManager.shouldAddMentionOnReturnKey()
@@ -484,20 +484,12 @@ extension SZMentionsListener: UITextViewDelegate {
 
     public func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment,
                          in characterRange: NSRange) -> Bool {
-        if let shouldInteract = delegate?.textView?(textView, shouldInteractWith: textAttachment,
-                                                    in: characterRange) {
-            return shouldInteract
-        }
-
-        return true
+        return delegate?.textView?(textView, shouldInteractWith: textAttachment,
+                                                    in: characterRange) ?? true
     }
 
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
-        if let shouldInteract = delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange) {
-            return shouldInteract
-        }
-
-        return true
+        return delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange) ?? true
     }
 
     public func textViewDidBeginEditing(_ textView: UITextView) {
@@ -516,18 +508,10 @@ extension SZMentionsListener: UITextViewDelegate {
     }
     
     public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        if let shouldBeginEditing = delegate?.textViewShouldBeginEditing?(textView) {
-            return shouldBeginEditing
-        }
-        
-        return true
+        return delegate?.textViewShouldBeginEditing?(textView) ?? true
     }
     
     public func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
-        if let shouldEndEditing = delegate?.textViewShouldEndEditing?(textView) {
-            return shouldEndEditing
-        }
-        
-        return true
+        return delegate?.textViewShouldEndEditing?(textView) ?? true
     }
 }
