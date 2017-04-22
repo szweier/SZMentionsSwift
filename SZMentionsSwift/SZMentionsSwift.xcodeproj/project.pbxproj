@@ -164,11 +164,11 @@
 			isa = PBXGroup;
 			children = (
 				DBF2DF601C4B1067001B9788 /* Info.plist */,
+				DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */,
 				DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */,
 				DB0AB4A31EAAC175003F84DB /* AttributeSpec.swift */,
 				DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsSpec.swift */,
 				DB0AB4A51EAAC48A003F84DB /* DelegatesSpec.swift */,
-				DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */,
 			);
 			path = SZMentionsSwiftTests;
 			sourceTree = "<group>";

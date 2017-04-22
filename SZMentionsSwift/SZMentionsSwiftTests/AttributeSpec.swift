@@ -6,24 +6,17 @@ import Nimble
 class Attribute: QuickSpec {
     override func spec() {
         describe("Attribute Handling") {
+            let attribute = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
+            let attribute2 = SZAttribute(attributeName: NSBackgroundColorAttributeName, attributeValue: UIColor.black)
+
             it("Should throw an exception if the attribute types don't match") {
-                let attribute = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
-                let attribute2 = SZAttribute(attributeName: NSBackgroundColorAttributeName, attributeValue: UIColor.black)
-
-                let defaultAttributes = [attribute]
-                let mentionAttributes = [attribute, attribute2]
-
-                expect(SZVerifier.verifySetup(withDefaultTextAttributes: defaultAttributes, mentionTextAttributes: mentionAttributes)).to(throwAssertion())
+                expect(SZVerifier.verifySetup(withDefaultTextAttributes: [attribute],
+                                              mentionTextAttributes: [attribute, attribute2])).to(throwAssertion())
             }
 
             it("Should not throw an exception if the attribute types match") {
-                let attribute = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
-                let attribute2 = SZAttribute(attributeName: NSBackgroundColorAttributeName, attributeValue: UIColor.black)
-
-                let defaultAttributes = [attribute, attribute2]
-                let mentionAttributes = [attribute2, attribute]
-
-                expect(SZVerifier.verifySetup(withDefaultTextAttributes: defaultAttributes, mentionTextAttributes: mentionAttributes)).toNot(throwAssertion())
+                expect(SZVerifier.verifySetup(withDefaultTextAttributes: [attribute, attribute2],
+                                              mentionTextAttributes: [attribute2, attribute])).toNot(throwAssertion())
             }
 
             it("Should have the correct default color") {

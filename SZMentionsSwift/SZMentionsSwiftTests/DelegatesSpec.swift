@@ -4,17 +4,25 @@ import Nimble
 
 class Delegates: QuickSpec {
     class TextViewDelegate: NSObject, UITextViewDelegate {
-        var shouldBeginEditing: Bool = true
-        var shouldEndEditing: Bool = true
+        var shouldBeginEditing: Bool = false
+        var shouldEndEditing: Bool = false
+        var shouldInteractWithTextAttachment: Bool = false
         var triggeredDelegateMethod: Bool = false
 
+        func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment,
+                      in characterRange: NSRange) -> Bool {
+            return shouldInteractWithTextAttachment
+        }
+
+        func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+            return shouldInteractWithTextAttachment
+        }
+
         func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-            triggeredDelegateMethod = true
             return shouldBeginEditing
         }
 
         func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
-            triggeredDelegateMethod = true
             return shouldEndEditing
         }
 
@@ -31,8 +39,8 @@ class Delegates: QuickSpec {
         describe("Delegate Methods") {
             var textViewDelegate: TextViewDelegate!
             var testDelegate: TestMentionDelegate!
-            let textView = UITextView()
             var mentionsListener: SZMentionsListener!
+            let textView = UITextView()
 
             beforeEach {
                 let attribute = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
@@ -44,38 +52,43 @@ class Delegates: QuickSpec {
                                                       mentionsManager: testDelegate,
                                                       textViewDelegate: textViewDelegate,
                                                       mentionTextAttributes: [attribute],
-                                                      defaultTextAttributes: [attribute2],
-                                                      spaceAfterMention: false,
-                                                      addMentionOnReturnKey: true,
-                                                      searchSpaces: false)
+                                                      defaultTextAttributes: [attribute2])
             }
 
-            it("Should return true for textView(shouldInteractWith:in) for a text attachment") {
+            it("Should return false for textView(shouldInteractWith:in) for a text attachment when overridden") {
+                expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSMakeRange(0, 0))).to(beFalsy())
+            }
+
+            it("Should return true for textView(shouldInteractWith:in) for a text attachment when not overridden") {
+                mentionsListener.delegate = nil
                 expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSMakeRange(0, 0))).to(beTruthy())
             }
 
-            it("Should return true for textView(shouldInteractWith:in) for a URL") {
+            it("Should return false for textView(shouldInteractWith:in) for a URL when overridden") {
+                expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSMakeRange(0, 0))).to(beFalsy())
+            }
+
+            it("Should return true for textView(shouldInteractWith:in) for a URL when not overridden") {
+                mentionsListener.delegate = nil
                 expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSMakeRange(0, 0))).to(beTruthy())
             }
 
+            it("Should return false for textViewShouldBeginEditing when overridden") {
+                expect(mentionsListener.textViewShouldBeginEditing(textView)).to(beFalsy())
+            }
+
             it("Should return true for textViewShouldBeginEditing when not overridden") {
+                mentionsListener.delegate = nil
                 expect(mentionsListener.textViewShouldBeginEditing(textView)).to(beTruthy())
             }
 
-            it("Should return the delegate response for textViewShouldBeginEditing") {
-                expect(mentionsListener.textViewShouldBeginEditing(textView)).to(beTruthy())
-                textViewDelegate.shouldBeginEditing = false
-                expect(!mentionsListener.textViewShouldBeginEditing(textView)).to(beTruthy())
+            it("Should return false for textViewShouldEndEditing when not overridden") {
+                expect(mentionsListener.textViewShouldEndEditing(textView)).to(beFalsy())
             }
 
             it("Should return true for textViewShouldEndEditing when not overridden") {
+                mentionsListener.delegate = nil
                 expect(mentionsListener.textViewShouldEndEditing(textView)).to(beTruthy())
-            }
-
-            it("Should return the delegate response for textViewShouldEndEditing") {
-                expect(mentionsListener.textViewShouldEndEditing(textView)).to(beTruthy())
-                textViewDelegate.shouldEndEditing = false
-                expect(mentionsListener.textViewShouldEndEditing(textView)).to(beFalsy())
             }
 
             it("Should return the delegate response for textViewDidBeginEditing") {
@@ -91,6 +104,7 @@ class Delegates: QuickSpec {
             }
 
             it("Should call delegate method to determine if adding mention on return should be enabled") {
+                expect(testDelegate.shouldAddMentionOnReturnKeyCalled).to(beFalsy())
                 mentionsListener.addMentionAfterReturnKey = true
 
                 textView.insertText("@t")

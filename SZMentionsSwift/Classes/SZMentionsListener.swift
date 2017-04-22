@@ -70,7 +70,7 @@ public class SZMentionsListener: NSObject {
      @brief An optional delegate that can be used to handle all UITextView delegate
      methods after they've been handled by the SZMentionsListener
      */
-    fileprivate weak var delegate: UITextViewDelegate?
+    internal weak var delegate: UITextViewDelegate?
 
     /**
      @brief Manager in charge of handling the creation and dismissal of the mentions

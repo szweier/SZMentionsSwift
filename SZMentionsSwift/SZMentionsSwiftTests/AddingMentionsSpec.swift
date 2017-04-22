@@ -139,23 +139,6 @@ class AddingMentions: QuickSpec {
                 expect(mentionsListener.mentions.isEmpty).to(beTruthy())
             }
 
-            it("Should remove the mention when editing the middle of a mention") {
-                textView.insertText("Testing @t")
-                let mention = SZExampleMention()
-                mention.szMentionName = "Steven"
-                mentionsListener.addMention(mention)
-
-                expect(mentionsListener.mentions.count).to(equal(1))
-
-                textView.selectedRange = NSMakeRange(13, 1)
-
-                if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") {
-                    textView.deleteBackward()
-                }
-
-                expect(mentionsListener.mentions.isEmpty).to(beTruthy())
-            }
-
             it("Should test mention location is adjusted properly when a mention is inserted behind a mention when space after mention is true") {
                 mentionsListener.spaceAfterMention = true
                 textView.insertText("@t")
@@ -208,7 +191,7 @@ class AddingMentions: QuickSpec {
                 if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "test") {
                     textView.insertText("test")
                 }
-                XCTAssert((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as AnyObject).isEqual( UIColor.black))
+                expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
             }
 
             it("Should test that the correct mention range is replaced if multiple exist and that the selected range is correct") {
