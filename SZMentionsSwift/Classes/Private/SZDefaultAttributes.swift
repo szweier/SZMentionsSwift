@@ -10,34 +10,26 @@ internal class SZDefaultAttributes {
     /**
      @brief Default color
      */
-    class var defaultColor: SZAttribute {
-        return SZAttribute(
-            attributeName: NSForegroundColorAttributeName,
-            attributeValue: UIColor.black)
+    static var defaultColor: SZAttribute {
+        return SZAttribute(attributeName: NSForegroundColorAttributeName,
+                           attributeValue: UIColor.black)
     }
 
     /**
      @brief Mention color
      */
-    class var mentionColor: SZAttribute {
-        return SZAttribute(
-            attributeName: NSForegroundColorAttributeName,
-            attributeValue: UIColor.blue)
+    static var mentionColor: SZAttribute {
+        return SZAttribute(attributeName: NSForegroundColorAttributeName,
+                           attributeValue: UIColor.blue)
     }
 
     /**
      @brief the text attributes to be applied to default text (can be overridden using inits on SZMentionsListener)
      */
-    class func defaultTextAttributes() -> [SZAttribute]
-    {
-        return [defaultColor]
-    }
+    static var defaultTextAttributes: [SZAttribute] { return [defaultColor] }
 
     /**
      @brief the text attributes to be applied to mention text (can be overridden using inits on SZMentionsListener)
      */
-    class func defaultMentionAttributes() -> [SZAttribute]
-    {
-        return [mentionColor]
-    }
+    static var defaultMentionAttributes: [SZAttribute] { return [mentionColor] }
 }

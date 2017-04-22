@@ -13,3 +13,12 @@ profile
 *.moved-aside
 DerivedData
 .idea/
+
+####
+# Cocoapods: cocoapods.org
+#
+# Ignoring these files means that whoever uses the code will first have to run:
+# pod install
+# in the App.xcodeproj directory.
+# This ensures the latest dependencies are used.
+Pods/

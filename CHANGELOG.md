@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.0.7](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.7) (4/22/2017)
+
+#### Cleaned
+* Moved to Quick & Nimble testing
+* Updated tests
+* Refactored code to be more Swifty
+* Moved to static methods instead of class methods
+
 ## [1.0.6](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.6) (4/02/2017)
 
 #### Added
@@ -8,12 +16,12 @@
 ## [1.0.5](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.5) (2/10/2017)
 
 #### Fixed
-* Issue where emojii can result in an incorrect attributed string appearance thanks to @raphaelcruzeiro
+* Issue where emoji can result in an incorrect attributed string appearance thanks to @raphaelcruzeiro
 
 ## [1.0.4](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.4) (2/7/2017)
 
 #### Fixed
-* Issue where the count was incorrect when using emojii thanks to @raphaelcruzeiro
+* Issue where the count was incorrect when using emoji thanks to @raphaelcruzeiro
 
 ## [1.0.3](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.3) (2/2/2017)
 
@@ -28,7 +36,7 @@
 ## [1.0.1](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.1) (1/10/2017)
 
 #### Cleaned
-* Refactored code abse
+* Refactored code base
 
 #### Fixed
 * Issue with cooldown timer not being triggered correctly in certain cases
@@ -159,3 +167,5 @@
 
 ## [0.0.1](https://github.com/szweier/SZMentionsSwift/releases/tag/0.0.1) (1/12/2015)
 * Initial release
+
+

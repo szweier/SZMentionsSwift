@@ -83,12 +83,12 @@ This required properties for a mention being sent to the mentions listener
 
 The require methods for handling mention interaction.
 
-`func showMentionsListWithString(mentionsString: NSString)` lets the delegate know to show a mentions list as well as provides the current string typed into the textview, allowing for filtering of the mentions list.
+`func showMentionsListWithString(mentionsString: String)` lets the delegate know to show a mentions list as well as provides the current string typed into the textview, allowing for filtering of the mentions list.
 `func hideMentionsList()` lets the delegate know we are no longer typing in a mention. 
 
 #### SZMention
 
-This class is returned via the `mentions` method, it includes the `range` of the mention as well as `object` containing the object sent to the mentions listener via the `addMention:(id)mention` method.
+This class is returned via the `mentions` method, it includes the `range` of the mention as well as `object` containing the object sent to the mentions listener via the `addMention(_ mention: SZExampleMention)` method.
 
 #### SZAttribute
 
