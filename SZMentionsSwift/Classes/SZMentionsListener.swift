@@ -145,7 +145,7 @@ public class SZMentionsListener: NSObject {
      @param addMentionOnReturnKey - tell listener for observer Return key
      @param trigger - what text triggers showing the mentions list
      @param cooldownInterval - amount of time between show / hide mentions calls
-     @param searchSpacesInMentions - mention searches can / cannot contain spaces
+     @param searchSpaces - mention searches can / cannot contain spaces
      */
     public init(
         mentionTextView textView: UITextView,
@@ -467,8 +467,7 @@ extension SZMentionsListener: UITextViewDelegate {
 
     public func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment,
                          in characterRange: NSRange) -> Bool {
-        return delegate?.textView?(textView, shouldInteractWith: textAttachment,
-                                                    in: characterRange) ?? true
+        return delegate?.textView?(textView, shouldInteractWith: textAttachment, in: characterRange) ?? true
     }
 
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
