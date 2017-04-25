@@ -254,6 +254,18 @@ class AddingMentions: QuickSpec {
                 expect(mentionsListener.mentions.first?.mentionRange.location).to(equal(18))
             }
 
+            it("Should accurately detect whether or not a mention is being edited") {
+                textView.insertText("@s")
+                let mention = SZExampleMention()
+                mention.szMentionName = "Steven"
+                mentionsListener.addMention(mention)
+
+                expect(mentionsListener.mentions.mentionBeingEdited(atRange: NSRange(location: 0, length: 0))).to(beNil())
+                textView.selectedRange = NSRange(location: 0, length: 0)
+                _ = mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "t")
+                expect(mentionsListener.mentions.mentionBeingEdited(atRange: NSRange(location: 1, length: 0))).to(beNil())
+            }
+
             it("Should not crash when deleting two mentions at a time") {
                 textView.insertText("@St")
                 var mention = SZExampleMention()

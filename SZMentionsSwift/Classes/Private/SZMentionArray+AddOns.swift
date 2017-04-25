@@ -13,7 +13,7 @@ internal extension Array where Element: SZMention {
      @return SZMention?: the mention being edited (if one exists)
      */
     func mentionBeingEdited(atRange range: NSRange) -> SZMention? {
-        return filter{ NSIntersectionRange(range, $0.mentionRange).location > 0 }.first
+        return filter{ NSIntersectionRange(range, $0.mentionRange).location > 0 && range.location != $0.mentionRange.location }.first
     }
 
     /**
