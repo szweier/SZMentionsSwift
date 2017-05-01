@@ -18,7 +18,12 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
     init(frame: CGRect, delegate: UITextViewDelegate) {
         super.init(frame: frame)
         let mentionsListener = SZMentionsListener(mentionTextView: textView,
-                                                  mentionsManager: self, textViewDelegate: delegate, mentionTextAttributes: mentionAttributes(), defaultTextAttributes: defaultAttributes(),spaceAfterMention: true, addMentionOnReturnKey: true)
+                                                  mentionsManager: self,
+                                                  textViewDelegate: delegate,
+                                                  mentionTextAttributes: mentionAttributes(),
+                                                  defaultTextAttributes: defaultAttributes(),
+                                                  spaceAfterMention: true,
+                                                  addMentionOnReturnKey: true)
 
         setupTextView(textView, delegate: mentionsListener)
         addSubview(textView)

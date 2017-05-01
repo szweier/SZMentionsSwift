@@ -1,5 +1,13 @@
 # Change Log
 
+## [1.0.8](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.8) (4/30/2017)
+
+#### Fixed
+* Issue with inserting text before a mention
+
+#### Cleaned
+* General code clean up
+
 ## [1.0.7](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.7) (4/22/2017)
 
 #### Cleaned

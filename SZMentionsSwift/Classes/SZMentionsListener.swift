@@ -115,11 +115,6 @@ public class SZMentionsListener: NSObject {
     fileprivate var editingMention: Bool = false
 
     /**
-     @brief Allow us to edit text internally without triggering delegate
-     */
-    fileprivate var settingText: Bool = false
-
-    /**
      @brief String to filter by
      */
     fileprivate var filterString: String?
@@ -150,7 +145,7 @@ public class SZMentionsListener: NSObject {
      @param addMentionOnReturnKey - tell listener for observer Return key
      @param trigger - what text triggers showing the mentions list
      @param cooldownInterval - amount of time between show / hide mentions calls
-     @param searchSpacesInMentions - mention searches can / cannot contain spaces
+     @param searchSpaces - mention searches can / cannot contain spaces
      */
     public init(
         mentionTextView textView: UITextView,
@@ -204,9 +199,7 @@ public class SZMentionsListener: NSObject {
                 mutableAttributedString.apply(mentionTextAttributes, range:range)
             }
 
-            settingText = true
             mentionsTextView.attributedText = mutableAttributedString
-            settingText = false
         }
     }
 
@@ -234,8 +227,6 @@ public class SZMentionsListener: NSObject {
 
         mutableAttributedString.apply(mentionTextAttributes, range: currentMentionRange)
 
-        settingText = true
-
         var selectedRange = NSRange(location: currentMentionRange.location + currentMentionRange.length, length: 0)
 
         mentionsTextView.attributedText = mutableAttributedString
@@ -243,7 +234,6 @@ public class SZMentionsListener: NSObject {
         if spaceAfterMention { selectedRange.location += 1 }
 
         mentionsTextView.selectedRange = selectedRange
-        settingText = false
 
         mentionsManager.hideMentionsList()
 
@@ -371,13 +361,11 @@ extension SZMentionsListener {
             if replaceCharacters { mutableAttributedString.mutableString.replaceCharacters(in: range, with: text) }
 
             mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: range.location, length: text.utf16.count))
-            settingText = true
             mutableAttributedString.enumerateAttribute("NSOriginalFont", in: NSRange(location: 0, length: mutableAttributedString.string.utf16.count),
                                                        options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) in
                                                         if value != nil { mutableAttributedString.removeAttribute("NSOriginalFont", range: range) }
             }
             textView.attributedText = mutableAttributedString
-            settingText = false
 
             var newRange = NSRange(location: range.location, length: 0)
 
@@ -401,10 +389,7 @@ extension SZMentionsListener {
         if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
             mutableAttributedString.apply(defaultTextAttributes, range: mention.mentionRange)
             mutableAttributedString.mutableString.replaceCharacters(in: range, with: text)
-
-            settingText = true
             textView.attributedText = mutableAttributedString
-            settingText = false
             textView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
 
             _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
@@ -473,8 +458,6 @@ extension SZMentionsListener: UITextViewDelegate {
         }
         _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
-        if settingText { return false }
-
         return shouldAdjust(textView, range: range, text: text)
     }
 
@@ -484,8 +467,7 @@ extension SZMentionsListener: UITextViewDelegate {
 
     public func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment,
                          in characterRange: NSRange) -> Bool {
-        return delegate?.textView?(textView, shouldInteractWith: textAttachment,
-                                                    in: characterRange) ?? true
+        return delegate?.textView?(textView, shouldInteractWith: textAttachment, in: characterRange) ?? true
     }
 
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
