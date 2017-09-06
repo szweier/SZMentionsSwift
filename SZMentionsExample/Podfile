@@ -1,0 +1,5 @@
+use_frameworks!
+
+target 'SZMentionsExample' do
+  pod 'SZMentionsSwift', :path => '../'
+end
