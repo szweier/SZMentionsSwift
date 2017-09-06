@@ -1,0 +1,6 @@
+use_frameworks!
+platform :ios, '9.3'
+
+target 'SZMentionsExample' do
+  pod 'SZMentionsSwift', :path => '../'
+end

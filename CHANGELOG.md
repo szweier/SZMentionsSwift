@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.0.9](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.9) (9/6/2017)
+
+#### Added
+* The ability to use `pod try SZMentionsSwift` reported by @slxl https://github.com/szweier/SZMentionsSwift/issues/49
+
 ## [1.0.8](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.8) (4/30/2017)
 
 #### Fixed
