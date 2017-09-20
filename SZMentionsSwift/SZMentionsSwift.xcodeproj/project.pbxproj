@@ -17,7 +17,6 @@
 		DB3DB5DB1EA176FC004CBD91 /* MentionsDisplaySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */; };
 		DB3DB5DD1EA17EB8004CBD91 /* AddingMentionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsSpec.swift */; };
 		DBE8B4A11C657F200090EF32 /* NSMutableAttributedString+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49B1C657F200090EF32 /* NSMutableAttributedString+Attributes.swift */; };
-		DBE8B4A21C657F200090EF32 /* SZDefaultAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */; };
 		DBE8B4A31C657F200090EF32 /* SZMentionArray+AddOns.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49D1C657F200090EF32 /* SZMentionArray+AddOns.swift */; };
 		DBE8B4A41C657F200090EF32 /* SZAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49E1C657F200090EF32 /* SZAttribute.swift */; };
 		DBE8B4A51C657F200090EF32 /* SZMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49F1C657F200090EF32 /* SZMention.swift */; };
@@ -26,7 +25,6 @@
 		DBE8B4B51C6580360090EF32 /* SZMention.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49F1C657F200090EF32 /* SZMention.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBE8B4B61C6580360090EF32 /* SZMentionsListener.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B4A01C657F200090EF32 /* SZMentionsListener.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		DBE8B4B71C6580400090EF32 /* NSMutableAttributedString+Attributes.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49B1C657F200090EF32 /* NSMutableAttributedString+Attributes.swift */; settings = {ATTRIBUTES = (Private, ); }; };
-		DBE8B4B81C6580400090EF32 /* SZDefaultAttributes.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		DBE8B4B91C6580400090EF32 /* SZMentionArray+AddOns.swift in Headers */ = {isa = PBXBuildFile; fileRef = DBE8B49D1C657F200090EF32 /* SZMentionArray+AddOns.swift */; settings = {ATTRIBUTES = (Private, ); }; };
 		DBF2DF611C4B1067001B9788 /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */; };
 /* End PBXBuildFile section */
@@ -57,7 +55,6 @@
 		DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionsDisplaySpec.swift; sourceTree = "<group>"; };
 		DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddingMentionsSpec.swift; sourceTree = "<group>"; };
 		DBE8B49B1C657F200090EF32 /* NSMutableAttributedString+Attributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Attributes.swift"; sourceTree = "<group>"; };
-		DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZDefaultAttributes.swift; sourceTree = "<group>"; };
 		DBE8B49D1C657F200090EF32 /* SZMentionArray+AddOns.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SZMentionArray+AddOns.swift"; sourceTree = "<group>"; };
 		DBE8B49E1C657F200090EF32 /* SZAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZAttribute.swift; sourceTree = "<group>"; };
 		DBE8B49F1C657F200090EF32 /* SZMention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZMention.swift; sourceTree = "<group>"; };
@@ -154,7 +151,6 @@
 			children = (
 				DBE8B49B1C657F200090EF32 /* NSMutableAttributedString+Attributes.swift */,
 				DBE8B49D1C657F200090EF32 /* SZMentionArray+AddOns.swift */,
-				DBE8B49C1C657F200090EF32 /* SZDefaultAttributes.swift */,
 				DB2330161E24832D00242C33 /* SZVerifier.swift */,
 			);
 			path = Private;
@@ -185,7 +181,6 @@
 				DBE8B4B51C6580360090EF32 /* SZMention.swift in Headers */,
 				DBE8B4B61C6580360090EF32 /* SZMentionsListener.swift in Headers */,
 				DBE8B4B71C6580400090EF32 /* NSMutableAttributedString+Attributes.swift in Headers */,
-				DBE8B4B81C6580400090EF32 /* SZDefaultAttributes.swift in Headers */,
 				DBE8B4B91C6580400090EF32 /* SZMentionArray+AddOns.swift in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,17 +236,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Steven Zweier";
 				TargetAttributes = {
 					DB0403BC1C44A017000904DB = {
 						CreatedOnToolsVersion = 7.2;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 					};
 					DBF2DF5B1C4B1067001B9788 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = K2V4RUXGKP;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 					};
 				};
 			};
@@ -318,7 +313,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		94B32CDAE248658E63D4851F /* [CP] Copy Pods Resources */ = {
@@ -363,7 +358,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -377,7 +372,6 @@
 				DBE8B4A11C657F200090EF32 /* NSMutableAttributedString+Attributes.swift in Sources */,
 				DB2330171E24832D00242C33 /* SZVerifier.swift in Sources */,
 				DBE8B4A41C657F200090EF32 /* SZAttribute.swift in Sources */,
-				DBE8B4A21C657F200090EF32 /* SZDefaultAttributes.swift in Sources */,
 				DBE8B4A31C657F200090EF32 /* SZMentionArray+AddOns.swift in Sources */,
 				DBE8B4A61C657F200090EF32 /* SZMentionsListener.swift in Sources */,
 			);
@@ -414,14 +408,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -464,14 +464,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -515,7 +521,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -534,7 +541,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwift;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -548,7 +556,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -562,7 +571,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

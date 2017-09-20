@@ -151,8 +151,10 @@ public class SZMentionsListener: NSObject {
         mentionTextView textView: UITextView,
         mentionsManager manager: SZMentionsManagerProtocol,
         textViewDelegate: UITextViewDelegate? = nil,
-        mentionTextAttributes mentionAttributes: [SZAttribute] = SZDefaultAttributes.defaultMentionAttributes,
-        defaultTextAttributes defaultAttributes: [SZAttribute] = SZDefaultAttributes.defaultTextAttributes,
+        mentionTextAttributes mentionAttributes: [SZAttribute] = [SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue,
+                                                                             attributeValue: UIColor.blue)],
+        defaultTextAttributes defaultAttributes: [SZAttribute] = [SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue,
+                                                                              attributeValue: UIColor.black)],
         spaceAfterMention spaceAfter: Bool = false,
         addMentionOnReturnKey mentionOnReturn: Bool = false,
         trigger mentionTrigger: String = "@",
@@ -361,9 +363,9 @@ extension SZMentionsListener {
             if replaceCharacters { mutableAttributedString.mutableString.replaceCharacters(in: range, with: text) }
 
             mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: range.location, length: text.utf16.count))
-            mutableAttributedString.enumerateAttribute("NSOriginalFont", in: NSRange(location: 0, length: mutableAttributedString.string.utf16.count),
+            mutableAttributedString.enumerateAttribute(NSAttributedStringKey(rawValue: "NSOriginalFont"), in: NSRange(location: 0, length: mutableAttributedString.string.utf16.count),
                                                        options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) in
-                                                        if value != nil { mutableAttributedString.removeAttribute("NSOriginalFont", range: range) }
+                                                        if value != nil { mutableAttributedString.removeAttribute(NSAttributedStringKey(rawValue: "NSOriginalFont"), range: range) }
             }
             textView.attributedText = mutableAttributedString
 
@@ -402,7 +404,7 @@ extension SZMentionsListener {
      @brief Calls show mentions if necessary when the timer fires
      @param timer: the timer that called the method
      */
-    internal func cooldownTimerFired(_ timer: Timer) {
+    @objc internal func cooldownTimerFired(_ timer: Timer) {
         if let filterString = filterString, filterString != stringCurrentlyBeingFiltered {
             stringCurrentlyBeingFiltered = filterString
 

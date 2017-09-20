@@ -10,8 +10,8 @@ class AddingMentions: QuickSpec {
             var mentionsListener: SZMentionsListener!
 
             beforeEach {
-                let attribute = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
-                let attribute2 = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.black)
+                let attribute = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.red)
+                let attribute2 = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.black)
 
                 mentionsListener = SZMentionsListener(mentionTextView: textView,
                                                       mentionsManager: testDelegate,
@@ -191,7 +191,7 @@ class AddingMentions: QuickSpec {
                 if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "test") {
                     textView.insertText("test")
                 }
-                expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect((textView.attributedText.attribute(NSAttributedStringKey.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
             }
 
             it("Should test that the correct mention range is replaced if multiple exist and that the selected range is correct") {
@@ -233,7 +233,7 @@ class AddingMentions: QuickSpec {
                     textView.insertText("test")
                 }
 
-                expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: textView.selectedRange.location - 1, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect((textView.attributedText.attribute(NSAttributedStringKey.foregroundColor, at: textView.selectedRange.location - 1, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
             }
 
             it("Should test that the mention position is correct to start text on a new line") {
