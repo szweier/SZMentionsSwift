@@ -32,22 +32,6 @@ internal extension Array where Element: SZMention {
     }
 
     /**
-     @brief Determine whether or not we need to change the color back to default attributes
-     @param textView: the mentions text view
-     @param range: the current selection in the text view
-     @param mentions: the list of current mentions
-     @return Bool: whether or not we need to change back to default attributes
-     */
-//    func needsToChangeToDefaultAttributes(_ textView: UITextView, range: NSRange) -> Bool {
-//        let isAheadOfMention = range.location > 0 &&
-//            mentionExistsAt(range.location - 1)
-//        let isAtStartOfTextViewAndIsTouchingMention = range.location == 0 &&
-//            mentionExistsAt(range.location + 1)
-//
-//        return isAheadOfMention || isAtStartOfTextViewAndIsTouchingMention
-//    }
-
-    /**
      @brief Determines whether or not a mention exists at a specific location
      @param index: the location to check
      @param mentions: the list of current mentions
