@@ -151,9 +151,9 @@ public class SZMentionsListener: NSObject {
         mentionTextView textView: UITextView,
         mentionsManager manager: SZMentionsManagerProtocol,
         textViewDelegate: UITextViewDelegate? = nil,
-        mentionTextAttributes mentionAttributes: [SZAttribute] = [SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue,
+        mentionTextAttributes mentionAttributes: [SZAttribute] = [SZAttribute(attributeName: .foregroundColor,
                                                                              attributeValue: UIColor.blue)],
-        defaultTextAttributes defaultAttributes: [SZAttribute] = [SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue,
+        defaultTextAttributes defaultAttributes: [SZAttribute] = [SZAttribute(attributeName: .foregroundColor,
                                                                               attributeValue: UIColor.black)],
         spaceAfterMention spaceAfter: Bool = false,
         addMentionOnReturnKey mentionOnReturn: Bool = false,
@@ -254,7 +254,7 @@ extension SZMentionsListener {
         mutableMentions.removeAll()
         var attributes = [String: Any]()
         for attribute in defaultTextAttributes {
-            attributes[attribute.attributeName] = attribute.attributeValue
+            attributes[attribute.attributeName.rawValue] = attribute.attributeValue
         }
         textView.typingAttributes = attributes
         textView.text = " "
@@ -423,7 +423,7 @@ extension SZMentionsListener: UITextViewDelegate {
                          replacementText text: String) -> Bool {
         var attributes = [String: Any]()
         for attribute in defaultTextAttributes {
-            attributes[attribute.attributeName] = attribute.attributeValue
+            attributes[attribute.attributeName.rawValue] = attribute.attributeValue
         }
         textView.typingAttributes = attributes
         

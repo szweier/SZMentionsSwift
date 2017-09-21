@@ -43,8 +43,8 @@ class Delegates: QuickSpec {
             let textView = UITextView()
 
             beforeEach {
-                let attribute = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.red)
-                let attribute2 = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.black)
+                let attribute = SZAttribute(attributeName: .foregroundColor, attributeValue: UIColor.red)
+                let attribute2 = SZAttribute(attributeName: .foregroundColor, attributeValue: UIColor.black)
 
                 textViewDelegate = TextViewDelegate()
                 testDelegate = TestMentionDelegate()
@@ -134,11 +134,11 @@ class Delegates: QuickSpec {
                 mentionsListener.insertExistingMentions(insertMentions)
 
                 expect(mentionsListener.mentions.count).to(equal(2))
-                expect((textView.attributedText.attribute(NSAttributedStringKey.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                expect((textView.attributedText.attribute(NSAttributedStringKey.foregroundColor, at: 9, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                expect((textView.attributedText.attribute(NSAttributedStringKey.foregroundColor, at: 21, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                expect((textView.attributedText.attribute(NSAttributedStringKey.foregroundColor, at: 27, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                expect((textView.attributedText.attribute(NSAttributedStringKey.foregroundColor, at: 33, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 9, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 21, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 27, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 33, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
             }
 
             it("Should throw an assertion if the mention range is beyond the text length") {

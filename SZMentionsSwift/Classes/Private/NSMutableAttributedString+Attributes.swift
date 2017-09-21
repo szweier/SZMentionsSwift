@@ -15,7 +15,7 @@ internal extension NSMutableAttributedString {
      */
     func apply(_ attributes: [SZAttribute], range: NSRange) {
         attributes.forEach { attribute in
-            addAttribute(NSAttributedStringKey(rawValue: attribute.attributeName),
+            addAttribute(attribute.attributeName,
                          value: attribute.attributeValue,
                          range: range)
         }
