@@ -15,8 +15,9 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
     private var verticalConstraints: [NSLayoutConstraint] = []
     private var dataManager: SZExampleMentionsTableViewDataManager?
 
-    init(frame: CGRect, delegate: UITextViewDelegate) {
-        super.init(frame: frame)
+    init(delegate: UITextViewDelegate) {
+        super.init(frame: .zero)
+        autoresizingMask = .flexibleHeight
         let mentionsListener = SZMentionsListener(mentionTextView: textView,
                                                   mentionsManager: self,
                                                   textViewDelegate: delegate,
@@ -112,8 +113,8 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
 
     func showMentionsListWithString(_ mentionsString: String) {
         if mentionsTableView.superview == nil {
-            addSubview(mentionsTableView)
             removeConstraints(constraints)
+            addSubview(mentionsTableView)
             addConstraints(
                 NSLayoutConstraint.constraints(
                     withVisualFormat: "|-5-[tableview]-5-|",
@@ -138,7 +139,7 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
     }
 
     func hideMentionsList() {
-        if (mentionsTableView.superview != nil) {
+        if mentionsTableView.superview != nil {
             mentionsTableView.removeFromSuperview()
             verticalConstraints = NSLayoutConstraint.constraints(
                 withVisualFormat: "V:|-5-[textView(30)]-5-|",
@@ -155,6 +156,10 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
         if let mention = dataManager?.firstMentionObject() {
             dataManager?.addMention(mention)
         }
+    }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: frame.size.width, height: mentionsTableView.superview == nil ? 40 : 140)
     }
     
     required init?(coder aDecoder: NSCoder) {
