@@ -12,7 +12,7 @@ public class SZAttribute {
     /**
      @brief Name of the attribute to set on a string
      */
-    private(set) var attributeName: NSAttributedStringKey
+    private(set) var attributeName: String
 
     /**
      @brief Value of the attribute to set on a string
@@ -24,7 +24,7 @@ public class SZAttribute {
      @param attributeName: the name of the attribute (example: NSForegroundColorAttributeName)
      @param attributeValue: the value for the given attribute (example: UIColor.redColor)
      */
-    public init(attributeName: NSAttributedStringKey, attributeValue: NSObject) {
+    public init(attributeName: String, attributeValue: NSObject) {
         self.attributeName = attributeName
         self.attributeValue = attributeValue
     }

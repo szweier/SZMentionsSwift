@@ -151,9 +151,9 @@ public class SZMentionsListener: NSObject {
         mentionTextView textView: UITextView,
         mentionsManager manager: SZMentionsManagerProtocol,
         textViewDelegate: UITextViewDelegate? = nil,
-        mentionTextAttributes mentionAttributes: [SZAttribute] = [SZAttribute(attributeName: .foregroundColor,
+        mentionTextAttributes mentionAttributes: [SZAttribute] = [SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue,
                                                                              attributeValue: UIColor.blue)],
-        defaultTextAttributes defaultAttributes: [SZAttribute] = [SZAttribute(attributeName: .foregroundColor,
+        defaultTextAttributes defaultAttributes: [SZAttribute] = [SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue,
                                                                               attributeValue: UIColor.black)],
         spaceAfterMention spaceAfter: Bool = false,
         addMentionOnReturnKey mentionOnReturn: Bool = false,
@@ -253,7 +253,7 @@ extension SZMentionsListener {
     fileprivate func resetTypingAttributes(for textView: UITextView) {
         var attributes = [String: Any]()
         for attribute in defaultTextAttributes {
-            attributes[attribute.attributeName.rawValue] = attribute.attributeValue
+            attributes[attribute.attributeName] = attribute.attributeValue
         }
         textView.typingAttributes = attributes
     }

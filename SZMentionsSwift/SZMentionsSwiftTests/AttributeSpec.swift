@@ -6,8 +6,8 @@ import Nimble
 class Attribute: QuickSpec {
     override func spec() {
         describe("Attribute Handling") {
-            let attribute = SZAttribute(attributeName: .foregroundColor, attributeValue: UIColor.red)
-            let attribute2 = SZAttribute(attributeName: .backgroundColor, attributeValue: UIColor.black)
+            let attribute = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.red)
+            let attribute2 = SZAttribute(attributeName: NSAttributedStringKey.backgroundColor.rawValue, attributeValue: UIColor.black)
 
             it("Should throw an exception if the attribute types don't match") {
                 expect(SZVerifier.verifySetup(withDefaultTextAttributes: [attribute],

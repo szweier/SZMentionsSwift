@@ -10,8 +10,8 @@ class AddingMentions: QuickSpec {
             var mentionsListener: SZMentionsListener!
 
             beforeEach {
-                let attribute = SZAttribute(attributeName: .foregroundColor, attributeValue: UIColor.red)
-                let attribute2 = SZAttribute(attributeName: .foregroundColor, attributeValue: UIColor.black)
+                let attribute = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.red)
+                let attribute2 = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.black)
 
                 mentionsListener = SZMentionsListener(mentionTextView: textView,
                                                       mentionsManager: testDelegate,

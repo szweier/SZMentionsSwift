@@ -43,8 +43,8 @@ class Delegates: QuickSpec {
             let textView = UITextView()
 
             beforeEach {
-                let attribute = SZAttribute(attributeName: .foregroundColor, attributeValue: UIColor.red)
-                let attribute2 = SZAttribute(attributeName: .foregroundColor, attributeValue: UIColor.black)
+                let attribute = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.red)
+                let attribute2 = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.black)
 
                 textViewDelegate = TextViewDelegate()
                 testDelegate = TestMentionDelegate()
