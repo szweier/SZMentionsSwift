@@ -247,16 +247,24 @@ public class SZMentionsListener: NSObject {
 
 extension SZMentionsListener {
     /**
-     @brief Resets the empty text view
-     @param textView: the text view to reset
+     @brief Reset typingAttributes for textView
+     @param textView: the textView to change the typingAttributes on
      */
-    fileprivate func resetEmpty(_ textView: UITextView) {
-        mutableMentions.removeAll()
+    fileprivate func resetTypingAttributes(for textView: UITextView) {
         var attributes = [String: Any]()
         for attribute in defaultTextAttributes {
             attributes[attribute.attributeName.rawValue] = attribute.attributeValue
         }
         textView.typingAttributes = attributes
+    }
+    
+    /**
+     @brief Resets the empty text view
+     @param textView: the text view to reset
+     */
+    fileprivate func resetEmpty(_ textView: UITextView) {
+        mutableMentions.removeAll()
+        resetTypingAttributes(for: textView)
         textView.text = " "
         if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
             mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: 0, length: 1))
@@ -421,13 +429,9 @@ extension SZMentionsListener: UITextViewDelegate {
 
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                          replacementText text: String) -> Bool {
-        var attributes = [String: Any]()
-        for attribute in defaultTextAttributes {
-            attributes[attribute.attributeName.rawValue] = attribute.attributeValue
-        }
-        textView.typingAttributes = attributes
-        
         assert((textView.delegate?.isEqual(self))!, "Textview delegate must be set equal to SZMentionsListener")
+
+        resetTypingAttributes(for: textView)
 
         if text == "\n", addMentionAfterReturnKey, mentionEnabled {
             mentionsManager.shouldAddMentionOnReturnKey()
