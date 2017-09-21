@@ -252,6 +252,11 @@ extension SZMentionsListener {
      */
     fileprivate func resetEmpty(_ textView: UITextView) {
         mutableMentions.removeAll()
+        var attributes = [String: Any]()
+        for attribute in defaultTextAttributes {
+            attributes[attribute.attributeName] = attribute.attributeValue
+        }
+        textView.typingAttributes = attributes
         textView.text = " "
         if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
             mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: 0, length: 1))
@@ -339,44 +344,11 @@ extension SZMentionsListener {
             shouldAdjust = handleEditingMention(editedMention, textView: textView, range: range, text: text)
         }
 
-        if mentions.needsToChangeToDefaultAttributes(textView, range: range) {
-            shouldAdjust = forceDefaultAttributes(textView, range: range, text: text, replaceCharacters: !editingMention)
-        }
-
         mentions.adjustMentions(forTextChangeAtRange: range, text: text)
 
         _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
         return shouldAdjust
-    }
-
-    /**
-     @brief Forces default attributes on a string of text
-     @param textView: the mentions text view
-     @param range: the range of text being replaced
-     @param text: the text to replace the range with
-     @return Bool: false (we do not want the text view handling text input in this case)
-     */
-    private func forceDefaultAttributes(_ textView: UITextView, range: NSRange, text: String, replaceCharacters: Bool) -> Bool {
-        if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
-
-            if replaceCharacters { mutableAttributedString.mutableString.replaceCharacters(in: range, with: text) }
-
-            mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: range.location, length: text.utf16.count))
-            mutableAttributedString.enumerateAttribute(NSAttributedStringKey(rawValue: "NSOriginalFont"), in: NSRange(location: 0, length: mutableAttributedString.string.utf16.count),
-                                                       options: NSAttributedString.EnumerationOptions(rawValue: 0)) { (value, range, stop) in
-                                                        if value != nil { mutableAttributedString.removeAttribute(NSAttributedStringKey(rawValue: "NSOriginalFont"), range: range) }
-            }
-            textView.attributedText = mutableAttributedString
-
-            var newRange = NSRange(location: range.location, length: 0)
-
-            if newRange.length <= 0 { newRange.location = range.location + text.utf16.count }
-            
-            textView.selectedRange = newRange
-        }
-
-        return false
     }
 
     /**
@@ -449,6 +421,12 @@ extension SZMentionsListener: UITextViewDelegate {
 
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                          replacementText text: String) -> Bool {
+        var attributes = [String: Any]()
+        for attribute in defaultTextAttributes {
+            attributes[attribute.attributeName] = attribute.attributeValue
+        }
+        textView.typingAttributes = attributes
+        
         assert((textView.delegate?.isEqual(self))!, "Textview delegate must be set equal to SZMentionsListener")
 
         if text == "\n", addMentionAfterReturnKey, mentionEnabled {

@@ -38,14 +38,14 @@ internal extension Array where Element: SZMention {
      @param mentions: the list of current mentions
      @return Bool: whether or not we need to change back to default attributes
      */
-    func needsToChangeToDefaultAttributes(_ textView: UITextView, range: NSRange) -> Bool {
-        let isAheadOfMention = range.location > 0 &&
-            mentionExistsAt(range.location - 1)
-        let isAtStartOfTextViewAndIsTouchingMention = range.location == 0 &&
-            mentionExistsAt(range.location + 1)
-
-        return isAheadOfMention || isAtStartOfTextViewAndIsTouchingMention
-    }
+//    func needsToChangeToDefaultAttributes(_ textView: UITextView, range: NSRange) -> Bool {
+//        let isAheadOfMention = range.location > 0 &&
+//            mentionExistsAt(range.location - 1)
+//        let isAtStartOfTextViewAndIsTouchingMention = range.location == 0 &&
+//            mentionExistsAt(range.location + 1)
+//
+//        return isAheadOfMention || isAtStartOfTextViewAndIsTouchingMention
+//    }
 
     /**
      @brief Determines whether or not a mention exists at a specific location
@@ -53,7 +53,7 @@ internal extension Array where Element: SZMention {
      @param mentions: the list of current mentions
      @return Bool: Whether or not a mention exists at a specific location
      */
-    private func mentionExistsAt(_ index: NSInteger) -> Bool {
+    func mentionExistsAt(_ index: NSInteger) -> Bool {
         let mentionsList = filter{ index >= $0.mentionRange.location && index < $0.mentionRange.location + $0.mentionRange.length }
 
         return mentionsList.count > 0
