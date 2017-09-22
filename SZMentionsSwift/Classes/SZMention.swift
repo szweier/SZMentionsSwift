@@ -8,19 +8,7 @@
 
 import UIKit
 
-public protocol MentionContainer: Equatable {
-    /**
-     @brief The location of the mention within the attributed string of the UITextView
-     */
-    var mentionRange: NSRange { get }
-    
-    /**
-     @brief Contains a reference to the object sent to the addMention: method
-     */
-    var mentionObject: CreateMention { get }
-}
-
-public class SZMention: MentionContainer {
+public class SZMention: Equatable {
     /**
      @brief The location of the mention within the attributed string of the UITextView
      */
