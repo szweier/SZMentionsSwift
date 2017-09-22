@@ -105,7 +105,6 @@ class Delegates: QuickSpec {
 
             it("Should call delegate method to determine if adding mention on return should be enabled") {
                 expect(testDelegate.shouldAddMentionOnReturnKeyCalled).to(beFalsy())
-                mentionsListener.addMentionAfterReturnKey = true
 
                 textView.insertText("@t")
                 expect(testDelegate.hidingMentionsList).to(beFalsy())
@@ -122,14 +121,14 @@ class Delegates: QuickSpec {
                 textView.text = "Testing Steven Zweier and Tiffany get mentioned correctly";
 
                 let mention = SZExampleMention()
-                mention.szMentionName = "Steve"
-                mention.szMentionRange = NSMakeRange(8, 13)
+                mention.mentionName = "Steve"
+                mention.mentionRange = NSMakeRange(8, 13)
 
                 let mention2 = SZExampleMention()
-                mention2.szMentionName = "Tiff"
-                mention2.szMentionRange = NSMakeRange(26, 7)
+                mention2.mentionName = "Tiff"
+                mention2.mentionRange = NSMakeRange(26, 7)
 
-                let insertMentions : Array<SZCreateMentionProtocol> = [mention, mention2]
+                let insertMentions : Array<CreateMention> = [mention, mention2]
 
                 mentionsListener.insertExistingMentions(insertMentions)
 
@@ -145,14 +144,14 @@ class Delegates: QuickSpec {
                 textView.text = "Testing Steven Zweier"
 
                 let mention = SZExampleMention()
-                mention.szMentionName = "Steve"
-                mention.szMentionRange = NSMakeRange(8, 13)
+                mention.mentionName = "Steve"
+                mention.mentionRange = NSMakeRange(8, 13)
 
                 let mention2 = SZExampleMention()
-                mention2.szMentionName = "Tiff"
-                mention2.szMentionRange = NSMakeRange(26, 7)
+                mention2.mentionName = "Tiff"
+                mention2.mentionRange = NSMakeRange(26, 7)
 
-                let insertMentions : Array<SZCreateMentionProtocol> = [mention, mention2]
+                let insertMentions : Array<CreateMention> = [mention, mention2]
 
                 expect(mentionsListener.insertExistingMentions(insertMentions)).to(throwAssertion())
             }

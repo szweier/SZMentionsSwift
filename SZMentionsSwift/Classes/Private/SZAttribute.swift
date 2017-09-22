@@ -2,23 +2,23 @@
 //  SZAttribute.swift
 //  SZMentionsSwift
 //
-//  Created by Steven Zweier on 1/11/16.
-//  Copyright © 2016 Steven Zweier. All rights reserved.
+//  Created by Steven Zweier on 9/21/17.
+//  Copyright © 2017 Steven Zweier. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-public class SZAttribute {
+public class SZAttribute: AttributeContainer {
     /**
      @brief Name of the attribute to set on a string
      */
-    private(set) var attributeName: String
-
+    public var attributeName: String
+    
     /**
      @brief Value of the attribute to set on a string
      */
-    private(set) var attributeValue: NSObject
-
+    public var attributeValue: NSObject
+    
     /**
      @brief initializer for creating an attribute
      @param attributeName: the name of the attribute (example: NSForegroundColorAttributeName)

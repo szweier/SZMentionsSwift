@@ -8,7 +8,19 @@
 
 import UIKit
 
-public class SZMention: Equatable {
+public protocol MentionContainer: Equatable {
+    /**
+     @brief The location of the mention within the attributed string of the UITextView
+     */
+    var mentionRange: NSRange { get }
+    
+    /**
+     @brief Contains a reference to the object sent to the addMention: method
+     */
+    var mentionObject: CreateMention { get }
+}
+
+public class SZMention: MentionContainer {
     /**
      @brief The location of the mention within the attributed string of the UITextView
      */
@@ -17,14 +29,14 @@ public class SZMention: Equatable {
     /**
      @brief Contains a reference to the object sent to the addMention: method
      */
-    public private(set) var mentionObject: SZCreateMentionProtocol
+    public private(set) var mentionObject: CreateMention
 
     /**
      @brief initializer for creating a mention object
      @param mentionRange: the range of the mention
      @param mentionObject: the object of your mention (assuming you get extra data you need to store and retrieve later)
      */
-    public init(mentionRange: NSRange, mentionObject: SZCreateMentionProtocol) {
+    public init(mentionRange: NSRange, mentionObject: CreateMention) {
         self.mentionRange = mentionRange
         self.mentionObject = mentionObject
     }
