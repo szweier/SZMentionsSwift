@@ -34,18 +34,6 @@ internal extension Array where Element: SZMention {
     }
 
     /**
-     @brief Determines whether or not a mention exists at a specific location
-     @param index: the location to check
-     @param mentions: the list of current mentions
-     @return Bool: Whether or not a mention exists at a specific location
-     */
-    func mentionExistsAt(_ index: NSInteger) -> Bool {
-        let mentionsList = filter{ index >= $0.mentionRange.location && index < $0.mentionRange.location + $0.mentionRange.length }
-
-        return mentionsList.count > 0
-    }
-
-    /**
      @brief Determines what mentions exist after a given range
      @param range: the range where text was changed
      @param mentionsList: the list of current mentions
