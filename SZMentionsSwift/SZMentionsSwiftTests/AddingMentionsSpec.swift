@@ -110,8 +110,11 @@ class AddingMentions: QuickSpec {
 
                 textView.selectedRange = NSMakeRange(0, 0)
 
-                if mentionsListener.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "@t") {
-                    textView.insertText("@t")
+                if mentionsListener.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "@") {
+                    textView.insertText("@")
+                }
+                if mentionsListener.textView(textView, shouldChangeTextIn: NSMakeRange(0, 0), replacementText: "t") {
+                    textView.insertText("t")
                 }
                 mention = SZExampleMention()
                 mention.szMentionName = "Steven Zweier"

@@ -328,6 +328,18 @@ extension SZMentionsListener {
         mentionsManager.hideMentionsList()
         mentionEnabled = false
     }
+    
+    fileprivate func clearMention(_ mention: SZMention?) {
+        guard let mention = mention else { return }
+        if let index = mutableMentions.index(of: mention) {
+            editingMention = true
+            mutableMentions.remove(at: index)
+        }
+        if let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as? NSMutableAttributedString {
+            mutableAttributedString.apply(defaultTextAttributes, range: mention.mentionRange)
+            mentionsTextView.attributedText = mutableAttributedString
+        }
+    }
 
     /**
      @brief Determines whether or not we should allow the textView to adjust its own text
@@ -336,7 +348,7 @@ extension SZMentionsListener {
      @param text: the text to replace the range with
      @return Bool: whether or not the textView should adjust the text itself
      */
-    fileprivate func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
+    @discardableResult fileprivate func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
         var shouldAdjust = true
 
         if textView.text.isEmpty { resetEmpty(textView) }
@@ -344,10 +356,7 @@ extension SZMentionsListener {
         editingMention = false
 
         if let editedMention = mentions.mentionBeingEdited(atRange: range) {
-            if let index = mutableMentions.index(of: editedMention) {
-                editingMention = true
-                mutableMentions.remove(at: index)
-            }
+            clearMention(editedMention)
 
             shouldAdjust = handleEditingMention(editedMention, textView: textView, range: range, text: text)
         }
@@ -369,7 +378,6 @@ extension SZMentionsListener {
     private func handleEditingMention(_ mention: SZMention, textView: UITextView,
                                       range: NSRange, text: String) -> Bool {
         if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
-            mutableAttributedString.apply(defaultTextAttributes, range: mention.mentionRange)
             mutableAttributedString.mutableString.replaceCharacters(in: range, with: text)
             textView.attributedText = mutableAttributedString
             textView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
@@ -439,6 +447,21 @@ extension SZMentionsListener: UITextViewDelegate {
             mentionsManager.hideMentionsList()
 
             return false
+        } else if text.characters.count > 1 {
+            //Pasting
+            if let editedMention = mentions.mentionBeingEdited(atRange: range) {
+                clearMention(editedMention)
+            }
+            
+            if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
+                mutableAttributedString.replaceCharacters(in: range, with: NSAttributedString(string: text))
+                mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: range.location, length: text.characters.count))
+                textView.attributedText = mutableAttributedString
+            }
+            
+            mentions.adjustMentions(forTextChangeAtRange: range, text: text)
+            
+            return false
         }
         _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
@@ -446,6 +469,13 @@ extension SZMentionsListener: UITextViewDelegate {
     }
 
     public func textViewDidChange(_ textView: UITextView) {
+        if textView.selectedRange.location > 1 {
+            let substring = (textView.attributedText.string as NSString).substring(with: NSRange(location: textView.selectedRange.location - 2, length: 2))
+            if substring == ". ", let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
+                mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: textView.selectedRange.location - 2, length: 2))
+                textView.attributedText = mutableAttributedString
+            }
+        }
         delegate?.textViewDidChange?(textView)
     }
 
