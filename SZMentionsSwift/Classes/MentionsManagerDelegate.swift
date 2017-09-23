@@ -23,7 +23,7 @@ public protocol MentionsManager {
     func hideMentionsList()
     
     /**
-     @brief Called when a user hits enter while entering a mention
+     @brief Called when a user hits enter while searching for a mention
      @return Whether or not the mention was handled
      */
     func didHandleMentionOnReturn() -> Bool

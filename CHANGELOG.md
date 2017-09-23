@@ -1,5 +1,14 @@
 # Change Log
 
+## [1.1.0](https://github.com/szweier/SZMentionsSwift/releases/tag/1.1.0) (9/23/2017)
+
+#### Added
+* Xcode 9 + Swift 4 compatibility
+
+#### Note
+* This release contains breaking changes, some methods have been updated for clarity as well as classes changes to protocols.
+See README for more information.
+
 ## [1.0.9](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.9) (9/6/2017)
 
 #### Added

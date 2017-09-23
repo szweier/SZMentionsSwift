@@ -51,13 +51,13 @@ Use one of the many initializers to setup your mentions listener.  Parameters ex
 
 `mentionsTextView` : **required** The text view we are applying the mentions listener to. Note: it's delegate **must** be the mentions manager.
 
-`delegate` : **optional** If you would like to receive UITextView delegate methods set this and it will be passed through after processing view the mentions listener.
-
 `mentionsManager` : **required** The class that will be handling the mention interaction.
 
-`defaultTextAttributes` : Attributes (see: `SZAttribute`) to apply to the textview for all text that is not a mention.
+`textViewDelegate` : **optional** If you would like to receive UITextView delegate methods set this and it will be passed through after processing view the mentions listener.
 
-`mentionTextAttributes` : Attributes (see: `SZAttribute`) to apply to the textview for all mentions
+`mentionTextAttributes` : Attributes (see: `AttributeContainer`) to apply to the textview for all mentions
+
+`defaultTextAttributes` : Attributes (see: `AttributeContainer`) to apply to the textview for all text that is not a mention.
 
 `spaceAfterMention` : **optional** Whether or not you would like a space to be added to the end of your mentions. Default is `NO`
 
@@ -73,30 +73,26 @@ Use one of the many initializers to setup your mentions listener.  Parameters ex
 
 ##### Methods
 
-`public func addMention(mention: SZCreateMentionProtocol)` : Call this method while adding a mention to apply the mention to the current text.
+`@discardableResult public func addMention(_ mention: CreateMention) -> Bool` : Call this method while adding a mention to apply the mention to the current text.
 
-#### SZCreateMentionProtocol
+`public func insertExistingMentions(_ existingMentions: [CreateMention])`: Insert mentions into an existing textview.  This is provided assuming you are given text
+along with a list of users mentioned in that text and want to prep the textview in advance.
 
-This required properties for a mention being sent to the mentions listener
+#### CreateMention (Protocol)
 
-#### SZMentionsSwiftManagerProtocol
+This protocol contains the required properties for a mention being sent to the mentions listener
 
-The require methods for handling mention interaction.
+#### MentionsManager (Protocol)
+
+The required methods for handling mention interaction.
 
 `func showMentionsListWithString(mentionsString: String)` lets the delegate know to show a mentions list as well as provides the current string typed into the textview, allowing for filtering of the mentions list.
-`func hideMentionsList()` lets the delegate know we are no longer typing in a mention. 
+`func hideMentionsList()` lets the delegate know we are no longer typing in a mention.
+`func didHandleMentionOnReturn() -> Bool` allows you to handle when the user taps the enter key while searching for a mention. Return true if you've handled the interaction, false if you'd like to allow the listener to handle this event.
 
 #### SZMention
 
-This class is returned via the `mentions` method, it includes the `range` of the mention as well as `object` containing the object sent to the mentions listener via the `addMention(_ mention: SZExampleMention)` method.
-
-#### SZAttribute
-
-This class is used to pass attributes to apply mentions text as well as regular text.
-
-Example:
-    
-    SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.black)
+This class is returned via the `mentions` method, it includes the `range` of the mention as well as `object` containing the object sent to the mentions listener via the `addMention(_ mention: CreateMention)` method.
     
 
 ## Unit Tests
