@@ -331,8 +331,7 @@ extension SZMentionsListener {
         mentionEnabled = false
     }
     
-    private func clearMention(_ mention: SZMention?) {
-        guard let mention = mention else { return }
+    private func clearMention(_ mention: SZMention) {
         if let index = mutableMentions.index(of: mention) {
             editingMention = true
             mutableMentions.remove(at: index)

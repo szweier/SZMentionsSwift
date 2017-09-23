@@ -267,26 +267,47 @@ class AddingMentions: QuickSpec {
                 _ = mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "t")
                 expect(mentionsListener.mentions.mentionBeingEdited(atRange: NSRange(location: 1, length: 0))).to(beNil())
             }
-
+            
             it("Should not crash when deleting two mentions at a time") {
                 textView.insertText("@St")
                 var mention = SZExampleMention()
                 mention.mentionName = "Steven Zweier"
                 mentionsListener.addMention(mention)
-
+                
                 textView.insertText(" ")
-
+                
                 textView.insertText("@Jo")
                 mention = SZExampleMention()
                 mention.mentionName = "John Smith"
                 mentionsListener.addMention(mention)
-
+                
                 textView.selectedRange = NSMakeRange(0, textView.text.utf16.count)
-
+                
                 if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") {
                     textView.deleteBackward()
                 }
                 expect(textView.text.isEmpty).to(beTruthy())
+            }
+            
+            it("Should remove existing mention when pasting text within the mention") {
+                textView.insertText("@St")
+                let mention = SZExampleMention()
+                mention.mentionName = "Steven Zweier"
+                mentionsListener.addMention(mention)
+                
+                textView.selectedRange = NSRange(location: 7, length: 0)
+                
+                expect(mentionsListener.mentions.count).to(equal(1))
+                expect(textView.attributedText.string).to(equal("Steven Zweier"))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 12, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                
+                _ = mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "Test")
+                
+                expect(textView.attributedText.string).to(equal("Steven TestZweier"))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 16, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect(mentionsListener.mentions.count).to(equal(0))
             }
             
             it("Should call reset empty") {
