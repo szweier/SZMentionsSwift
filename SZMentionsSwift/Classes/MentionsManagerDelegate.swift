@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol MentionsManager {
+public protocol MentionsManagerDelegate {
     /**
      @brief Called when the UITextView is editing a mention.
      
