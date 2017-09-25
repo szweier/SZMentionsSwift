@@ -9,7 +9,7 @@
 import UIKit
 import SZMentionsSwift
 
-class SZExampleAccessoryView: UIView, MentionsManager {
+class SZExampleAccessoryView: UIView, MentionsManagerDelegate {
     private let textView = UITextView()
     private let mentionsTableView = UITableView()
     private var verticalConstraints: [NSLayoutConstraint] = []

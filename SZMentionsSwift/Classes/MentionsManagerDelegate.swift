@@ -1,5 +1,5 @@
 //
-//  MentionsManager.swift
+//  MentionsManagerDelegate.swift
 //  SZMentionsSwift
 //
 //  Created by Steven Zweier on 9/21/17.

@@ -5,7 +5,7 @@ class SZExampleMention: CreateMention {
     var mentionRange: NSRange = NSMakeRange(0, 0)
 }
 
-class TestMentionDelegate: NSObject, MentionsManager, UITextViewDelegate {
+class TestMentionDelegate: NSObject, MentionsManagerDelegate, UITextViewDelegate {
     
     var hidingMentionsList = false
     var shouldAddMentionOnReturnKeyCalled = false

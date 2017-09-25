@@ -57,7 +57,7 @@ public class SZMentionsListener: NSObject {
      @brief Manager in charge of handling the creation and dismissal of the mentions
      list.
      */
-    private var mentionsManager: MentionsManager
+    private var mentionsManager: MentionsManagerDelegate
 
     /**
      @brief Amount of time to delay between showMentions calls default:0.5
@@ -115,7 +115,7 @@ public class SZMentionsListener: NSObject {
      */
     public init(
         mentionTextView textView: UITextView,
-        mentionsManager manager: MentionsManager,
+        mentionsManager manager: MentionsManagerDelegate,
         textViewDelegate: UITextViewDelegate? = nil,
         mentionTextAttributes mentionAttributes: [AttributeContainer]? = nil,
         defaultTextAttributes defaultAttributes: [AttributeContainer]? = nil,
