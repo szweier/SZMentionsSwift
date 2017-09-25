@@ -36,69 +36,69 @@ public class SZMentionsListener: NSObject {
     /**
      @brief Trigger to start a mention. Default: @
      */
-    private var trigger: String
+    fileprivate var trigger: String
 
     /**
      @brief Text attributes to be applied to all text excluding mentions.
      */
-    private var defaultTextAttributes: [AttributeContainer]
+    fileprivate var defaultTextAttributes: [AttributeContainer]
 
     /**
      @brief Text attributes to be applied to mentions.
      */
-    private var mentionTextAttributes: [AttributeContainer]
+    fileprivate var mentionTextAttributes: [AttributeContainer]
 
     /**
      @brief The UITextView being handled by the SZMentionsListener
      */
-    private var mentionsTextView: UITextView
+    fileprivate var mentionsTextView: UITextView
 
     /**
      @brief Manager in charge of handling the creation and dismissal of the mentions
      list.
      */
-    private var mentionsManager: MentionsManagerDelegate
+    fileprivate var mentionsManager: MentionsManagerDelegate
 
     /**
      @brief Amount of time to delay between showMentions calls default:0.5
      */
-    private var cooldownInterval: TimeInterval
+    fileprivate var cooldownInterval: TimeInterval
 
     /**
      @brief Mutable array list of mentions managed by listener, accessible via the
      public mentions property.
      */
-    private var mutableMentions: [SZMention] = []
+    fileprivate var mutableMentions: [SZMention] = []
 
     /**
      @brief Range of mention currently being edited.
      */
-    private var currentMentionRange: NSRange?
+    fileprivate var currentMentionRange: NSRange?
 
     /**
      @brief Whether or not we are currently editing a mention.
      */
-    private var editingMention: Bool = false
+    fileprivate var editingMention: Bool = false
 
     /**
      @brief String to filter by
      */
-    private var filterString: String?
+    fileprivate var filterString: String?
 
     /**
      @brief String that has been sent to the showMentionsListWithString
      */
-    private var stringCurrentlyBeingFiltered: String?
+    fileprivate var stringCurrentlyBeingFiltered: String?
 
     /**
      @brief Timer to space out mentions requests
      */
-    private var cooldownTimer: Timer?
+    fileprivate var cooldownTimer: Timer?
 
     /**
      @brief Whether or not a mention is currently being edited
      */
-    private var mentionEnabled = false
+    fileprivate var mentionEnabled = false
 
     // MARK: Initialization
     /**
@@ -123,10 +123,18 @@ public class SZMentionsListener: NSObject {
         trigger mentionTrigger: String = "@",
         cooldownInterval interval: TimeInterval = 0.5,
         searchSpaces: Bool = false) {
-        mentionTextAttributes = mentionAttributes ?? [SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue,
-                                                              attributeValue: UIColor.blue)]
-        defaultTextAttributes = defaultAttributes ?? [SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue,
-                                                              attributeValue: UIColor.black)]
+        #if swift(>=4.0)
+            mentionTextAttributes = mentionAttributes ?? [SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue,
+            attributeValue: UIColor.blue)]
+            defaultTextAttributes = defaultAttributes ?? [SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue,
+            attributeValue: UIColor.black)]
+        #else
+            mentionTextAttributes = mentionAttributes ?? [SZAttribute(attributeName: NSForegroundColorAttributeName,
+                                                                      attributeValue: UIColor.blue)]
+            defaultTextAttributes = defaultAttributes ?? [SZAttribute(attributeName: NSForegroundColorAttributeName,
+                                                                      attributeValue: UIColor.black)]
+        #endif
+
         SZVerifier.verifySetup(withDefaultTextAttributes: defaultTextAttributes,
                                mentionTextAttributes: mentionTextAttributes)
         searchSpacesInMentions = searchSpaces
@@ -252,7 +260,7 @@ extension SZMentionsListener {
      @brief Reset typingAttributes for textView
      @param textView: the textView to change the typingAttributes on
      */
-    private func resetTypingAttributes(for textView: UITextView) {
+    fileprivate func resetTypingAttributes(for textView: UITextView) {
         var attributes = [String: Any]()
         for attribute in defaultTextAttributes {
             attributes[attribute.attributeName] = attribute.attributeValue
@@ -264,7 +272,7 @@ extension SZMentionsListener {
      @brief Resets the empty text view
      @param textView: the text view to reset
      */
-    private func resetEmpty(_ textView: UITextView) {
+    fileprivate func resetEmpty(_ textView: UITextView) {
         mutableMentions.removeAll()
         resetTypingAttributes(for: textView)
         textView.text = " "
@@ -282,7 +290,7 @@ extension SZMentionsListener {
      @param textView: the mentions text view
      @param range: the selected range
      */
-    private func adjust(_ textView: UITextView, range: NSRange) {
+    fileprivate func adjust(_ textView: UITextView, range: NSRange) {
         let substring = (textView.text as NSString).substring(to: range.location) as NSString
         var textBeforeTrigger = " "
         let location = substring.range(of: trigger, options: NSString.CompareOptions.backwards).location
@@ -331,7 +339,7 @@ extension SZMentionsListener {
         mentionEnabled = false
     }
     
-    private func clearMention(_ mention: SZMention) {
+    fileprivate func clearMention(_ mention: SZMention) {
         if let index = mutableMentions.index(of: mention) {
             editingMention = true
             mutableMentions.remove(at: index)
@@ -349,7 +357,7 @@ extension SZMentionsListener {
      @param text: the text to replace the range with
      @return Bool: whether or not the textView should adjust the text itself
      */
-    @discardableResult private func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
+    @discardableResult fileprivate func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
         var shouldAdjust = true
 
         if textView.text.isEmpty { resetEmpty(textView) }
