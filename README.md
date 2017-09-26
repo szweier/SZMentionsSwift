@@ -82,7 +82,7 @@ along with a list of users mentioned in that text and want to prep the textview 
 
 This protocol contains the required properties for a mention being sent to the mentions listener
 
-#### MentionsManager (Protocol)
+#### MentionsManagerDelegate (Protocol)
 
 The required methods for handling mention interaction.
 
