@@ -1,17 +1,21 @@
 @testable import SZMentionsSwift
 
-class SZExampleMention: SZCreateMentionProtocol {
-    var szMentionName: String = ""
-    var szMentionRange: NSRange = NSMakeRange(0, 0)
+class SZExampleMention: CreateMention {
+    var mentionName: String = ""
+    var mentionRange: NSRange = NSMakeRange(0, 0)
 }
 
-class TestMentionDelegate: NSObject, SZMentionsManagerProtocol, UITextViewDelegate {
+class TestMentionDelegate: NSObject, MentionsManagerDelegate, UITextViewDelegate {
+    
     var hidingMentionsList = false
     var shouldAddMentionOnReturnKeyCalled = false
     /**
-     @brief Called when addMentionAfterReturnKey = true  (mention table show and user hit Return key).
+     @brief Called when a user hits enter while entering a mention
      */
-    func shouldAddMentionOnReturnKey() { shouldAddMentionOnReturnKeyCalled = true }
+    func didHandleMentionOnReturn() -> Bool {
+        shouldAddMentionOnReturnKeyCalled = true
+        return true
+    }
 
     /**
      @brief Called when the UITextView is not editing a mention.

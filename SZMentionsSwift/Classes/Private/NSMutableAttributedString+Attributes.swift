@@ -13,11 +13,17 @@ internal extension NSMutableAttributedString {
      @param range: the range to apply the attributes to
      @param mutableAttributedString: the string to apply the attributes to
      */
-    func apply(_ attributes: [SZAttribute], range: NSRange) {
+    func apply(_ attributes: [AttributeContainer], range: NSRange) {
         attributes.forEach { attribute in
-            addAttribute(attribute.attributeName,
-                         value: attribute.attributeValue,
-                         range: range)
+            #if swift(>=4.0)
+                addAttribute(NSAttributedStringKey(rawValue: attribute.attributeName),
+                value: attribute.attributeValue,
+                range: range)
+            #else
+                addAttribute(attribute.attributeName,
+                             value: attribute.attributeValue,
+                             range: range)
+            #endif
         }
     }
 }

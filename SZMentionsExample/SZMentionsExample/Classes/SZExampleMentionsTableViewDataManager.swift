@@ -22,7 +22,7 @@ class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UI
 
         for name in names {
             let mention = SZExampleMention()
-            mention.szMentionName = name
+            mention.mentionName = name
             tempMentions.append(mention)
         }
 
@@ -50,7 +50,7 @@ class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UI
 
         if (filterString?.characters.count ?? 0 > 0) {
             filteredMentions = mentions.filter() {
-                if let type = ($0 as SZExampleMention).szMentionName as String! {
+                if let type = ($0 as SZExampleMention).mentionName as String! {
                     return type.lowercased().contains(filterString!.lowercased())
                 } else {
                     return false
@@ -79,7 +79,7 @@ class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UI
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") else { return UITableViewCell() }
-        cell.textLabel?.text = mentionsList()[indexPath.row].szMentionName
+        cell.textLabel?.text = mentionsList()[indexPath.row].mentionName
 
         return cell
     }

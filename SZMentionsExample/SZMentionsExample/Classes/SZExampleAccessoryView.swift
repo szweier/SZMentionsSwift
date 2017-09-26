@@ -9,21 +9,21 @@
 import UIKit
 import SZMentionsSwift
 
-class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
+class SZExampleAccessoryView: UIView, MentionsManagerDelegate {
     private let textView = UITextView()
     private let mentionsTableView = UITableView()
     private var verticalConstraints: [NSLayoutConstraint] = []
     private var dataManager: SZExampleMentionsTableViewDataManager?
 
-    init(frame: CGRect, delegate: UITextViewDelegate) {
-        super.init(frame: frame)
+    init(delegate: UITextViewDelegate) {
+        super.init(frame: .zero)
+        autoresizingMask = .flexibleHeight
         let mentionsListener = SZMentionsListener(mentionTextView: textView,
                                                   mentionsManager: self,
                                                   textViewDelegate: delegate,
                                                   mentionTextAttributes: mentionAttributes(),
                                                   defaultTextAttributes: defaultAttributes(),
-                                                  spaceAfterMention: true,
-                                                  addMentionOnReturnKey: true)
+                                                  spaceAfterMention: true)
 
         setupTextView(textView, delegate: mentionsListener)
         addSubview(textView)
@@ -31,8 +31,8 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
         textView.text = "Test Steven Zweier mention"
 
         let mention = SZExampleMention()
-        mention.szMentionName = "Steven Zweier"
-        mention.szMentionRange = NSRange(location: 5, length: 13)
+        mention.mentionName = "Steven Zweier"
+        mention.mentionRange = NSRange(location: 5, length: 13)
 
         mentionsListener.insertExistingMentions([mention])
 
@@ -72,8 +72,8 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
         textView.delegate = delegate
     }
 
-    private func mentionAttributes() -> [SZAttribute] {
-        var attributes = [SZAttribute]()
+    private func mentionAttributes() -> [AttributeContainer] {
+        var attributes = [AttributeContainer]()
 
         let attribute = SZAttribute(
             attributeName: NSForegroundColorAttributeName,
@@ -91,8 +91,8 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
         return attributes
     }
 
-    private func defaultAttributes() -> [SZAttribute] {
-        var attributes = [SZAttribute]()
+    private func defaultAttributes() -> [AttributeContainer] {
+        var attributes = [AttributeContainer]()
 
         let attribute = SZAttribute(
             attributeName: NSForegroundColorAttributeName,
@@ -112,8 +112,8 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
 
     func showMentionsListWithString(_ mentionsString: String) {
         if mentionsTableView.superview == nil {
-            addSubview(mentionsTableView)
             removeConstraints(constraints)
+            addSubview(mentionsTableView)
             addConstraints(
                 NSLayoutConstraint.constraints(
                     withVisualFormat: "|-5-[tableview]-5-|",
@@ -138,7 +138,7 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
     }
 
     func hideMentionsList() {
-        if (mentionsTableView.superview != nil) {
+        if mentionsTableView.superview != nil {
             mentionsTableView.removeFromSuperview()
             verticalConstraints = NSLayoutConstraint.constraints(
                 withVisualFormat: "V:|-5-[textView(30)]-5-|",
@@ -150,11 +150,10 @@ class SZExampleAccessoryView: UIView, SZMentionsManagerProtocol {
         dataManager?.filter(nil)
     }
 
-    //**Optional function Called when user tap Return key you must init SZMentionsListener with addMentionOnReturnKey = true
-    func shouldAddMentionOnReturnKey() {
-        if let mention = dataManager?.firstMentionObject() {
-            dataManager?.addMention(mention)
-        }
+    func didHandleMentionOnReturn() -> Bool { return true }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: frame.size.width, height: mentionsTableView.superview == nil ? 40 : 140)
     }
     
     required init?(coder aDecoder: NSCoder) {

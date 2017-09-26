@@ -13,7 +13,9 @@ internal extension Array where Element: SZMention {
      @return SZMention?: the mention being edited (if one exists)
      */
     func mentionBeingEdited(atRange range: NSRange) -> SZMention? {
-        return filter{ NSIntersectionRange(range, $0.mentionRange).location > 0 && range.location != $0.mentionRange.location }.first
+        return filter{ NSIntersectionRange(range, $0.mentionRange).length > 0 ||
+            (range.location + range.length) > $0.mentionRange.location &&
+            (range.location + range.length) < ($0.mentionRange.location + $0.mentionRange.length) }.first
     }
 
     /**
@@ -29,34 +31,6 @@ internal extension Array where Element: SZMention {
                 location: mention.mentionRange.location + rangeAdjustment,
                 length: mention.mentionRange.length)
         }
-    }
-
-    /**
-     @brief Determine whether or not we need to change the color back to default attributes
-     @param textView: the mentions text view
-     @param range: the current selection in the text view
-     @param mentions: the list of current mentions
-     @return Bool: whether or not we need to change back to default attributes
-     */
-    func needsToChangeToDefaultAttributes(_ textView: UITextView, range: NSRange) -> Bool {
-        let isAheadOfMention = range.location > 0 &&
-            mentionExistsAt(range.location - 1)
-        let isAtStartOfTextViewAndIsTouchingMention = range.location == 0 &&
-            mentionExistsAt(range.location + 1)
-
-        return isAheadOfMention || isAtStartOfTextViewAndIsTouchingMention
-    }
-
-    /**
-     @brief Determines whether or not a mention exists at a specific location
-     @param index: the location to check
-     @param mentions: the list of current mentions
-     @return Bool: Whether or not a mention exists at a specific location
-     */
-    private func mentionExistsAt(_ index: NSInteger) -> Bool {
-        let mentionsList = filter{ index >= $0.mentionRange.location && index < $0.mentionRange.location + $0.mentionRange.length }
-
-        return mentionsList.count > 0
     }
 
     /**

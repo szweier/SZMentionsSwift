@@ -43,8 +43,13 @@ class Delegates: QuickSpec {
             let textView = UITextView()
 
             beforeEach {
-                let attribute = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
-                let attribute2 = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.black)
+                #if swift(>=4.0)
+                    let attribute = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.red)
+                    let attribute2 = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.black)
+                #else
+                    let attribute = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
+                    let attribute2 = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.black)
+                #endif
 
                 textViewDelegate = TextViewDelegate()
                 testDelegate = TestMentionDelegate()
@@ -105,7 +110,6 @@ class Delegates: QuickSpec {
 
             it("Should call delegate method to determine if adding mention on return should be enabled") {
                 expect(testDelegate.shouldAddMentionOnReturnKeyCalled).to(beFalsy())
-                mentionsListener.addMentionAfterReturnKey = true
 
                 textView.insertText("@t")
                 expect(testDelegate.hidingMentionsList).to(beFalsy())
@@ -122,37 +126,46 @@ class Delegates: QuickSpec {
                 textView.text = "Testing Steven Zweier and Tiffany get mentioned correctly";
 
                 let mention = SZExampleMention()
-                mention.szMentionName = "Steve"
-                mention.szMentionRange = NSMakeRange(8, 13)
+                mention.mentionName = "Steve"
+                mention.mentionRange = NSMakeRange(8, 13)
 
                 let mention2 = SZExampleMention()
-                mention2.szMentionName = "Tiff"
-                mention2.szMentionRange = NSMakeRange(26, 7)
+                mention2.mentionName = "Tiff"
+                mention2.mentionRange = NSMakeRange(26, 7)
 
-                let insertMentions : Array<SZCreateMentionProtocol> = [mention, mention2]
+                let insertMentions : Array<CreateMention> = [mention, mention2]
 
                 mentionsListener.insertExistingMentions(insertMentions)
 
                 expect(mentionsListener.mentions.count).to(equal(2))
-                expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 9, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 21, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 27, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 33, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+
+                #if swift(>=4.0)
+                    expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                    expect((textView.attributedText.attribute(.foregroundColor, at: 9, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                    expect((textView.attributedText.attribute(.foregroundColor, at: 21, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                    expect((textView.attributedText.attribute(.foregroundColor, at: 27, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                    expect((textView.attributedText.attribute(.foregroundColor, at: 33, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                #else
+                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 9, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 21, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 27, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 33, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                #endif
             }
 
             it("Should throw an assertion if the mention range is beyond the text length") {
                 textView.text = "Testing Steven Zweier"
 
                 let mention = SZExampleMention()
-                mention.szMentionName = "Steve"
-                mention.szMentionRange = NSMakeRange(8, 13)
+                mention.mentionName = "Steve"
+                mention.mentionRange = NSMakeRange(8, 13)
 
                 let mention2 = SZExampleMention()
-                mention2.szMentionName = "Tiff"
-                mention2.szMentionRange = NSMakeRange(26, 7)
+                mention2.mentionName = "Tiff"
+                mention2.mentionRange = NSMakeRange(26, 7)
 
-                let insertMentions : Array<SZCreateMentionProtocol> = [mention, mention2]
+                let insertMentions : Array<CreateMention> = [mention, mention2]
 
                 expect(mentionsListener.insertExistingMentions(insertMentions)).to(throwAssertion())
             }

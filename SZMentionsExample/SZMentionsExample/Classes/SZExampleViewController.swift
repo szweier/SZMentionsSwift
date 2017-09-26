@@ -15,8 +15,7 @@ class SZExampleViewController: UIViewController, UITextViewDelegate {
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        let frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: 40)
-        myInputAccessoryView = SZExampleAccessoryView(frame: frame, delegate: self)
+        myInputAccessoryView = SZExampleAccessoryView(delegate: self)
     }
 
     required init?(coder aDecoder: NSCoder) {
