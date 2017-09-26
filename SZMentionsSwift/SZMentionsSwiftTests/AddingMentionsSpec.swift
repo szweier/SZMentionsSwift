@@ -53,21 +53,40 @@ class AddingMentions: QuickSpec {
 
                 expect(mentionsListener.mentions.first?.mentionRange.location).to(equal(8))
             }
-
+            
             it("Should have the correct length of the mention created") {
                 textView.insertText("@t")
                 var mention = SZExampleMention()
                 mention.mentionName = "Steven"
                 mentionsListener.addMention(mention)
-
+                
                 expect(mentionsListener.mentions.first?.mentionRange.length).to(equal(6))
-
+                
                 textView.insertText("Testing @t")
                 mention = SZExampleMention()
                 mention.mentionName = "Steven Zweier"
                 mentionsListener.addMention(mention)
-
+                
                 expect(mentionsListener.mentions.last?.mentionRange.length).to(equal(13))
+            }
+            
+            it("Should have the correct length of the mention created") {
+                textView.insertText("@t")
+                let mention = SZExampleMention()
+                mention.mentionName = "Steven"
+                mentionsListener.addMention(mention)
+                
+                expect(mentionsListener.mentions.first?.mentionRange.length).to(equal(6))
+                
+                textView.insertText(". ")
+
+                #if swift(>=4.0)
+                    expect((textView.attributedText.attribute(.backgroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                    expect((textView.attributedText.attribute(.foregroundColor, at: 7, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                #else
+                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 7, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                #endif
             }
 
             it("Should adjust the location of an existing mention correctly") {
