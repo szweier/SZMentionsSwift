@@ -81,7 +81,7 @@ class AddingMentions: QuickSpec {
                 textView.insertText(". ")
 
                 #if swift(>=4.0)
-                    expect((textView.attributedText.attribute(.backgroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                    expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
                     expect((textView.attributedText.attribute(.foregroundColor, at: 7, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
                 #else
                     expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
