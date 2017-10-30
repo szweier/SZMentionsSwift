@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.1.1](https://github.com/szweier/SZMentionsSwift/releases/tag/1.1.1) (10/30/2017)
+
+#### Fixed
+* Issue where auto correct moves selected range incorrectly
+
 ## [1.1.0](https://github.com/szweier/SZMentionsSwift/releases/tag/1.1.0) (9/23/2017)
 
 #### Added

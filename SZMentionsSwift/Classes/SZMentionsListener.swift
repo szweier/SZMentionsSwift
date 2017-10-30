@@ -430,14 +430,18 @@ extension SZMentionsListener: UITextViewDelegate {
             if let editedMention = mentions.mentionBeingEdited(atRange: range) {
                 clearMention(editedMention)
             }
-            
+
+            textView.delegate = nil
             if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
                 mutableAttributedString.replaceCharacters(in: range, with: NSAttributedString(string: text))
                 mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: range.location, length: text.characters.count))
+                mentionsTextView.selectedRange = NSRange(location: 0, length: 0)
                 textView.attributedText = mutableAttributedString
+                mentionsTextView.selectedRange = NSRange(location: range.location + text.characters.count, length: 0)
             }
             
             mentions.adjustMentions(forTextChangeAtRange: range, text: text)
+            textView.delegate = self
             
             return false
         }
