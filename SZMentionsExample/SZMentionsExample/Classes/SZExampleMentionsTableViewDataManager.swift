@@ -48,7 +48,7 @@ class SZExampleMentionsTableViewDataManager: NSObject, UITableViewDataSource, UI
     private func mentionsList() -> [SZExampleMention] {
         var filteredMentions = mentions
 
-        if (filterString?.characters.count ?? 0 > 0) {
+        if (filterString?.count ?? 0 > 0) {
             filteredMentions = mentions.filter() {
                 if let type = ($0 as SZExampleMention).mentionName as String! {
                     return type.lowercased().contains(filterString!.lowercased())
