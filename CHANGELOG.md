@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.1.2](https://github.com/szweier/SZMentionsSwift/releases/tag/1.1.2)  (11/9/2017)
+
+#### Cleaned
+* Removed the last bit of warnings from most recent Apple updates
+
 ## [1.1.1](https://github.com/szweier/SZMentionsSwift/releases/tag/1.1.1) (10/30/2017)
 
 #### Fixed

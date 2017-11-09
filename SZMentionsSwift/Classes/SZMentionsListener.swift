@@ -168,7 +168,7 @@ extension SZMentionsListener {
             existingMentions.forEach { mention in
                 let range = mention.mentionRange
                 assert(range.location != NSNotFound, "Mention must have a range to insert into")
-                assert(range.location + range.length < mutableAttributedString.string.characters.count,
+                assert(range.location + range.length < mutableAttributedString.string.count,
                        "Mention range is out of bounds for the text length")
                 
                 let szMention = SZMention(mentionRange: range, mentionObject: mention)
@@ -425,7 +425,7 @@ extension SZMentionsListener: UITextViewDelegate {
             mentionsManager.hideMentionsList()
 
             return false
-        } else if text.characters.count > 1 {
+        } else if text.count > 1 {
             //Pasting
             if let editedMention = mentions.mentionBeingEdited(atRange: range) {
                 clearMention(editedMention)
@@ -434,10 +434,10 @@ extension SZMentionsListener: UITextViewDelegate {
             textView.delegate = nil
             if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
                 mutableAttributedString.replaceCharacters(in: range, with: NSAttributedString(string: text))
-                mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: range.location, length: text.characters.count))
+                mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: range.location, length: text.count))
                 mentionsTextView.selectedRange = NSRange(location: 0, length: 0)
                 textView.attributedText = mutableAttributedString
-                mentionsTextView.selectedRange = NSRange(location: range.location + text.characters.count, length: 0)
+                mentionsTextView.selectedRange = NSRange(location: range.location + text.count, length: 0)
             }
             
             mentions.adjustMentions(forTextChangeAtRange: range, text: text)

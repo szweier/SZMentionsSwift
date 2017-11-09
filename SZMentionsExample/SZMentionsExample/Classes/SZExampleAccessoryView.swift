@@ -76,13 +76,13 @@ class SZExampleAccessoryView: UIView, MentionsManagerDelegate {
         var attributes = [AttributeContainer]()
 
         let attribute = SZAttribute(
-            attributeName: NSForegroundColorAttributeName,
+            attributeName: NSAttributedStringKey.foregroundColor.rawValue,
             attributeValue: UIColor.black)
         let attribute2 = SZAttribute(
-            attributeName: NSFontAttributeName,
+            attributeName: NSAttributedStringKey.font.rawValue,
             attributeValue: UIFont(name: "ChalkboardSE-Bold", size: 12)!)
         let attribute3 = SZAttribute(
-            attributeName: NSBackgroundColorAttributeName,
+            attributeName: NSAttributedStringKey.backgroundColor.rawValue,
             attributeValue: UIColor.lightGray)
         attributes.append(attribute)
         attributes.append(attribute2)
@@ -95,13 +95,13 @@ class SZExampleAccessoryView: UIView, MentionsManagerDelegate {
         var attributes = [AttributeContainer]()
 
         let attribute = SZAttribute(
-            attributeName: NSForegroundColorAttributeName,
+            attributeName: NSAttributedStringKey.foregroundColor.rawValue,
             attributeValue: UIColor.gray)
         let attribute2 = SZAttribute(
-            attributeName: NSFontAttributeName,
+            attributeName: NSAttributedStringKey.font.rawValue,
             attributeValue: UIFont(name: "ArialMT", size: 12)!)
         let attribute3 = SZAttribute(
-            attributeName: NSBackgroundColorAttributeName,
+            attributeName: NSAttributedStringKey.backgroundColor.rawValue,
             attributeValue: UIColor.white)
         attributes.append(attribute)
         attributes.append(attribute2)
