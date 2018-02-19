@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.1.3](https://github.com/szweier/SZMentionsSwift/releases/tag/1.1.3)  (2/19/2018)
+
+#### Cleaned
+* Allow for multiple triggers to be chosen for triggering mentions [Issue #55](https://github.com/szweier/SZMentionsSwift/issues/55)
+
 ## [1.1.2](https://github.com/szweier/SZMentionsSwift/releases/tag/1.1.2)  (11/9/2017)
 
 #### Cleaned
@@ -22,7 +27,7 @@ See README for more information.
 ## [1.0.9](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.9) (9/6/2017)
 
 #### Added
-* The ability to use `pod try SZMentionsSwift` reported by @slxl https://github.com/szweier/SZMentionsSwift/issues/49
+* The ability to use `pod try SZMentionsSwift` reported by @slxl [Issue #49](https://github.com/szweier/SZMentionsSwift/issues/49)
 
 ## [1.0.8](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.8) (4/30/2017)
 
@@ -43,7 +48,7 @@ See README for more information.
 ## [1.0.6](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.6) (4/02/2017)
 
 #### Added
-* Option to search mentions that contain spaces thanks to @camdengaba. https://github.com/szweier/SZMentionsSwift/issues/42
+* Option to search mentions that contain spaces thanks to @camdengaba. [Issue #42](https://github.com/szweier/SZMentionsSwift/issues/42)
 
 ## [1.0.5](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.5) (2/10/2017)
 
@@ -63,7 +68,7 @@ See README for more information.
 ## [1.0.2](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.2) (1/25/2017)
 
 #### Fixed
-* Issue reported by @raphaelcruzeiro https://github.com/szweier/SZMentionsSwift/issues/32
+* Issue reported by @raphaelcruzeiro [Issue #32](https://github.com/szweier/SZMentionsSwift/issues/32)
 
 ## [1.0.1](https://github.com/szweier/SZMentionsSwift/releases/tag/1.0.1) (1/10/2017)
 
