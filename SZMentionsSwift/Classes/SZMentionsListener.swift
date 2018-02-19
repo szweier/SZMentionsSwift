@@ -34,9 +34,9 @@ public class SZMentionsListener: NSObject {
 
     // MARK: Private vars
     /**
-     @brief Trigger to start a mention. Default: @
+     @brief Triggers to start a mention. Default: @
      */
-    fileprivate var trigger: String
+    fileprivate var triggers: [String]
 
     /**
      @brief Text attributes to be applied to all text excluding mentions.
@@ -109,7 +109,7 @@ public class SZMentionsListener: NSObject {
      @param mentionTextAttributes - text style to show for mentions
      @param defaultTextAttributes - text style to show for default text
      @param spaceAfterMention - whether or not to add a space after adding a mention
-     @param trigger - what text triggers showing the mentions list
+     @param triggers - what text triggers showing the mentions list
      @param cooldownInterval - amount of time between show / hide mentions calls
      @param searchSpaces - mention searches can / cannot contain spaces
      */
@@ -120,7 +120,7 @@ public class SZMentionsListener: NSObject {
         mentionTextAttributes mentionAttributes: [AttributeContainer]? = nil,
         defaultTextAttributes defaultAttributes: [AttributeContainer]? = nil,
         spaceAfterMention spaceAfter: Bool = false,
-        trigger mentionTrigger: String = "@",
+        triggers mentionTriggers: [String] = ["@"],
         cooldownInterval interval: TimeInterval = 0.5,
         searchSpaces: Bool = false) {
         #if swift(>=4.0)
@@ -142,7 +142,7 @@ public class SZMentionsListener: NSObject {
         mentionsManager = manager
         delegate = textViewDelegate
         spaceAfterMention = spaceAfter
-        trigger = mentionTrigger
+        triggers = mentionTriggers
         cooldownInterval = interval
         super.init()
         resetEmpty(mentionsTextView)
@@ -182,7 +182,7 @@ extension SZMentionsListener {
     }
     
     /**
-     @brief Adds a mention to the current mention range (determined by trigger + characters typed up to space or end of line)
+     @brief Adds a mention to the current mention range (determined by triggers + characters typed up to space or end of line)
      @param mention: the mention object to apply
      @return Bool: whether or not a mention was added
      */
@@ -231,11 +231,11 @@ extension SZMentionsListener {
             stringCurrentlyBeingFiltered = filterString
             
             if mentionsTextView.selectedRange.location >= 1 {
+                let rangeTuple = mentionsTextView.text.range(of: triggers,
+                                                        options: NSString.CompareOptions.backwards,
+                                                        range: NSRange(location: 0, length: mentionsTextView.selectedRange.location + mentionsTextView.selectedRange.length))
                 
-                let range = (mentionsTextView.text as NSString).range(
-                    of: trigger,
-                    options: NSString.CompareOptions.backwards,
-                    range: NSRange(location: 0, length: mentionsTextView.selectedRange.location + mentionsTextView.selectedRange.length))
+                guard let range = rangeTuple.range, let trigger = rangeTuple.foundString else { return }
                 
                 var location: Int = 0
                 
@@ -291,9 +291,12 @@ extension SZMentionsListener {
      @param range: the selected range
      */
     fileprivate func adjust(_ textView: UITextView, range: NSRange) {
-        let substring = (textView.text as NSString).substring(to: range.location) as NSString
+        let string = (textView.text as NSString).substring(to: range.location)
         var textBeforeTrigger = " "
-        let location = substring.range(of: trigger, options: NSString.CompareOptions.backwards).location
+        let rangeTuple = string.range(of: triggers, options: NSString.CompareOptions.backwards)
+        guard let location = rangeTuple.range?.location, let trigger = rangeTuple.foundString else { return }
+        let substring = (string as NSString)
+        
         mentionEnabled = false
 
         if location != NSNotFound {
@@ -326,7 +329,7 @@ extension SZMentionsListener {
                 filterString = (mentionString as NSString).replacingOccurrences(of: trigger, with: "")
                 filterString = filterString?.replacingOccurrences(of: "\n", with: "")
 
-                if let filterString = filterString, let cooldownTimer = cooldownTimer, !cooldownTimer.isValid {
+                if let filterString = filterString, !(cooldownTimer?.isValid ?? false) {
                     stringCurrentlyBeingFiltered = filterString
                     mentionsManager.showMentionsListWithString(filterString)
                 }
