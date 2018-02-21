@@ -22,7 +22,6 @@ internal extension Array where Element: SZMention {
      @brief adjusts the positioning of mentions that exist after the range where text was edited
      @param range: the range where text was changed
      @param text: the text that was changed
-     @param mentions: the list of current mentions
      */
     func adjustMentions(forTextChangeAtRange range: NSRange, text: String) {
         let rangeAdjustment = text.utf16.count - range.length
@@ -36,7 +35,6 @@ internal extension Array where Element: SZMention {
     /**
      @brief Determines what mentions exist after a given range
      @param range: the range where text was changed
-     @param mentionsList: the list of current mentions
      @return [SZMention]: list of mentions that exist after the provided range
      */
     private func mentionsAfterTextEntry(_ range: NSRange) -> [SZMention] {
