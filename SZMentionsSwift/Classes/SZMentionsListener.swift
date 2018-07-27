@@ -246,7 +246,7 @@ extension SZMentionsListener {
                 let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSRange(location: location, length: 1))
                 
                 if substringTrigger == trigger {
-                    mentionsManager.showMentionsListWithString(filterString)
+                    mentionsManager.showMentionsListWithString(filterString, trigger: trigger)
                 }
             }
         }
@@ -331,7 +331,7 @@ extension SZMentionsListener {
 
                 if let filterString = filterString, !(cooldownTimer?.isValid ?? false) {
                     stringCurrentlyBeingFiltered = filterString
-                    mentionsManager.showMentionsListWithString(filterString)
+                    mentionsManager.showMentionsListWithString(filterString, trigger: trigger)
                 }
                 activateCooldownTimer()
                 return
