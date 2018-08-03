@@ -10,6 +10,10 @@ import UIKit
 import SZMentionsSwift
 
 class SZExampleAccessoryView: UIView, MentionsManagerDelegate {
+    struct SZAttribute: AttributeContainer {
+        var attributeName: String
+        var attributeValue: NSObject
+    }
     private let textView = UITextView()
     private let mentionsTableView = UITableView()
     private var verticalConstraints: [NSLayoutConstraint] = []
