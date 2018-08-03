@@ -1,7 +1,15 @@
+//
+//  SZMentionHelper.swift
+//  SZMentionsSwift
+//
+//  Created by Steve Zweier on 2/1/16.
+//  Copyright © 2016 Steven Zweier. All rights reserved.
+//
+
 import UIKit
 
 extension String {
-    func range(of strings: [String], options: NSString.CompareOptions, range: NSRange? = nil) -> (range: NSRange?, foundString: String?) {
+    internal func range(of strings: [String], options: NSString.CompareOptions, range: NSRange? = nil) -> (range: NSRange?, foundString: String?) {
         guard !strings.isEmpty else { return (nil, nil) }
         var i = 0
         var foundRange: NSRange?

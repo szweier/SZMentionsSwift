@@ -36,69 +36,69 @@ public class SZMentionsListener: NSObject {
     /**
      @brief Triggers to start a mention. Default: @
      */
-    fileprivate var triggers: [String]
+    private var triggers: [String]
 
     /**
      @brief Text attributes to be applied to all text excluding mentions.
      */
-    fileprivate var defaultTextAttributes: [AttributeContainer]
+    private var defaultTextAttributes: [AttributeContainer]
 
     /**
      @brief Text attributes to be applied to mentions.
      */
-    fileprivate var mentionTextAttributes: [AttributeContainer]
+    private var mentionTextAttributes: [AttributeContainer]
 
     /**
      @brief The UITextView being handled by the SZMentionsListener
      */
-    fileprivate var mentionsTextView: UITextView
+    private var mentionsTextView: UITextView
 
     /**
      @brief Manager in charge of handling the creation and dismissal of the mentions
      list.
      */
-    fileprivate var mentionsManager: MentionsManagerDelegate
+    private var mentionsManager: MentionsManagerDelegate
 
     /**
      @brief Amount of time to delay between showMentions calls default:0.5
      */
-    fileprivate var cooldownInterval: TimeInterval
+    private var cooldownInterval: TimeInterval
 
     /**
      @brief Mutable array list of mentions managed by listener, accessible via the
      public mentions property.
      */
-    fileprivate var mutableMentions: [SZMention] = []
+    private var mutableMentions: [SZMention] = []
 
     /**
      @brief Range of mention currently being edited.
      */
-    fileprivate var currentMentionRange: NSRange?
+    private var currentMentionRange: NSRange?
 
     /**
      @brief Whether or not we are currently editing a mention.
      */
-    fileprivate var editingMention: Bool = false
+    private var editingMention: Bool = false
 
     /**
      @brief String to filter by
      */
-    fileprivate var filterString: String?
+    private var filterString: String?
 
     /**
      @brief String that has been sent to the showMentionsListWithString
      */
-    fileprivate var stringCurrentlyBeingFiltered: String?
+    private var stringCurrentlyBeingFiltered: String?
 
     /**
      @brief Timer to space out mentions requests
      */
-    fileprivate var cooldownTimer: Timer?
+    private var cooldownTimer: Timer?
 
     /**
      @brief Whether or not a mention is currently being edited
      */
-    fileprivate var mentionEnabled = false
+    private var mentionEnabled = false
 
     // MARK: Initialization
     /**
@@ -260,7 +260,7 @@ extension SZMentionsListener {
      @brief Reset typingAttributes for textView
      @param textView: the textView to change the typingAttributes on
      */
-    fileprivate func resetTypingAttributes(for textView: UITextView) {
+    private func resetTypingAttributes(for textView: UITextView) {
         var attributes = [String: Any]()
         for attribute in defaultTextAttributes {
             attributes[attribute.attributeName] = attribute.attributeValue
@@ -272,7 +272,7 @@ extension SZMentionsListener {
      @brief Resets the empty text view
      @param textView: the text view to reset
      */
-    fileprivate func resetEmpty(_ textView: UITextView) {
+    private func resetEmpty(_ textView: UITextView) {
         mutableMentions.removeAll()
         resetTypingAttributes(for: textView)
         textView.text = " "
@@ -290,7 +290,7 @@ extension SZMentionsListener {
      @param textView: the mentions text view
      @param range: the selected range
      */
-    fileprivate func adjust(_ textView: UITextView, range: NSRange) {
+    private func adjust(_ textView: UITextView, range: NSRange) {
         let string = (textView.text as NSString).substring(to: range.location)
         var textBeforeTrigger = " "
         let rangeTuple = string.range(of: triggers, options: NSString.CompareOptions.backwards)
@@ -342,7 +342,7 @@ extension SZMentionsListener {
         mentionEnabled = false
     }
     
-    fileprivate func clearMention(_ mention: SZMention) {
+    private func clearMention(_ mention: SZMention) {
         if let index = mutableMentions.index(of: mention) {
             editingMention = true
             mutableMentions.remove(at: index)
@@ -360,7 +360,7 @@ extension SZMentionsListener {
      @param text: the text to replace the range with
      @return Bool: whether or not the textView should adjust the text itself
      */
-    @discardableResult fileprivate func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
+    @discardableResult private func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
         var shouldAdjust = true
 
         if textView.text.isEmpty { resetEmpty(textView) }
