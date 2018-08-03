@@ -421,6 +421,10 @@ extension SZMentionsListener: UITextViewDelegate {
                          replacementText text: String) -> Bool {
         assert((textView.delegate?.isEqual(self))!, "Textview delegate must be set equal to SZMentionsListener")
 
+        defer {
+            _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
+        }
+        
         resetTypingAttributes(for: textView)
 
         if text == "\n", mentionEnabled, mentionsManager.didHandleMentionOnReturn() {
@@ -448,7 +452,6 @@ extension SZMentionsListener: UITextViewDelegate {
             
             return false
         }
-        _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
         return shouldAdjust(textView, range: range, text: text)
     }
