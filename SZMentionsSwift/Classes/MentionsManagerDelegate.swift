@@ -13,9 +13,11 @@ public protocol MentionsManagerDelegate {
      @brief Called when the UITextView is editing a mention.
      
      @param MentionString the current text entered after the mention trigger.
+     @param Trigger the trigger being used to create the mention.
+     
      Generally used for filtering a mentions list.
      */
-    func showMentionsListWithString(_ mentionsString: String)
+    func showMentionsListWithString(_ mentionsString: String, trigger: String)
     
     /**
      @brief Called when the UITextView is not editing a mention.

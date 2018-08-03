@@ -20,6 +20,8 @@ class MentionsDisplay: QuickSpec {
             it("Should show the mentions list when typing a mention and hide when a space is added if search spaces is false") {
                 textView.insertText("@t")
                 expect(testDelegate.hidingMentionsList).to(beFalsy())
+                expect(testDelegate.mentionsString).to(equal("t"))
+                expect(testDelegate.trigger).to(equal("@"))
                 textView.insertText(" ")
                 expect(testDelegate.hidingMentionsList).to(beTruthy())
             }
@@ -28,6 +30,8 @@ class MentionsDisplay: QuickSpec {
                 mentionsListener.searchSpacesInMentions = true
                 textView.insertText("@t")
                 expect(testDelegate.hidingMentionsList).to(beFalsy())
+                expect(testDelegate.mentionsString).to(equal("t"))
+                expect(testDelegate.trigger).to(equal("@"))
                 textView.insertText(" ")
                 expect(testDelegate.hidingMentionsList).to(beFalsy())
             }
@@ -35,6 +39,8 @@ class MentionsDisplay: QuickSpec {
             it("Should show the mentions list when typing a mention on a new line and hide when a space is added if search spaces is false") {
                 textView.insertText("\n@t")
                 expect(testDelegate.hidingMentionsList).to(beFalsy())
+                expect(testDelegate.mentionsString).to(equal("t"))
+                expect(testDelegate.trigger).to(equal("@"))
                 textView.insertText(" ")
                 expect(testDelegate.hidingMentionsList).to(beTruthy())
             }
@@ -43,6 +49,8 @@ class MentionsDisplay: QuickSpec {
                 mentionsListener.searchSpacesInMentions = true
                 textView.insertText("\n@t")
                 expect(testDelegate.hidingMentionsList).to(beFalsy())
+                expect(testDelegate.mentionsString).to(equal("t"))
+                expect(testDelegate.trigger).to(equal("@"))
                 textView.insertText(" ")
                 expect(testDelegate.hidingMentionsList).to(beFalsy())
             }

@@ -246,7 +246,7 @@ extension SZMentionsListener {
                 let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSRange(location: location, length: 1))
                 
                 if substringTrigger == trigger {
-                    mentionsManager.showMentionsListWithString(filterString)
+                    mentionsManager.showMentionsListWithString(filterString, trigger: trigger)
                 }
             }
         }
@@ -303,7 +303,7 @@ extension SZMentionsListener {
             mentionEnabled = location == 0
 
             if location > 0 {
-                //Determine whether or not a space exists before the trigger.
+                //Determine whether or not a space exists before the triggter.
                 //(in the case of an @ trigger this avoids showing the mention list for an email address)
                 let substringRange = NSRange(location: location - 1, length: 1)
                 textBeforeTrigger = substring.substring(with: substringRange)
@@ -331,7 +331,7 @@ extension SZMentionsListener {
 
                 if let filterString = filterString, !(cooldownTimer?.isValid ?? false) {
                     stringCurrentlyBeingFiltered = filterString
-                    mentionsManager.showMentionsListWithString(filterString)
+                    mentionsManager.showMentionsListWithString(filterString, trigger: trigger)
                 }
                 activateCooldownTimer()
                 return
