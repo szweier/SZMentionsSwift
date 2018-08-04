@@ -9,6 +9,19 @@
 import UIKit
 import SZMentionsSwift
 
+//As SZAttribute is private only
+struct CustomAttr: AttributeContainer {
+    /**
+     @brief Name of the attribute to set on a string
+     */
+    public var attributeName: String
+    
+    /**
+     @brief Value of the attribute to set on a string
+     */
+    public var attributeValue: NSObject
+}
+
 class SZExampleAccessoryView: UIView, MentionsManagerDelegate {
     struct SZAttribute: AttributeContainer {
         var attributeName: String
@@ -22,12 +35,7 @@ class SZExampleAccessoryView: UIView, MentionsManagerDelegate {
     init(delegate: UITextViewDelegate) {
         super.init(frame: .zero)
         autoresizingMask = .flexibleHeight
-        let mentionsListener = SZMentionsListener(mentionTextView: textView,
-                                                  mentionsManager: self,
-                                                  textViewDelegate: delegate,
-                                                  mentionTextAttributes: mentionAttributes(),
-                                                  defaultTextAttributes: defaultAttributes(),
-                                                  spaceAfterMention: true)
+        let mentionsListener = SZMentionsListener(mentionTextView: textView, mentionsManager: self, textViewDelegate: delegate, mentionTextAttributes: mentionAttributes(), defaultTextAttributes: defaultAttributes(), spaceAfterMention: true, triggers: ["@", "!", "#"], cooldownInterval: 0.3, searchSpaces: true)
 
         setupTextView(textView, delegate: mentionsListener)
         addSubview(textView)
@@ -75,17 +83,17 @@ class SZExampleAccessoryView: UIView, MentionsManagerDelegate {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.delegate = delegate
     }
-
+    
     private func mentionAttributes() -> [AttributeContainer] {
         var attributes = [AttributeContainer]()
 
-        let attribute = SZAttribute(
+        let attribute = CustomAttr(
             attributeName: NSAttributedStringKey.foregroundColor.rawValue,
             attributeValue: UIColor.black)
-        let attribute2 = SZAttribute(
+        let attribute2 = CustomAttr(
             attributeName: NSAttributedStringKey.font.rawValue,
             attributeValue: UIFont(name: "ChalkboardSE-Bold", size: 12)!)
-        let attribute3 = SZAttribute(
+        let attribute3 = CustomAttr(
             attributeName: NSAttributedStringKey.backgroundColor.rawValue,
             attributeValue: UIColor.lightGray)
         attributes.append(attribute)
@@ -98,13 +106,13 @@ class SZExampleAccessoryView: UIView, MentionsManagerDelegate {
     private func defaultAttributes() -> [AttributeContainer] {
         var attributes = [AttributeContainer]()
 
-        let attribute = SZAttribute(
+        let attribute = CustomAttr(
             attributeName: NSAttributedStringKey.foregroundColor.rawValue,
             attributeValue: UIColor.gray)
-        let attribute2 = SZAttribute(
+        let attribute2 = CustomAttr(
             attributeName: NSAttributedStringKey.font.rawValue,
             attributeValue: UIFont(name: "ArialMT", size: 12)!)
-        let attribute3 = SZAttribute(
+        let attribute3 = CustomAttr(
             attributeName: NSAttributedStringKey.backgroundColor.rawValue,
             attributeValue: UIColor.white)
         attributes.append(attribute)
@@ -114,7 +122,8 @@ class SZExampleAccessoryView: UIView, MentionsManagerDelegate {
         return attributes
     }
 
-    func showMentionsListWithString(_ mentionsString: String) {
+    func showMentionsListWithString(_ mentionsString: String, trigger: String) {
+        print(mentionsString,trigger)
         if mentionsTableView.superview == nil {
             removeConstraints(constraints)
             addSubview(mentionsTableView)
