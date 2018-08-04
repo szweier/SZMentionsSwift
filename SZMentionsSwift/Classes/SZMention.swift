@@ -19,7 +19,7 @@ public struct SZMention: Equatable {
      */
     public private(set) var object: CreateMention
 
-    public static func ==(lhs: SZMention, rhs: SZMention) -> Bool {
+    public static func == (lhs: SZMention, rhs: SZMention) -> Bool {
         return lhs.range == rhs.range && lhs.object.name == rhs.object.name && lhs.object.range == rhs.object.range
     }
 }

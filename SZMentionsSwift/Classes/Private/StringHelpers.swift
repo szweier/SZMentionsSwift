@@ -23,7 +23,7 @@ extension String {
             }
             i += 1
         } while foundRange?.location == NSNotFound && i < strings.count
-        
+
         return (foundRange, string)
     }
 }

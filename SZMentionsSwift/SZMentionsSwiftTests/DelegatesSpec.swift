@@ -1,5 +1,5 @@
-import Quick
 import Nimble
+import Quick
 @testable import SZMentionsSwift
 
 class Delegates: QuickSpec {
@@ -9,28 +9,28 @@ class Delegates: QuickSpec {
         var shouldInteractWithTextAttachment: Bool = false
         var triggeredDelegateMethod: Bool = false
 
-        func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment,
-                      in characterRange: NSRange) -> Bool {
+        func textView(_: UITextView, shouldInteractWith _: NSTextAttachment,
+                      in _: NSRange) -> Bool {
             return shouldInteractWithTextAttachment
         }
 
-        func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        func textView(_: UITextView, shouldInteractWith _: URL, in _: NSRange) -> Bool {
             return shouldInteractWithTextAttachment
         }
 
-        func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        func textViewShouldBeginEditing(_: UITextView) -> Bool {
             return shouldBeginEditing
         }
 
-        func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        func textViewShouldEndEditing(_: UITextView) -> Bool {
             return shouldEndEditing
         }
 
-        func textViewDidEndEditing(_ textView: UITextView) {
+        func textViewDidEndEditing(_: UITextView) {
             triggeredDelegateMethod = true
         }
 
-        func textViewDidBeginEditing(_ textView: UITextView) {
+        func textViewDidBeginEditing(_: UITextView) {
             triggeredDelegateMethod = true
         }
     }
@@ -44,7 +44,7 @@ class Delegates: QuickSpec {
             beforeEach {
                 let attribute = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
                 let attribute2 = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.black)
-                
+
                 hidingMentionsList = false
                 textViewDelegate = TextViewDelegate()
                 mentionsListener = SZMentionsListener(mentionTextView: textView,
@@ -119,7 +119,7 @@ class Delegates: QuickSpec {
             }
 
             it("Should allow for mentions to be added in advance") {
-                textView.text = "Testing Steven Zweier and Tiffany get mentioned correctly";
+                textView.text = "Testing Steven Zweier and Tiffany get mentioned correctly"
 
                 let mention = SZExampleMention()
                 mention.name = "Steve"
@@ -129,7 +129,7 @@ class Delegates: QuickSpec {
                 mention2.name = "Tiff"
                 mention2.range = NSRange(location: 26, length: 7)
 
-                let insertMentions : Array<CreateMention> = [mention, mention2]
+                let insertMentions: Array<CreateMention> = [mention, mention2]
 
                 mentionsListener.insertExistingMentions(insertMentions)
 
@@ -153,7 +153,7 @@ class Delegates: QuickSpec {
                 mention2.name = "Tiff"
                 mention2.range = NSRange(location: 26, length: 7)
 
-                let insertMentions : Array<CreateMention> = [mention, mention2]
+                let insertMentions: Array<CreateMention> = [mention, mention2]
 
                 expect(mentionsListener.insertExistingMentions(insertMentions)).to(throwAssertion())
             }

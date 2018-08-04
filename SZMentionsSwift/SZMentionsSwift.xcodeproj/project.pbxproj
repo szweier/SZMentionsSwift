@@ -200,6 +200,7 @@
 			buildConfigurationList = DB0403D11C44A017000904DB /* Build configuration list for PBXNativeTarget "SZMentionsSwift" */;
 			buildPhases = (
 				AA6D33B2054E1E305ADA7245 /* [CP] Check Pods Manifest.lock */,
+				DBBA885C21164E38006387E8 /* SwiftFormat */,
 				DB0403B81C44A017000904DB /* Sources */,
 				DB0403B91C44A017000904DB /* Frameworks */,
 				DB0403BA1C44A017000904DB /* Headers */,
@@ -219,6 +220,7 @@
 			buildConfigurationList = DBF2DF661C4B1067001B9788 /* Build configuration list for PBXNativeTarget "SZMentionsSwiftTests" */;
 			buildPhases = (
 				19459A4E74E171B2B637F95A /* [CP] Check Pods Manifest.lock */,
+				DBBA885B21164E11006387E8 /* SwiftFormat */,
 				DBF2DF581C4B1067001B9788 /* Sources */,
 				DBF2DF591C4B1067001B9788 /* Frameworks */,
 				DBF2DF5A1C4B1067001B9788 /* Resources */,
@@ -346,6 +348,34 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-SZMentionsSwiftTests/Pods-SZMentionsSwiftTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		DBBA885B21164E11006387E8 /* SwiftFormat */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = SwiftFormat;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"${SRCROOT}\"";
+		};
+		DBBA885C21164E38006387E8 /* SwiftFormat */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = SwiftFormat;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"${SRCROOT}\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 

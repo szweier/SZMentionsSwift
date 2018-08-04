@@ -13,7 +13,7 @@ public protocol CreateMention {
      @brief The name of the mention to be added to the UITextView when selected.
      */
     var name: String { get }
-    
+
     /**
      @brief The range to place the mention at
      */

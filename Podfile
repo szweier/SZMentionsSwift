@@ -7,6 +7,8 @@ project 'SZMentionsSwift/SZMentionsSwift'
 workspace 'SZMentions'
 
 target 'SZMentionsSwift' do
+  pod 'SwiftFormat/CLI'
+
   target 'SZMentionsSwiftTests' do
     inherit! :search_paths
     pod 'Quick', '1.3.1'

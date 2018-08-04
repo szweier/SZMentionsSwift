@@ -1,5 +1,5 @@
-import Quick
 import Nimble
+import Quick
 @testable import SZMentionsSwift
 
 class AddingMentions: QuickSpec {
@@ -38,31 +38,31 @@ class AddingMentions: QuickSpec {
 
                 expect(mentionsListener.mentions.first?.range.location).to(equal(8))
             }
-            
+
             it("Should have the correct length of the mention created") {
                 textView.insertText("@t")
                 var mention = SZExampleMention()
                 mention.name = "Steven"
                 mentionsListener.addMention(mention)
-                
+
                 expect(mentionsListener.mentions.first?.range.length).to(equal(6))
-                
+
                 textView.insertText("Testing @t")
                 mention = SZExampleMention()
                 mention.name = "Steven Zweier"
                 mentionsListener.addMention(mention)
-                
+
                 expect(mentionsListener.mentions.last?.range.length).to(equal(13))
             }
-            
+
             it("Should have the correct length of the mention created") {
                 textView.insertText("@t")
                 let mention = SZExampleMention()
                 mention.name = "Steven"
                 mentionsListener.addMention(mention)
-                
+
                 expect(mentionsListener.mentions.first?.range.length).to(equal(6))
-                
+
                 textView.insertText(". ")
 
                 expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
@@ -271,51 +271,51 @@ class AddingMentions: QuickSpec {
                 _ = mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "t")
                 expect(mentionsListener.mentions.mentionBeingEdited(at: NSRange(location: 1, length: 0))).to(beNil())
             }
-            
+
             it("Should not crash when deleting two mentions at a time") {
                 textView.insertText("@St")
                 var mention = SZExampleMention()
                 mention.name = "Steven Zweier"
                 mentionsListener.addMention(mention)
-                
+
                 textView.insertText(" ")
-                
+
                 textView.insertText("@Jo")
                 mention = SZExampleMention()
                 mention.name = "John Smith"
                 mentionsListener.addMention(mention)
-                
+
                 textView.selectedRange = NSRange(location: 0, length: textView.text.utf16.count)
-                
+
                 if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "") {
                     textView.deleteBackward()
                 }
                 expect(textView.text.isEmpty).to(beTruthy())
             }
-            
+
             it("Should remove existing mention when pasting text within the mention") {
                 textView.insertText("@St")
                 let mention = SZExampleMention()
                 mention.name = "Steven Zweier"
                 mentionsListener.addMention(mention)
-                
+
                 textView.selectedRange = NSRange(location: 7, length: 0)
-                
+
                 expect(mentionsListener.mentions.count).to(equal(1))
                 expect(textView.attributedText.string).to(equal("Steven Zweier"))
                 expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
                 expect((textView.attributedText.attribute(.foregroundColor, at: 12, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                
+
                 _ = mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "Test")
-                
+
                 expect(textView.attributedText.string).to(equal("Steven TestZweier"))
-                
+
                 expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
                 expect((textView.attributedText.attribute(.foregroundColor, at: 16, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                
+
                 expect(mentionsListener.mentions.count).to(equal(0))
             }
-            
+
             it("Should call reset empty") {
                 textView.insertText("@t")
                 let mention = SZExampleMention()
@@ -327,7 +327,7 @@ class AddingMentions: QuickSpec {
                 _ = mentionsListener.textView(textView, shouldChangeTextIn: NSRange(location: 0, length: 0), replacementText: "")
                 expect(mentionsListener.mentions.isEmpty).to(beTruthy())
             }
-            
+
             it("Should not add mention if range is nil") {
                 let mention = SZExampleMention()
                 mention.name = "John Smith"
@@ -357,12 +357,11 @@ class AddingMentions: QuickSpec {
                 mentionsListener.cooldownTimerFired(Timer())
                 expect(textView.text.utf16.count).to(equal(5))
             }
-            
-            
+
             func generateMentionsListener(spaceAfterMention: Bool) -> SZMentionsListener {
                 let attribute = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
                 let attribute2 = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.black)
-                
+
                 return SZMentionsListener(mentionTextView: textView,
                                           mentionTextAttributes: [attribute],
                                           defaultTextAttributes: [attribute2],

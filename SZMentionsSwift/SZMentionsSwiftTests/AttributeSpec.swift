@@ -1,7 +1,6 @@
-import Quick
 import Nimble
+import Quick
 @testable import SZMentionsSwift
-
 
 class Attribute: QuickSpec {
     override func spec() {

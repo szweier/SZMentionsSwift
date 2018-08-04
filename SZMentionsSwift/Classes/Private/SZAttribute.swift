@@ -13,7 +13,7 @@ internal struct SZAttribute: AttributeContainer {
      @brief Name of the attribute to set on a string
      */
     var name: String
-    
+
     /**
      @brief Value of the attribute to set on a string
      */

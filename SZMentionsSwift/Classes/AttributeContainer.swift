@@ -13,7 +13,7 @@ public protocol AttributeContainer {
      @brief Name of the attribute to set on a string
      */
     var name: String { get }
-    
+
     /**
      @brief Value of the attribute to set on a string
      */

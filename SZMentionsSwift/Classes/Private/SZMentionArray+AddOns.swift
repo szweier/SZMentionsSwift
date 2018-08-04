@@ -13,7 +13,7 @@ internal extension Array where Element == SZMention {
      @return SZMention?: the mention being edited (if one exists)
      */
     func mentionBeingEdited(at range: NSRange) -> SZMention? {
-        return filter{ NSIntersectionRange(range, $0.range).length > 0 ||
+        return filter { NSIntersectionRange(range, $0.range).length > 0 ||
             (range.location + range.length) > $0.range.location &&
             (range.location + range.length) < ($0.range.location + $0.range.length) }.first
     }
@@ -29,7 +29,8 @@ internal extension Array where Element == SZMention {
             var adjustedMention = mention
             adjustedMention.range = NSRange(
                 location: mention.range.location + rangeAdjustment,
-                length: mention.range.length)
+                length: mention.range.length
+            )
             if let index = index(of: mention) {
                 self[index] = adjustedMention
             }
@@ -42,6 +43,6 @@ internal extension Array where Element == SZMention {
      @return [SZMention]: list of mentions that exist after the provided range
      */
     private func mentionsAfterTextEntry(_ range: NSRange) -> [SZMention] {
-        return filter{ $0.range.location >= range.location + range.length }
+        return filter { $0.range.location >= range.location + range.length }
     }
 }
