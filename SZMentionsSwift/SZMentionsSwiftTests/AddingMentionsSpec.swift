@@ -65,13 +65,8 @@ class AddingMentions: QuickSpec {
                 
                 textView.insertText(". ")
 
-                #if swift(>=4.0)
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 7, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                #else
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 7, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                #endif
+                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 7, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
             }
 
             it("Should adjust the location of an existing mention correctly") {
@@ -202,11 +197,7 @@ class AddingMentions: QuickSpec {
                 if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "test") {
                     textView.insertText("test")
                 }
-                #if swift(>=4.0)
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                #else
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                #endif
+                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
             }
 
             it("Should test that the correct mention range is replaced if multiple exist and that the selected range is correct") {
@@ -248,11 +239,7 @@ class AddingMentions: QuickSpec {
                     textView.insertText("test")
                 }
 
-                #if swift(>=4.0)
-                    expect((textView.attributedText.attribute(.foregroundColor, at: textView.selectedRange.location - 1, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                #else
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: textView.selectedRange.location - 1, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                #endif
+                expect((textView.attributedText.attribute(.foregroundColor, at: textView.selectedRange.location - 1, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
             }
 
             it("Should test that the mention position is correct to start text on a new line") {
@@ -316,25 +303,16 @@ class AddingMentions: QuickSpec {
                 
                 expect(mentionsListener.mentions.count).to(equal(1))
                 expect(textView.attributedText.string).to(equal("Steven Zweier"))
-
-                #if swift(>=4.0)
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 12, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                #else
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 12, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                #endif
+                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 12, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
                 
                 _ = mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "Test")
                 
                 expect(textView.attributedText.string).to(equal("Steven TestZweier"))
-                #if swift(>=4.0)
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 16, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                #else
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 16, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                #endif
+                
+                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 16, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                
                 expect(mentionsListener.mentions.count).to(equal(0))
             }
             
@@ -382,13 +360,8 @@ class AddingMentions: QuickSpec {
             
             
             func generateMentionsListener(spaceAfterMention: Bool) -> SZMentionsListener {
-                #if swift(>=4.0)
                 let attribute = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
                 let attribute2 = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.black)
-                #else
-                let attribute = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
-                let attribute2 = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.black)
-                #endif
                 
                 return SZMentionsListener(mentionTextView: textView,
                                           mentionTextAttributes: [attribute],

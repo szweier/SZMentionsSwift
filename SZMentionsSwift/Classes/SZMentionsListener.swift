@@ -137,17 +137,10 @@ public class SZMentionsListener: NSObject {
         hideMentions: @escaping () -> Void,
         didHandleMentionOnReturn: @escaping () -> Bool,
         showMentionsListWithString: @escaping (String, String) -> Void) {
-        #if swift(>=4.0)
-            mentionTextAttributes = mentionAttributes ?? [SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue,
-            value: UIColor.blue)]
-            defaultTextAttributes = defaultAttributes ?? [SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue,
-            value: UIColor.black)]
-        #else
-            mentionTextAttributes = mentionAttributes ?? [SZAttribute(name: NSForegroundColorAttributeName,
-                                                                      value: UIColor.blue)]
-            defaultTextAttributes = defaultAttributes ?? [SZAttribute(name: NSForegroundColorAttributeName,
-                                                                      value: UIColor.black)]
-        #endif
+        mentionTextAttributes = mentionAttributes ?? [SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue,
+                                                                  value: UIColor.blue)]
+        defaultTextAttributes = defaultAttributes ?? [SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue,
+                                                                  value: UIColor.black)]
 
         SZVerifier.verifySetup(withDefaultTextAttributes: defaultTextAttributes,
                                mentionTextAttributes: mentionTextAttributes)

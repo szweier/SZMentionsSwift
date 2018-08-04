@@ -42,14 +42,9 @@ class Delegates: QuickSpec {
             let textView = UITextView()
 
             beforeEach {
-                #if swift(>=4.0)
-                    let attribute = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
-                    let attribute2 = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.black)
-                #else
-                    let attribute = SZAttribute(name: NSForegroundColorAttributeName, value: UIColor.red)
-                    let attribute2 = SZAttribute(name: NSForegroundColorAttributeName, value: UIColor.black)
-                #endif
-
+                let attribute = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
+                let attribute2 = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.black)
+                
                 hidingMentionsList = false
                 textViewDelegate = TextViewDelegate()
                 mentionsListener = SZMentionsListener(mentionTextView: textView,
@@ -140,19 +135,11 @@ class Delegates: QuickSpec {
 
                 expect(mentionsListener.mentions.count).to(equal(2))
 
-                #if swift(>=4.0)
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 9, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 21, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 27, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 33, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                #else
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 9, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 21, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 27, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 33, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                #endif
+                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 9, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 21, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 27, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 33, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
             }
 
             it("Should throw an assertion if the mention range is beyond the text length") {
