@@ -46,45 +46,6 @@ class SZExampleAccessoryView: UIView {
     
     init(delegate: UITextViewDelegate) {
         super.init(frame: .zero)
-        func hideMentions() {
-            if self.mentionsTableView.superview != nil {
-                self.mentionsTableView.removeFromSuperview()
-                self.addConstraints(NSLayoutConstraint.constraints(
-                    withVisualFormat: "V:|-5-[textView(30)]-5-|",
-                    options: NSLayoutFormatOptions(rawValue: 0),
-                    metrics: nil,
-                    views: ["textView": self.textView])
-                )
-            }
-            self.dataManager?.filter("")
-        }
-        func didHandleMentionOnReturn() -> Bool { return false }
-        func showMentionsListWithString(mentionsString: String, trigger: String) {
-            if mentionsTableView.superview == nil {
-                removeConstraints(constraints)
-                addSubview(mentionsTableView)
-                addConstraints(
-                    NSLayoutConstraint.constraints(
-                        withVisualFormat: "|-5-[tableview]-5-|",
-                        options: NSLayoutFormatOptions(rawValue: 0),
-                        metrics: nil,
-                        views: ["tableview": mentionsTableView]) +
-                        NSLayoutConstraint.constraints(
-                            withVisualFormat: "|-5-[textView]-5-|",
-                            options: NSLayoutFormatOptions(rawValue: 0),
-                            metrics: nil,
-                            views: ["textView": textView]) +
-                        NSLayoutConstraint.constraints(
-                            withVisualFormat: "V:|-5-[tableview(100)][textView(30)]-5-|",
-                            options: NSLayoutFormatOptions(rawValue: 0),
-                            metrics: nil,
-                            views: ["textView": textView, "tableview": mentionsTableView])
-                )
-            }
-            
-            dataManager?.filter(mentionsString)
-        }
-        
         autoresizingMask = .flexibleHeight
         let mentionsListener = SZMentionsListener(mentionTextView: textView,
                                                   delegate: delegate,
@@ -147,6 +108,47 @@ class SZExampleAccessoryView: UIView {
     
     override var intrinsicContentSize: CGSize {
         return CGSize(width: frame.size.width, height: mentionsTableView.superview == nil ? 40 : 140)
+    }
+}
+
+extension SZExampleAccessoryView {
+    func hideMentions() {
+        if mentionsTableView.superview != nil {
+            mentionsTableView.removeFromSuperview()
+            addConstraints(NSLayoutConstraint.constraints(
+                withVisualFormat: "V:|-5-[textView(30)]-5-|",
+                options: NSLayoutFormatOptions(rawValue: 0),
+                metrics: nil,
+                views: ["textView": textView])
+            )
+        }
+        dataManager?.filter("")
+    }
+    func didHandleMentionOnReturn() -> Bool { return false }
+    func showMentionsListWithString(mentionsString: String, trigger: String) {
+        if mentionsTableView.superview == nil {
+            removeConstraints(constraints)
+            addSubview(mentionsTableView)
+            addConstraints(
+                NSLayoutConstraint.constraints(
+                    withVisualFormat: "|-5-[tableview]-5-|",
+                    options: NSLayoutFormatOptions(rawValue: 0),
+                    metrics: nil,
+                    views: ["tableview": mentionsTableView]) +
+                    NSLayoutConstraint.constraints(
+                        withVisualFormat: "|-5-[textView]-5-|",
+                        options: NSLayoutFormatOptions(rawValue: 0),
+                        metrics: nil,
+                        views: ["textView": textView]) +
+                    NSLayoutConstraint.constraints(
+                        withVisualFormat: "V:|-5-[tableview(100)][textView(30)]-5-|",
+                        options: NSLayoutFormatOptions(rawValue: 0),
+                        metrics: nil,
+                        views: ["textView": textView, "tableview": mentionsTableView])
+            )
+        }
+        
+        dataManager?.filter(mentionsString)
     }
 }
 
