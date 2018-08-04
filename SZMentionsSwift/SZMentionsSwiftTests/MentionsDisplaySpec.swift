@@ -8,11 +8,6 @@ class MentionsDisplay: QuickSpec {
         describe("Mentions Display") {
             var mentionsListener: SZMentionsListener!
             let textView = UITextView()
-            var shouldAddMentionOnReturnKeyCalled = false
-            var hidingMentionsList = false
-            
-            beforeEach {
-            }
             
             it("Should show the mentions list when typing a mention and hide when a space is added if search spaces is false") {
                 mentionsListener = generateMentionsListener(searchSpacesInMentions: false)
@@ -49,16 +44,9 @@ class MentionsDisplay: QuickSpec {
             func generateMentionsListener(searchSpacesInMentions: Bool) -> SZMentionsListener {
                 return SZMentionsListener(mentionTextView: textView,
                                           searchSpaces: searchSpacesInMentions,
-                                          hideMentions: {
-                                            hidingMentionsList = true
-                },
-                                          didHandleMentionOnReturn: { () -> Bool in
-                                            shouldAddMentionOnReturnKeyCalled = true
-                                            return true
-                },
-                                          showMentionsListWithString: { _ in
-                                            hidingMentionsList = false
-                })
+                                          hideMentions: hideMentionsBlock,
+                                          didHandleMentionOnReturn: didHandleMentionBlock,
+                                          showMentionsListWithString: showMentionsBlock)
             }
         }
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class SZMention: Equatable {
+public struct SZMention: Equatable {
     /**
      @brief The location of the mention within the attributed string of the UITextView
      */
@@ -19,17 +19,7 @@ public class SZMention: Equatable {
      */
     public private(set) var object: CreateMention
 
-    /**
-     @brief initializer for creating a mention object
-     @param range: the range of the mention
-     @param object: the object of your mention (assuming you get extra data you need to store and retrieve later)
-     */
-    public init(range: NSRange, object: CreateMention) {
-        self.range = range
-        self.object = object
-    }
-
     public static func ==(lhs: SZMention, rhs: SZMention) -> Bool {
-        return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+        return lhs.range == rhs.range && lhs.object.name == rhs.object.name && lhs.object.range == rhs.object.range
     }
 }

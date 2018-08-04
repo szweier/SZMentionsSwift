@@ -21,15 +21,10 @@ class SZExampleMentionsTableViewDataManager: NSObject {
         }
     }()
     private var mentionsList: [SZExampleMention] {
-        var filteredMentions = mentions
-        
-        if !filterString.isEmpty {
-            filteredMentions = mentions.filter {
-                return $0.name.lowercased().contains(filterString.lowercased())
-            }
+        guard !mentions.isEmpty else { return mentions }
+        return mentions.filter {
+            return $0.name.lowercased().contains(filterString.lowercased())
         }
-        
-        return filteredMentions
     }
     private let tableView: UITableView
     private var filterString: String = ""
@@ -37,7 +32,7 @@ class SZExampleMentionsTableViewDataManager: NSObject {
     init(mentionTableView: UITableView, mentionsListener: SZMentionsListener) {
         tableView = mentionTableView
         tableView.register(
-            UITableViewCell.classForCoder(),
+            UITableViewCell.self,
             forCellReuseIdentifier: cellIdentifier)
         listener = mentionsListener
         super.init()
@@ -51,7 +46,7 @@ class SZExampleMentionsTableViewDataManager: NSObject {
 
 extension SZExampleMentionsTableViewDataManager: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.listener.addMention(mentionsList[indexPath.row])
+        listener.addMention(mentionsList[indexPath.row])
     }
 }
 

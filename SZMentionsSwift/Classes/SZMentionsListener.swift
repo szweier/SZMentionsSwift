@@ -212,7 +212,7 @@ extension SZMentionsListener {
         let displayName = mention.name + (spaceAfterMention ? " " : "")
         mutableAttributedString.mutableString.replaceCharacters(in: currentMentionRange, with: displayName)
         
-        mentions.adjustMentions(forTextChangeAtRange: currentMentionRange, text: displayName)
+        mutableMentions.adjustMentions(forTextChangeAt: currentMentionRange, text: displayName)
         
         currentMentionRange = NSRange(location: currentMentionRange.location, length: mention.name.utf16.count)
         
@@ -383,13 +383,13 @@ extension SZMentionsListener {
 
         editingMention = false
 
-        if let editedMention = mentions.mentionBeingEdited(atRange: range) {
+        if let editedMention = mentions.mentionBeingEdited(at: range) {
             clearMention(editedMention)
 
             shouldAdjust = handleEditingMention(editedMention, textView: textView, range: range, text: text)
         }
 
-        mentions.adjustMentions(forTextChangeAtRange: range, text: text)
+        mutableMentions.adjustMentions(forTextChangeAt: range, text: text)
 
         _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
@@ -450,7 +450,7 @@ extension SZMentionsListener: UITextViewDelegate {
             return false
         } else if text.count > 1 {
             //Pasting
-            if let editedMention = mentions.mentionBeingEdited(atRange: range) {
+            if let editedMention = mentions.mentionBeingEdited(at: range) {
                 clearMention(editedMention)
             }
 
@@ -463,7 +463,7 @@ extension SZMentionsListener: UITextViewDelegate {
                 mentionsTextView.selectedRange = NSRange(location: range.location + text.count, length: 0)
             }
             
-            mentions.adjustMentions(forTextChangeAtRange: range, text: text)
+            mutableMentions.adjustMentions(forTextChangeAt: range, text: text)
             textView.delegate = self
             
             return false

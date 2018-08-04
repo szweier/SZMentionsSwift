@@ -6,13 +6,13 @@
 //  Copyright © 2016 Steven Zweier. All rights reserved.
 //
 
-internal extension Array where Element: SZMention {
+internal extension Array where Element == SZMention {
     /**
      @brief returns the mention being edited (if a mention is being edited)
      @param range: the range to look for a mention
      @return SZMention?: the mention being edited (if one exists)
      */
-    func mentionBeingEdited(atRange range: NSRange) -> SZMention? {
+    func mentionBeingEdited(at range: NSRange) -> SZMention? {
         return filter{ NSIntersectionRange(range, $0.range).length > 0 ||
             (range.location + range.length) > $0.range.location &&
             (range.location + range.length) < ($0.range.location + $0.range.length) }.first
@@ -23,12 +23,16 @@ internal extension Array where Element: SZMention {
      @param range: the range where text was changed
      @param text: the text that was changed
      */
-    func adjustMentions(forTextChangeAtRange range: NSRange, text: String) {
+    mutating func adjustMentions(forTextChangeAt range: NSRange, text: String) {
         let rangeAdjustment = text.utf16.count - range.length
         mentionsAfterTextEntry(range).forEach { mention in
-            mention.range = NSRange(
+            var adjustedMention = mention
+            adjustedMention.range = NSRange(
                 location: mention.range.location + rangeAdjustment,
                 length: mention.range.length)
+            if let index = index(of: mention) {
+                self[index] = adjustedMention
+            }
         }
     }
 

@@ -40,8 +40,6 @@ class Delegates: QuickSpec {
             var textViewDelegate: TextViewDelegate!
             var mentionsListener: SZMentionsListener!
             let textView = UITextView()
-            var shouldAddMentionOnReturnKeyCalled = false
-            var hidingMentionsList = false
 
             beforeEach {
                 #if swift(>=4.0)
@@ -58,16 +56,9 @@ class Delegates: QuickSpec {
                                                       delegate: textViewDelegate,
                                                       mentionTextAttributes: [attribute],
                                                       defaultTextAttributes: [attribute2],
-                                                      hideMentions: {
-                                                            hidingMentionsList = true
-                },
-                                                      didHandleMentionOnReturn: { () -> Bool in
-                                                        shouldAddMentionOnReturnKeyCalled = true
-                                                        return true
-                },
-                                                      showMentionsListWithString: { _ in
-                                                        hidingMentionsList = false
-                })
+                                                      hideMentions: hideMentionsBlock,
+                                                      didHandleMentionOnReturn: didHandleMentionBlock,
+                                                      showMentionsListWithString: showMentionsBlock)
             }
 
             it("Should return false for textView(shouldInteractWith:in) for a text attachment when overridden") {
