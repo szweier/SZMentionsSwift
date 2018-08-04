@@ -43,10 +43,10 @@ class SZExampleAccessoryView: UIView {
                 value: UIColor.white)
         ]
     }
-
+    
     init(delegate: UITextViewDelegate) {
         super.init(frame: .zero)
-        let hideMentionsBlock: () -> Void = {
+        func hideMentions() {
             if self.mentionsTableView.superview != nil {
                 self.mentionsTableView.removeFromSuperview()
                 self.addConstraints(NSLayoutConstraint.constraints(
@@ -58,31 +58,31 @@ class SZExampleAccessoryView: UIView {
             }
             self.dataManager?.filter("")
         }
-        let didHandleMentionOnReturnBlock: () -> Bool = { false }
-        let showMentionsListWithStringBlock: (String) -> Void = { mentionsString in
-            if self.mentionsTableView.superview == nil {
-                self.removeConstraints(self.constraints)
-                self.addSubview(self.mentionsTableView)
-                self.addConstraints(
+        func didHandleMentionOnReturn() -> Bool { return false }
+        func showMentionsListWithString(mentionsString: String, trigger: String) {
+            if mentionsTableView.superview == nil {
+                removeConstraints(constraints)
+                addSubview(mentionsTableView)
+                addConstraints(
                     NSLayoutConstraint.constraints(
                         withVisualFormat: "|-5-[tableview]-5-|",
                         options: NSLayoutFormatOptions(rawValue: 0),
                         metrics: nil,
-                        views: ["tableview": self.mentionsTableView]) +
+                        views: ["tableview": mentionsTableView]) +
                         NSLayoutConstraint.constraints(
                             withVisualFormat: "|-5-[textView]-5-|",
                             options: NSLayoutFormatOptions(rawValue: 0),
                             metrics: nil,
-                            views: ["textView": self.textView]) +
+                            views: ["textView": textView]) +
                         NSLayoutConstraint.constraints(
                             withVisualFormat: "V:|-5-[tableview(100)][textView(30)]-5-|",
                             options: NSLayoutFormatOptions(rawValue: 0),
                             metrics: nil,
-                            views: ["textView": self.textView, "tableview": self.mentionsTableView])
+                            views: ["textView": textView, "tableview": mentionsTableView])
                 )
             }
             
-            self.dataManager?.filter(mentionsString)
+            dataManager?.filter(mentionsString)
         }
         
         autoresizingMask = .flexibleHeight
@@ -91,24 +91,24 @@ class SZExampleAccessoryView: UIView {
                                                   mentionTextAttributes: mentionAttributes,
                                                   defaultTextAttributes: defaultAttributes,
                                                   spaceAfterMention: true,
-                                                  hideMentions: hideMentionsBlock,
-                                                  didHandleMentionOnReturn: didHandleMentionOnReturnBlock,
-                                                  showMentionsListWithString: showMentionsListWithStringBlock)
+                                                  hideMentions: hideMentions,
+                                                  didHandleMentionOnReturn: didHandleMentionOnReturn,
+                                                  showMentionsListWithString: showMentionsListWithString)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.delegate = mentionsListener
         addSubview(textView)
         addConstraintsToTextView(textView)
         textView.text = "Test Steven Zweier mention"
-
+        
         let mention = SZExampleMention(name: "Steven Zweier",
                                        range: NSRange(location: 5, length: 13))
-
+        
         mentionsListener.insertExistingMentions([mention])
-
+        
         dataManager = SZExampleMentionsTableViewDataManager(
             mentionTableView: mentionsTableView,
             mentionsListener: mentionsListener)
-
+        
         setupTableView(mentionsTableView, dataManager: dataManager!)
         backgroundColor = UIColor.gray
     }
@@ -116,14 +116,14 @@ class SZExampleAccessoryView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func setupTableView(_ tableView: UITableView, dataManager: SZExampleMentionsTableViewDataManager) {
         mentionsTableView.translatesAutoresizingMaskIntoConstraints = false
         mentionsTableView.backgroundColor = UIColor.blue
         mentionsTableView.delegate = dataManager
         mentionsTableView.dataSource = dataManager
     }
-
+    
     private func addConstraintsToTextView(_ textView: UITextView) {
         removeConstraints(constraints)
         addConstraints(
@@ -132,96 +132,17 @@ class SZExampleAccessoryView: UIView {
                 options: NSLayoutFormatOptions(rawValue: 0),
                 metrics: nil,
                 views: ["textView": textView]) +
-            NSLayoutConstraint.constraints(
-                views: ["textView": textView]))
-        verticalConstraints = NSLayoutConstraint.constraints(
-            withVisualFormat: "V:|-5-[textView(30)]-5-|",
-            options: NSLayoutFormatOptions(rawValue: 0),
-            metrics: nil,
-            views: ["textView": textView])
-        addConstraints(verticalConstraints)
+                NSLayoutConstraint.constraints(
+                    withVisualFormat: "V:|-5-[textView(30)]-5-|",
+                    options: NSLayoutFormatOptions(rawValue: 0),
+                    metrics: nil,
+                    views: ["textView": textView])
+        )
     }
-
+    
     private func setupTextView(_ textView: UITextView, delegate: SZMentionsListener) {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.delegate = delegate
-    }
-
-    private func mentionAttributes() -> [AttributeContainer] {
-        var attributes = [AttributeContainer]()
-
-        let attribute = SZAttribute(
-            attributeName: NSAttributedStringKey.foregroundColor.rawValue,
-            attributeValue: UIColor.black)
-        let attribute2 = SZAttribute(
-            attributeName: NSAttributedStringKey.font.rawValue,
-            attributeValue: UIFont(name: "ChalkboardSE-Bold", size: 12)!)
-        let attribute3 = SZAttribute(
-            attributeName: NSAttributedStringKey.backgroundColor.rawValue,
-            attributeValue: UIColor.lightGray)
-        attributes.append(attribute)
-        attributes.append(attribute2)
-        attributes.append(attribute3)
-
-        return attributes
-    }
-
-    private func defaultAttributes() -> [AttributeContainer] {
-        var attributes = [AttributeContainer]()
-
-        let attribute = SZAttribute(
-            attributeName: NSAttributedStringKey.foregroundColor.rawValue,
-            attributeValue: UIColor.gray)
-        let attribute2 = SZAttribute(
-            attributeName: NSAttributedStringKey.font.rawValue,
-            attributeValue: UIFont(name: "ArialMT", size: 12)!)
-        let attribute3 = SZAttribute(
-            attributeName: NSAttributedStringKey.backgroundColor.rawValue,
-            attributeValue: UIColor.white)
-        attributes.append(attribute)
-        attributes.append(attribute2)
-        attributes.append(attribute3)
-
-        return attributes
-    }
-
-    func showMentionsListWithString(_ mentionsString: String, trigger: String) {
-        if mentionsTableView.superview == nil {
-            removeConstraints(constraints)
-            addSubview(mentionsTableView)
-            addConstraints(
-                NSLayoutConstraint.constraints(
-                    withVisualFormat: "|-5-[tableview]-5-|",
-                    options: NSLayoutFormatOptions(rawValue: 0),
-                    metrics: nil,
-                    views: ["tableview": mentionsTableView]))
-            addConstraints(
-                NSLayoutConstraint.constraints(
-                    withVisualFormat: "|-5-[textView]-5-|",
-                    options: NSLayoutFormatOptions(rawValue: 0),
-                    metrics: nil,
-                    views: ["textView": textView]))
-            verticalConstraints = NSLayoutConstraint.constraints(
-                withVisualFormat: "V:|-5-[tableview(100)][textView(30)]-5-|",
-                options: NSLayoutFormatOptions(rawValue: 0),
-                metrics: nil,
-                views: ["textView": textView, "tableview": mentionsTableView])
-            addConstraints(verticalConstraints)
-        }
-
-        dataManager?.filter(mentionsString)
-    }
-
-    func hideMentionsList() {
-        if mentionsTableView.superview != nil {
-            mentionsTableView.removeFromSuperview()
-            verticalConstraints = NSLayoutConstraint.constraints(
->>>>>>> master
-                withVisualFormat: "V:|-5-[textView(30)]-5-|",
-                options: NSLayoutFormatOptions(rawValue: 0),
-                metrics: nil,
-                views: ["textView": textView])
-            )
     }
     
     override var intrinsicContentSize: CGSize {
