@@ -52,9 +52,9 @@ class MentionsDisplay: QuickSpec {
             func generateMentionsListener(searchSpacesInMentions: Bool) -> SZMentionsListener {
                 return SZMentionsListener(mentionTextView: textView,
                                           searchSpaces: searchSpacesInMentions,
-                                          hideMentions: hideMentionsBlock,
-                                          didHandleMentionOnReturn: didHandleMentionBlock,
-                                          showMentionsListWithString: showMentionsBlock)
+                                          hideMentions: hideMentions,
+                                          didHandleMentionOnReturn: didHandleMention,
+                                          showMentionsListWithString: showMentions)
             }
         }
     }

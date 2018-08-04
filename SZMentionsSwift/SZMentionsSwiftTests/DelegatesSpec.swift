@@ -56,9 +56,9 @@ class Delegates: QuickSpec {
                                                       delegate: textViewDelegate,
                                                       mentionTextAttributes: [attribute],
                                                       defaultTextAttributes: [attribute2],
-                                                      hideMentions: hideMentionsBlock,
-                                                      didHandleMentionOnReturn: didHandleMentionBlock,
-                                                      showMentionsListWithString: showMentionsBlock)
+                                                      hideMentions: hideMentions,
+                                                      didHandleMentionOnReturn: didHandleMention,
+                                                      showMentionsListWithString: showMentions)
             }
 
             it("Should return false for textView(shouldInteractWith:in) for a text attachment when overridden") {

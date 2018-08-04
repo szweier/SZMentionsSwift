@@ -10,13 +10,13 @@ var hidingMentionsList = false
 var mentionsString = ""
 var triggerString = ""
 
-let hideMentionsBlock: () -> Void = { hidingMentionsList = true }
-let showMentionsBlock: (String, String) -> Void = { (mention, trigger) in
+func hideMentions() { hidingMentionsList = true }
+func showMentions(mention: String, trigger: String) {
     hidingMentionsList = false
     mentionsString = mention
     triggerString = trigger
 }
-let didHandleMentionBlock: () -> Bool = { () -> Bool in
+func didHandleMention() -> Bool {
     shouldAddMentionOnReturnKeyCalled = true
     return true
 }
