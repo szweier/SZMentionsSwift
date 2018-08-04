@@ -51,7 +51,7 @@ Use one of the many initializers to setup your mentions listener.  Parameters ex
 
 `mentionsTextView` : **required** The text view we are applying the mentions listener to. Note: it's delegate **must** be the mentions manager.
 
-`textViewDelegate` : **optional** If you would like to receive UITextView delegate methods set this and it will be passed through after processing view the mentions listener.
+`delegate` : **optional** If you would like to receive UITextView delegate methods set this and it will be passed through after processing view the mentions listener.
 
 `mentionTextAttributes` : Attributes (see: `AttributeContainer`) to apply to the textview for all mentions
 
