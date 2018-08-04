@@ -9,60 +9,73 @@
 import UIKit
 
 public class SZMentionsListener: NSObject {
-    // MARK: Public vars
+    // MARK: Public
     /**
      @brief Array of mentions currently added to the textview
      */
     public var mentions: [SZMention] { return mutableMentions }
     
-    // MARK: Internal vars
+    // MARK: Internal
     /**
      @brief An optional delegate that can be used to handle all UITextView delegate
      methods after they've been handled by the SZMentionsListener
      */
     internal weak var delegate: UITextViewDelegate?
     
+    // MARK: Private
     /**
      @brief Whether or not we should add a space after the mention, default: false
      */
-    internal var spaceAfterMention: Bool
+    private let spaceAfterMention: Bool
     
     /**
      @brief Tell listener that mention searches can contain spaces, default: false
      */
-    internal var searchSpacesInMentions: Bool
+    private let searchSpacesInMentions: Bool
 
-    // MARK: Private vars
     /**
      @brief Triggers to start a mention. Default: @
      */
-    private var triggers: [String]
+    private let triggers: [String]
 
     /**
      @brief Text attributes to be applied to all text excluding mentions.
      */
-    private var defaultTextAttributes: [AttributeContainer]
+    private let defaultTextAttributes: [AttributeContainer]
 
     /**
      @brief Text attributes to be applied to mentions.
      */
-    private var mentionTextAttributes: [AttributeContainer]
+    private let mentionTextAttributes: [AttributeContainer]
 
     /**
      @brief The UITextView being handled by the SZMentionsListener
      */
-    private var mentionsTextView: UITextView
+    private let mentionsTextView: UITextView
 
     /**
-     @brief Manager in charge of handling the creation and dismissal of the mentions
-     list.
+     @brief Called when the UITextView is not editing a mention.
      */
-    private var mentionsManager: MentionsManagerDelegate
+    private let hideMentions: () -> Void
+    
+    /**
+     @brief Called when a user hits enter while entering a mention
+     @return Whether or not the mention was handled
+     */
+    private let didHandleMentionOnReturn: () -> Bool
+    
+    /**
+     @brief Called when the UITextView is editing a mention.
+     
+     @param MentionString the current text entered after the mention trigger.
+     Generally used for filtering a mentions list.
+     */
+    private let showMentionsListWithString: (_ mentionString: String) -> Void
 
     /**
      @brief Amount of time to delay between showMentions calls default:0.5
      */
-    private var cooldownInterval: TimeInterval
+    private let cooldownInterval: TimeInterval
 
     /**
      @brief Mutable array list of mentions managed by listener, accessible via the
@@ -104,7 +117,6 @@ public class SZMentionsListener: NSObject {
     /**
      @brief Initializer that allows for customization of text attributes for default text and mentions
      @param mentionTextView: - the text view to manage mentions for
-     @param mentionsManager: - the object that will handle showing and hiding of the mentions picker
      @param textViewDelegate: - the object that will handle textview delegate methods
      @param mentionTextAttributes - text style to show for mentions
      @param defaultTextAttributes - text style to show for default text
@@ -115,35 +127,39 @@ public class SZMentionsListener: NSObject {
      */
     public init(
         mentionTextView textView: UITextView,
-        mentionsManager manager: MentionsManagerDelegate,
         textViewDelegate: UITextViewDelegate? = nil,
         mentionTextAttributes mentionAttributes: [AttributeContainer]? = nil,
         defaultTextAttributes defaultAttributes: [AttributeContainer]? = nil,
         spaceAfterMention spaceAfter: Bool = false,
         triggers mentionTriggers: [String] = ["@"],
         cooldownInterval interval: TimeInterval = 0.5,
-        searchSpaces: Bool = false) {
+        searchSpaces: Bool = false,
+        hideMentions: @escaping () -> Void,
+        didHandleMentionOnReturn: @escaping () -> Bool,
+        showMentionsListWithString: @escaping (String) -> Void) {
         #if swift(>=4.0)
-            mentionTextAttributes = mentionAttributes ?? [SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue,
-            attributeValue: UIColor.blue)]
-            defaultTextAttributes = defaultAttributes ?? [SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue,
-            attributeValue: UIColor.black)]
+            mentionTextAttributes = mentionAttributes ?? [SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue,
+            value: UIColor.blue)]
+            defaultTextAttributes = defaultAttributes ?? [SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue,
+            value: UIColor.black)]
         #else
-            mentionTextAttributes = mentionAttributes ?? [SZAttribute(attributeName: NSForegroundColorAttributeName,
-                                                                      attributeValue: UIColor.blue)]
-            defaultTextAttributes = defaultAttributes ?? [SZAttribute(attributeName: NSForegroundColorAttributeName,
-                                                                      attributeValue: UIColor.black)]
+            mentionTextAttributes = mentionAttributes ?? [SZAttribute(name: NSForegroundColorAttributeName,
+                                                                      value: UIColor.blue)]
+            defaultTextAttributes = defaultAttributes ?? [SZAttribute(name: NSForegroundColorAttributeName,
+                                                                      value: UIColor.black)]
         #endif
 
         SZVerifier.verifySetup(withDefaultTextAttributes: defaultTextAttributes,
                                mentionTextAttributes: mentionTextAttributes)
         searchSpacesInMentions = searchSpaces
         mentionsTextView = textView
-        mentionsManager = manager
         delegate = textViewDelegate
         spaceAfterMention = spaceAfter
         triggers = mentionTriggers
         cooldownInterval = interval
+        self.hideMentions = hideMentions
+        self.didHandleMentionOnReturn = didHandleMentionOnReturn
+        self.showMentionsListWithString = showMentionsListWithString
         super.init()
         resetEmpty(mentionsTextView)
         mentionsTextView.delegate = self
@@ -166,12 +182,12 @@ extension SZMentionsListener {
         if let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as? NSMutableAttributedString {
             
             existingMentions.forEach { mention in
-                let range = mention.mentionRange
+                let range = mention.range
                 assert(range.location != NSNotFound, "Mention must have a range to insert into")
                 assert(range.location + range.length < mutableAttributedString.string.count,
                        "Mention range is out of bounds for the text length")
                 
-                let szMention = SZMention(mentionRange: range, mentionObject: mention)
+                let szMention = SZMention(range: range, object: mention)
                 mutableMentions.append(szMention)
                 
                 mutableAttributedString.apply(mentionTextAttributes, range:range)
@@ -193,14 +209,14 @@ extension SZMentionsListener {
         
         filterString = nil
         
-        let displayName = mention.mentionName + (spaceAfterMention ? " " : "")
+        let displayName = mention.name + (spaceAfterMention ? " " : "")
         mutableAttributedString.mutableString.replaceCharacters(in: currentMentionRange, with: displayName)
         
         mentions.adjustMentions(forTextChangeAtRange: currentMentionRange, text: displayName)
         
-        currentMentionRange = NSRange(location: currentMentionRange.location, length: mention.mentionName.utf16.count)
+        currentMentionRange = NSRange(location: currentMentionRange.location, length: mention.name.utf16.count)
         
-        let szmention = SZMention(mentionRange: currentMentionRange, mentionObject: mention)
+        let szmention = SZMention(range: currentMentionRange, object: mention)
         mutableMentions.append(szmention)
         
         mutableAttributedString.apply(mentionTextAttributes, range: currentMentionRange)
@@ -213,7 +229,7 @@ extension SZMentionsListener {
         
         mentionsTextView.selectedRange = selectedRange
         
-        mentionsManager.hideMentionsList()
+        hideMentions()
         
         return true
     }
@@ -246,7 +262,7 @@ extension SZMentionsListener {
                 let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSRange(location: location, length: 1))
                 
                 if substringTrigger == trigger {
-                    mentionsManager.showMentionsListWithString(filterString)
+                    showMentionsListWithString(filterString)
                 }
             }
         }
@@ -263,7 +279,7 @@ extension SZMentionsListener {
     private func resetTypingAttributes(for textView: UITextView) {
         var attributes = [String: Any]()
         for attribute in defaultTextAttributes {
-            attributes[attribute.attributeName] = attribute.attributeValue
+            attributes[attribute.name] = attribute.value
         }
         textView.typingAttributes = attributes
     }
@@ -331,14 +347,14 @@ extension SZMentionsListener {
 
                 if let filterString = filterString, !(cooldownTimer?.isValid ?? false) {
                     stringCurrentlyBeingFiltered = filterString
-                    mentionsManager.showMentionsListWithString(filterString)
+                    showMentionsListWithString(filterString)
                 }
                 activateCooldownTimer()
                 return
             }
         }
 
-        mentionsManager.hideMentionsList()
+        hideMentions()
         mentionEnabled = false
     }
     
@@ -348,7 +364,7 @@ extension SZMentionsListener {
             mutableMentions.remove(at: index)
         }
         if let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as? NSMutableAttributedString {
-            mutableAttributedString.apply(defaultTextAttributes, range: mention.mentionRange)
+            mutableAttributedString.apply(defaultTextAttributes, range: mention.range)
             mentionsTextView.attributedText = mutableAttributedString
         }
     }
@@ -427,9 +443,9 @@ extension SZMentionsListener: UITextViewDelegate {
         
         resetTypingAttributes(for: textView)
 
-        if text == "\n", mentionEnabled, mentionsManager.didHandleMentionOnReturn() {
+        if text == "\n", mentionEnabled, didHandleMentionOnReturn() {
             mentionEnabled = false
-            mentionsManager.hideMentionsList()
+            hideMentions()
 
             return false
         } else if text.count > 1 {
@@ -481,10 +497,8 @@ extension SZMentionsListener: UITextViewDelegate {
     }
 
     public func textViewDidChangeSelection(_ textView: UITextView) {
-        if !editingMention {
-            adjust(textView, range: textView.selectedRange)
-            delegate?.textViewDidChangeSelection?(textView)
-        }
+        if !editingMention { adjust(textView, range: textView.selectedRange) }
+        delegate?.textViewDidChangeSelection?(textView)
     }
 
     public func textViewDidEndEditing(_ textView: UITextView) {

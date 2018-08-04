@@ -9,7 +9,7 @@ workspace 'SZMentions'
 target 'SZMentionsSwift' do
   target 'SZMentionsSwiftTests' do
     inherit! :search_paths
-    pod 'Quick', :git => 'https://github.com/Quick/Quick.git', :branch => 'master'
-    pod 'Nimble', :git => 'https://github.com/Quick/Nimble.git', :branch => 'master'
+    pod 'Quick'
+    pod 'Nimble'
   end
 end

@@ -7,11 +7,11 @@ class Attribute: QuickSpec {
     override func spec() {
         describe("Attribute Handling") {
             #if swift(>=4.0)
-                let attribute = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.red)
-                let attribute2 = SZAttribute(attributeName: NSAttributedStringKey.backgroundColor.rawValue, attributeValue: UIColor.black)
+                let attribute = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
+                let attribute2 = SZAttribute(name: NSAttributedStringKey.backgroundColor.rawValue, value: UIColor.black)
             #else
-                let attribute = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
-                let attribute2 = SZAttribute(attributeName: NSBackgroundColorAttributeName, attributeValue: UIColor.black)
+                let attribute = SZAttribute(name: NSForegroundColorAttributeName, value: UIColor.red)
+                let attribute2 = SZAttribute(name: NSBackgroundColorAttributeName, value: UIColor.black)
             #endif
 
             it("Should throw an exception if the attribute types don't match") {

@@ -3,48 +3,62 @@ import Nimble
 @testable import SZMentionsSwift
 
 class MentionsDisplay: QuickSpec {
-
+    
     override func spec() {
         describe("Mentions Display") {
-            var testDelegate: TestMentionDelegate!
             var mentionsListener: SZMentionsListener!
             let textView = UITextView()
-
+            var shouldAddMentionOnReturnKeyCalled = false
+            var hidingMentionsList = false
+            
             beforeEach {
-                testDelegate = TestMentionDelegate()
-                mentionsListener = SZMentionsListener(mentionTextView: textView,
-                                                      mentionsManager: testDelegate,
-                                                      textViewDelegate: testDelegate)
             }
-
+            
             it("Should show the mentions list when typing a mention and hide when a space is added if search spaces is false") {
+                mentionsListener = generateMentionsListener(searchSpacesInMentions: false)
                 textView.insertText("@t")
-                expect(testDelegate.hidingMentionsList).to(beFalsy())
+                expect(hidingMentionsList).to(beFalsy())
                 textView.insertText(" ")
-                expect(testDelegate.hidingMentionsList).to(beTruthy())
+                expect(hidingMentionsList).to(beTruthy())
             }
-
+            
             it("Should show the mentions list when typing a mention and remain visible when a space is added if search spaces is true") {
-                mentionsListener.searchSpacesInMentions = true
+                mentionsListener = generateMentionsListener(searchSpacesInMentions: true)
                 textView.insertText("@t")
-                expect(testDelegate.hidingMentionsList).to(beFalsy())
+                expect(hidingMentionsList).to(beFalsy())
                 textView.insertText(" ")
-                expect(testDelegate.hidingMentionsList).to(beFalsy())
+                expect(hidingMentionsList).to(beFalsy())
             }
-
+            
             it("Should show the mentions list when typing a mention on a new line and hide when a space is added if search spaces is false") {
+                mentionsListener = generateMentionsListener(searchSpacesInMentions: false)
                 textView.insertText("\n@t")
-                expect(testDelegate.hidingMentionsList).to(beFalsy())
+                expect(hidingMentionsList).to(beFalsy())
                 textView.insertText(" ")
-                expect(testDelegate.hidingMentionsList).to(beTruthy())
+                expect(hidingMentionsList).to(beTruthy())
             }
-
+            
             it("Should show the mentions list when typing a mention on a new line and remain visible when a space is added if search spaces is true") {
-                mentionsListener.searchSpacesInMentions = true
+                mentionsListener = generateMentionsListener(searchSpacesInMentions: true)
                 textView.insertText("\n@t")
-                expect(testDelegate.hidingMentionsList).to(beFalsy())
+                expect(hidingMentionsList).to(beFalsy())
                 textView.insertText(" ")
-                expect(testDelegate.hidingMentionsList).to(beFalsy())
+                expect(hidingMentionsList).to(beFalsy())
+            }
+            
+            func generateMentionsListener(searchSpacesInMentions: Bool) -> SZMentionsListener {
+                return SZMentionsListener(mentionTextView: textView,
+                                          searchSpaces: searchSpacesInMentions,
+                                          hideMentions: {
+                                            hidingMentionsList = true
+                },
+                                          didHandleMentionOnReturn: { () -> Bool in
+                                            shouldAddMentionOnReturnKeyCalled = true
+                                            return true
+                },
+                                          showMentionsListWithString: { _ in
+                                            hidingMentionsList = false
+                })
             }
         }
     }

@@ -15,7 +15,6 @@
 		DB0AB4A81EAACC92003F84DB /* SharedTestClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */; };
 		DB1DF4B31F74A2AD00EA8E63 /* SZAttribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DF4B21F74A2AD00EA8E63 /* SZAttribute.swift */; };
 		DB1DF4B51F74A3D200EA8E63 /* SZMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DF4B41F74A3D200EA8E63 /* SZMention.swift */; };
-		DB1DF4B91F74A5C800EA8E63 /* MentionsManagerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DF4B81F74A5C800EA8E63 /* MentionsManagerDelegate.swift */; };
 		DB1DF4BB1F74A66700EA8E63 /* CreateMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DF4BA1F74A66700EA8E63 /* CreateMention.swift */; };
 		DB2330171E24832D00242C33 /* SZVerifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2330161E24832D00242C33 /* SZVerifier.swift */; };
 		DB3DB5DB1EA176FC004CBD91 /* MentionsDisplaySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */; };
@@ -56,7 +55,6 @@
 		DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedTestClasses.swift; sourceTree = "<group>"; };
 		DB1DF4B21F74A2AD00EA8E63 /* SZAttribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SZAttribute.swift; sourceTree = "<group>"; };
 		DB1DF4B41F74A3D200EA8E63 /* SZMention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SZMention.swift; sourceTree = "<group>"; };
-		DB1DF4B81F74A5C800EA8E63 /* MentionsManagerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MentionsManagerDelegate.swift; sourceTree = "<group>"; };
 		DB1DF4BA1F74A66700EA8E63 /* CreateMention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMention.swift; sourceTree = "<group>"; };
 		DB2330161E24832D00242C33 /* SZVerifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SZVerifier.swift; sourceTree = "<group>"; };
 		DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionsDisplaySpec.swift; sourceTree = "<group>"; };
@@ -148,7 +146,6 @@
 				DBE8B49A1C657F200090EF32 /* Private */,
 				DBE8B49E1C657F200090EF32 /* AttributeContainer.swift */,
 				DB1DF4BA1F74A66700EA8E63 /* CreateMention.swift */,
-				DB1DF4B81F74A5C800EA8E63 /* MentionsManagerDelegate.swift */,
 				DB1DF4B41F74A3D200EA8E63 /* SZMention.swift */,
 				DBE8B4A01C657F200090EF32 /* SZMentionsListener.swift */,
 			);
@@ -361,7 +358,6 @@
 				DBE8B4A11C657F200090EF32 /* NSMutableAttributedString+Attributes.swift in Sources */,
 				DBC779F31FDB6161006CD115 /* StringHelpers.swift in Sources */,
 				DB1DF4B31F74A2AD00EA8E63 /* SZAttribute.swift in Sources */,
-				DB1DF4B91F74A5C800EA8E63 /* MentionsManagerDelegate.swift in Sources */,
 				DB2330171E24832D00242C33 /* SZVerifier.swift in Sources */,
 				DBE8B4A41C657F200090EF32 /* AttributeContainer.swift in Sources */,
 				DB1DF4BB1F74A66700EA8E63 /* CreateMention.swift in Sources */,

@@ -38,44 +38,54 @@ class Delegates: QuickSpec {
     override func spec() {
         describe("Delegate Methods") {
             var textViewDelegate: TextViewDelegate!
-            var testDelegate: TestMentionDelegate!
             var mentionsListener: SZMentionsListener!
             let textView = UITextView()
+            var shouldAddMentionOnReturnKeyCalled = false
+            var hidingMentionsList = false
 
             beforeEach {
                 #if swift(>=4.0)
-                    let attribute = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.red)
-                    let attribute2 = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.black)
+                    let attribute = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
+                    let attribute2 = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.black)
                 #else
-                    let attribute = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
-                    let attribute2 = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.black)
+                    let attribute = SZAttribute(name: NSForegroundColorAttributeName, value: UIColor.red)
+                    let attribute2 = SZAttribute(name: NSForegroundColorAttributeName, value: UIColor.black)
                 #endif
 
+                hidingMentionsList = false
                 textViewDelegate = TextViewDelegate()
-                testDelegate = TestMentionDelegate()
                 mentionsListener = SZMentionsListener(mentionTextView: textView,
-                                                      mentionsManager: testDelegate,
                                                       textViewDelegate: textViewDelegate,
                                                       mentionTextAttributes: [attribute],
-                                                      defaultTextAttributes: [attribute2])
+                                                      defaultTextAttributes: [attribute2],
+                                                      hideMentions: {
+                                                            hidingMentionsList = true
+                },
+                                                      didHandleMentionOnReturn: { () -> Bool in
+                                                        shouldAddMentionOnReturnKeyCalled = true
+                                                        return true
+                },
+                                                      showMentionsListWithString: { _ in
+                                                        hidingMentionsList = false
+                })
             }
 
             it("Should return false for textView(shouldInteractWith:in) for a text attachment when overridden") {
-                expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSMakeRange(0, 0))).to(beFalsy())
+                expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSRange(location: 0, length: 0))).to(beFalsy())
             }
 
             it("Should return true for textView(shouldInteractWith:in) for a text attachment when not overridden") {
                 mentionsListener.delegate = nil
-                expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSMakeRange(0, 0))).to(beTruthy())
+                expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSRange(location: 0, length: 0))).to(beTruthy())
             }
 
             it("Should return false for textView(shouldInteractWith:in) for a URL when overridden") {
-                expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSMakeRange(0, 0))).to(beFalsy())
+                expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSRange(location: 0, length: 0))).to(beFalsy())
             }
 
             it("Should return true for textView(shouldInteractWith:in) for a URL when not overridden") {
                 mentionsListener.delegate = nil
-                expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSMakeRange(0, 0))).to(beTruthy())
+                expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSRange(location: 0, length: 0))).to(beTruthy())
             }
 
             it("Should return false for textViewShouldBeginEditing when overridden") {
@@ -109,29 +119,29 @@ class Delegates: QuickSpec {
             }
 
             it("Should call delegate method to determine if adding mention on return should be enabled") {
-                expect(testDelegate.shouldAddMentionOnReturnKeyCalled).to(beFalsy())
+                expect(shouldAddMentionOnReturnKeyCalled).to(beFalsy())
 
                 textView.insertText("@t")
-                expect(testDelegate.hidingMentionsList).to(beFalsy())
+                expect(hidingMentionsList).to(beFalsy())
 
                 if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "\n") {
                     textView.insertText("\n")
                 }
 
-                expect(testDelegate.shouldAddMentionOnReturnKeyCalled).to(beTruthy())
-                expect(testDelegate.hidingMentionsList).to(beTruthy())
+                expect(shouldAddMentionOnReturnKeyCalled).to(beTruthy())
+                expect(hidingMentionsList).to(beTruthy())
             }
 
             it("Should allow for mentions to be added in advance") {
                 textView.text = "Testing Steven Zweier and Tiffany get mentioned correctly";
 
                 let mention = SZExampleMention()
-                mention.mentionName = "Steve"
-                mention.mentionRange = NSMakeRange(8, 13)
+                mention.name = "Steve"
+                mention.range = NSRange(location: 8, length: 13)
 
                 let mention2 = SZExampleMention()
-                mention2.mentionName = "Tiff"
-                mention2.mentionRange = NSMakeRange(26, 7)
+                mention2.name = "Tiff"
+                mention2.range = NSRange(location: 26, length: 7)
 
                 let insertMentions : Array<CreateMention> = [mention, mention2]
 
@@ -158,12 +168,12 @@ class Delegates: QuickSpec {
                 textView.text = "Testing Steven Zweier"
 
                 let mention = SZExampleMention()
-                mention.mentionName = "Steve"
-                mention.mentionRange = NSMakeRange(8, 13)
+                mention.name = "Steve"
+                mention.range = NSRange(location: 8, length: 13)
 
                 let mention2 = SZExampleMention()
-                mention2.mentionName = "Tiff"
-                mention2.mentionRange = NSMakeRange(26, 7)
+                mention2.name = "Tiff"
+                mention2.range = NSRange(location: 26, length: 7)
 
                 let insertMentions : Array<CreateMention> = [mention, mention2]
 
