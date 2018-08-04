@@ -124,6 +124,12 @@ public class SZMentionsListener: NSObject {
      @param triggers - what text triggers showing the mentions list
      @param cooldownInterval - amount of time between show / hide mentions calls
      @param searchSpaces - mention searches can / cannot contain spaces
+     @param hideMentions - block of code that is run when the mentions view is to be hidden
+     @param didHandleMentionOnReturn - block of code that is run when enter is hit while in the midst of editing a mention.
+     Use this block to either:
+     - 1. add the mention and return true stating that the mention was handled on your end (this will tell the listener to hide the view)
+     - 2. return false stating that the mention was NOT handled on your end (this will allow the listener to input a line break).
+     @param showMentionsListWithString - block of code that is run when the mentions list is to be shown
      */
     public init(
         mentionTextView textView: UITextView,
