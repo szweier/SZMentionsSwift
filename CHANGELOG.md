@@ -7,6 +7,9 @@
 * Converted classes to structs where appropriate
 * Renamed variables to remove redundancies
 
+#### Fixed
+* textView(_:shouldChangeTextIn:replacementString:) not been called #65
+
 #### Note
 * This release contains breaking changes. Please refer to the ReadMe and documentation within code for more information.
 
