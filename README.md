@@ -13,7 +13,7 @@ SZMentionsSwift is a lightweight mentions library for iOS. This library was buil
 
 ## Communication
 
-- If you **need help**, feel free to tweet @StevenZweier
+- If you **need help**, feel free to tweet [@StevenZweier](http://twitter.com/StevenZweier)
 - If you **found a bug**, **have a feature request**, or **have a general question** open an issue.
 - If you **want to contribute**, submit a pull request.
 
@@ -51,9 +51,7 @@ Use one of the many initializers to setup your mentions listener.  Parameters ex
 
 `mentionsTextView` : **required** The text view we are applying the mentions listener to. Note: it's delegate **must** be the mentions manager.
 
-`mentionsManager` : **required** The class that will be handling the mention interaction.
-
-`textViewDelegate` : **optional** If you would like to receive UITextView delegate methods set this and it will be passed through after processing view the mentions listener.
+`delegate` : **optional** If you would like to receive UITextView delegate methods set this and it will be passed through after processing view the mentions listener.
 
 `mentionTextAttributes` : Attributes (see: `AttributeContainer`) to apply to the textview for all mentions
 
@@ -66,6 +64,15 @@ Use one of the many initializers to setup your mentions listener.  Parameters ex
 `cooldownInterval` : **optional** The amount of time to wait between calling showMentionsList. Default is `0.5`
 
 `searchSpaces` : **optional** Mention searches can / cannot contain spaces
+
+`hideMentions` : **required** Block of code that is run when the mentions view is to be hidden
+
+`didHandleMentionOnReturn`: **required** Block of code that is run when enter is hit while in the midst of editing a mention.
+     Use this block to either:
+     - 1. add the mention and return true stating that the mention was handled on your end (this will tell the listener to hide the view)
+     - 2. return false stating that the mention was NOT handled on your end (this will allow the listener to input a line break).
+
+`showMentionsListWithString`: **required** Block of code that is run when the mentions list is to be shown
 
 ##### Properties
 
@@ -82,17 +89,13 @@ along with a list of users mentioned in that text and want to prep the textview 
 
 This protocol contains the required properties for a mention being sent to the mentions listener
 
-#### MentionsManagerDelegate (Protocol)
+#### AttributeContainer (Protocol)
 
-The required methods for handling mention interaction.
-
-`func showMentionsListWithString(mentionsString: String)` lets the delegate know to show a mentions list as well as provides the current string typed into the textview, allowing for filtering of the mentions list.
-`func hideMentionsList()` lets the delegate know we are no longer typing in a mention.
-`func didHandleMentionOnReturn() -> Bool` allows you to handle when the user taps the enter key while searching for a mention. Return true if you've handled the interaction, false if you'd like to allow the listener to handle this event.
+This protocol contains the required properties for attributes to be applied to attributed text
 
 #### SZMention
 
-This class is returned via the `mentions` method, it includes the `range` of the mention as well as `object` containing the object sent to the mentions listener via the `addMention(_ mention: CreateMention)` method.
+This struct is returned via the `mentions` method, it includes the `range` of the mention as well as `object` containing the object sent to the mentions listener via the `addMention(_ mention: CreateMention)` method.
     
 
 ## Unit Tests

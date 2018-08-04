@@ -12,10 +12,10 @@ public protocol AttributeContainer {
     /**
      @brief Name of the attribute to set on a string
      */
-    var attributeName: String { get }
-    
+    var name: String { get }
+
     /**
      @brief Value of the attribute to set on a string
      */
-    var attributeValue: NSObject { get }
+    var value: NSObject { get }
 }

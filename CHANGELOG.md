@@ -1,5 +1,15 @@
 # Change Log
 
+## [2.0.0](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.0)  (8/4/2018)
+
+#### Cleaned
+* Removed support for < swift 4.0
+* Converted classes to structs where appropriate
+* Renamed variables to remove redundancies
+
+#### Note
+* This release contains breaking changes. Please refer to the ReadMe and documentation within code for more information.
+
 ## [1.1.3](https://github.com/szweier/SZMentionsSwift/releases/tag/1.1.3)  (2/19/2018)
 
 #### Cleaned

@@ -7,9 +7,11 @@ project 'SZMentionsSwift/SZMentionsSwift'
 workspace 'SZMentions'
 
 target 'SZMentionsSwift' do
+  pod 'SwiftFormat/CLI'
+
   target 'SZMentionsSwiftTests' do
     inherit! :search_paths
-    pod 'Quick', :git => 'https://github.com/Quick/Quick.git', :branch => 'master'
-    pod 'Nimble', :git => 'https://github.com/Quick/Nimble.git', :branch => 'master'
+    pod 'Quick', '1.3.1'
+    pod 'Nimble', '7.1.3'
   end
 end

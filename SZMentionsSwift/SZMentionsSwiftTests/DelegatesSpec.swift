@@ -1,5 +1,5 @@
-import Quick
 import Nimble
+import Quick
 @testable import SZMentionsSwift
 
 class Delegates: QuickSpec {
@@ -9,28 +9,28 @@ class Delegates: QuickSpec {
         var shouldInteractWithTextAttachment: Bool = false
         var triggeredDelegateMethod: Bool = false
 
-        func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment,
-                      in characterRange: NSRange) -> Bool {
+        func textView(_: UITextView, shouldInteractWith _: NSTextAttachment,
+                      in _: NSRange) -> Bool {
             return shouldInteractWithTextAttachment
         }
 
-        func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        func textView(_: UITextView, shouldInteractWith _: URL, in _: NSRange) -> Bool {
             return shouldInteractWithTextAttachment
         }
 
-        func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        func textViewShouldBeginEditing(_: UITextView) -> Bool {
             return shouldBeginEditing
         }
 
-        func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+        func textViewShouldEndEditing(_: UITextView) -> Bool {
             return shouldEndEditing
         }
 
-        func textViewDidEndEditing(_ textView: UITextView) {
+        func textViewDidEndEditing(_: UITextView) {
             triggeredDelegateMethod = true
         }
 
-        func textViewDidBeginEditing(_ textView: UITextView) {
+        func textViewDidBeginEditing(_: UITextView) {
             triggeredDelegateMethod = true
         }
     }
@@ -38,44 +38,40 @@ class Delegates: QuickSpec {
     override func spec() {
         describe("Delegate Methods") {
             var textViewDelegate: TextViewDelegate!
-            var testDelegate: TestMentionDelegate!
             var mentionsListener: SZMentionsListener!
             let textView = UITextView()
 
             beforeEach {
-                #if swift(>=4.0)
-                    let attribute = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.red)
-                    let attribute2 = SZAttribute(attributeName: NSAttributedStringKey.foregroundColor.rawValue, attributeValue: UIColor.black)
-                #else
-                    let attribute = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.red)
-                    let attribute2 = SZAttribute(attributeName: NSForegroundColorAttributeName, attributeValue: UIColor.black)
-                #endif
+                let attribute = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
+                let attribute2 = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.black)
 
+                hidingMentionsList = false
                 textViewDelegate = TextViewDelegate()
-                testDelegate = TestMentionDelegate()
                 mentionsListener = SZMentionsListener(mentionTextView: textView,
-                                                      mentionsManager: testDelegate,
-                                                      textViewDelegate: textViewDelegate,
+                                                      delegate: textViewDelegate,
                                                       mentionTextAttributes: [attribute],
-                                                      defaultTextAttributes: [attribute2])
+                                                      defaultTextAttributes: [attribute2],
+                                                      hideMentions: hideMentions,
+                                                      didHandleMentionOnReturn: didHandleMention,
+                                                      showMentionsListWithString: showMentions)
             }
 
             it("Should return false for textView(shouldInteractWith:in) for a text attachment when overridden") {
-                expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSMakeRange(0, 0))).to(beFalsy())
+                expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSRange(location: 0, length: 0))).to(beFalsy())
             }
 
             it("Should return true for textView(shouldInteractWith:in) for a text attachment when not overridden") {
                 mentionsListener.delegate = nil
-                expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSMakeRange(0, 0))).to(beTruthy())
+                expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSRange(location: 0, length: 0))).to(beTruthy())
             }
 
             it("Should return false for textView(shouldInteractWith:in) for a URL when overridden") {
-                expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSMakeRange(0, 0))).to(beFalsy())
+                expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSRange(location: 0, length: 0))).to(beFalsy())
             }
 
             it("Should return true for textView(shouldInteractWith:in) for a URL when not overridden") {
                 mentionsListener.delegate = nil
-                expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSMakeRange(0, 0))).to(beTruthy())
+                expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSRange(location: 0, length: 0))).to(beTruthy())
             }
 
             it("Should return false for textViewShouldBeginEditing when overridden") {
@@ -109,63 +105,55 @@ class Delegates: QuickSpec {
             }
 
             it("Should call delegate method to determine if adding mention on return should be enabled") {
-                expect(testDelegate.shouldAddMentionOnReturnKeyCalled).to(beFalsy())
+                expect(shouldAddMentionOnReturnKeyCalled).to(beFalsy())
 
                 textView.insertText("@t")
-                expect(testDelegate.hidingMentionsList).to(beFalsy())
+                expect(hidingMentionsList).to(beFalsy())
 
                 if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "\n") {
                     textView.insertText("\n")
                 }
 
-                expect(testDelegate.shouldAddMentionOnReturnKeyCalled).to(beTruthy())
-                expect(testDelegate.hidingMentionsList).to(beTruthy())
+                expect(shouldAddMentionOnReturnKeyCalled).to(beTruthy())
+                expect(hidingMentionsList).to(beTruthy())
             }
 
             it("Should allow for mentions to be added in advance") {
-                textView.text = "Testing Steven Zweier and Tiffany get mentioned correctly";
+                textView.text = "Testing Steven Zweier and Tiffany get mentioned correctly"
 
                 let mention = SZExampleMention()
-                mention.mentionName = "Steve"
-                mention.mentionRange = NSMakeRange(8, 13)
+                mention.name = "Steve"
+                mention.range = NSRange(location: 8, length: 13)
 
                 let mention2 = SZExampleMention()
-                mention2.mentionName = "Tiff"
-                mention2.mentionRange = NSMakeRange(26, 7)
+                mention2.name = "Tiff"
+                mention2.range = NSRange(location: 26, length: 7)
 
-                let insertMentions : Array<CreateMention> = [mention, mention2]
+                let insertMentions: Array<CreateMention> = [mention, mention2]
 
                 mentionsListener.insertExistingMentions(insertMentions)
 
                 expect(mentionsListener.mentions.count).to(equal(2))
 
-                #if swift(>=4.0)
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 9, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 21, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 27, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                    expect((textView.attributedText.attribute(.foregroundColor, at: 33, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                #else
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 9, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 21, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 27, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                    expect((textView.attributedText.attribute(NSForegroundColorAttributeName, at: 33, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                #endif
+                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 9, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 21, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 27, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 33, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
             }
 
             it("Should throw an assertion if the mention range is beyond the text length") {
                 textView.text = "Testing Steven Zweier"
 
                 let mention = SZExampleMention()
-                mention.mentionName = "Steve"
-                mention.mentionRange = NSMakeRange(8, 13)
+                mention.name = "Steve"
+                mention.range = NSRange(location: 8, length: 13)
 
                 let mention2 = SZExampleMention()
-                mention2.mentionName = "Tiff"
-                mention2.mentionRange = NSMakeRange(26, 7)
+                mention2.name = "Tiff"
+                mention2.range = NSRange(location: 26, length: 7)
 
-                let insertMentions : Array<CreateMention> = [mention, mention2]
+                let insertMentions: Array<CreateMention> = [mention, mention2]
 
                 expect(mentionsListener.insertExistingMentions(insertMentions)).to(throwAssertion())
             }

@@ -11,7 +11,7 @@ import SZMentionsSwift
 
 class SZExampleViewController: UIViewController, UITextViewDelegate {
 
-    private var myInputAccessoryView: UIView?
+    private var myInputAccessoryView: SZExampleAccessoryView!
 
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -23,7 +23,7 @@ class SZExampleViewController: UIViewController, UITextViewDelegate {
     }
 
     override var inputAccessoryView: UIView {
-        return myInputAccessoryView!
+        return myInputAccessoryView
     }
 
     override var canBecomeFirstResponder : Bool {
@@ -35,4 +35,3 @@ class SZExampleViewController: UIViewController, UITextViewDelegate {
         becomeFirstResponder()
     }
 }
-

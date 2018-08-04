@@ -8,14 +8,14 @@
 
 import Foundation
 
-public struct SZAttribute: AttributeContainer {
+internal struct SZAttribute: AttributeContainer {
     /**
      @brief Name of the attribute to set on a string
      */
-    public var attributeName: String
-    
+    var name: String
+
     /**
      @brief Value of the attribute to set on a string
      */
-    public var attributeValue: NSObject
+    var value: NSObject
 }
