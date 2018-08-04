@@ -8,6 +8,8 @@ class SZExampleMention: CreateMention {
 class TestMentionDelegate: NSObject, MentionsManagerDelegate, UITextViewDelegate {
     
     var hidingMentionsList = false
+    var mentionsString = ""
+    var trigger = ""
     var shouldAddMentionOnReturnKeyCalled = false
     /**
      @brief Called when a user hits enter while entering a mention
@@ -28,5 +30,8 @@ class TestMentionDelegate: NSObject, MentionsManagerDelegate, UITextViewDelegate
      @param MentionString the current text entered after the mention trigger.
      Generally used for filtering a mentions list.
      */
-    func showMentionsListWithString(_ mentionsString: String) { }
+    func showMentionsListWithString(_ mentionsString: String, trigger: String) {
+        self.mentionsString = mentionsString
+        self.trigger = trigger
+    }
 }

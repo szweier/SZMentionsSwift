@@ -114,7 +114,7 @@ class SZExampleAccessoryView: UIView, MentionsManagerDelegate {
         return attributes
     }
 
-    func showMentionsListWithString(_ mentionsString: String) {
+    func showMentionsListWithString(_ mentionsString: String, trigger: String) {
         if mentionsTableView.superview == nil {
             removeConstraints(constraints)
             addSubview(mentionsTableView)
