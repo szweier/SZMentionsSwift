@@ -393,7 +393,10 @@ class AddingMentions: QuickSpec {
                 return SZMentionsListener(mentionTextView: textView,
                                           mentionTextAttributes: [attribute],
                                           defaultTextAttributes: [attribute2],
-                                          spaceAfterMention: spaceAfterMention)
+                                          spaceAfterMention: spaceAfterMention,
+                                          hideMentions: {},
+                                          didHandleMentionOnReturn: { true },
+                                          showMentionsListWithString: { _ in })
             }
         }
     }

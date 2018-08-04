@@ -55,7 +55,7 @@ class Delegates: QuickSpec {
                 hidingMentionsList = false
                 textViewDelegate = TextViewDelegate()
                 mentionsListener = SZMentionsListener(mentionTextView: textView,
-                                                      textViewDelegate: textViewDelegate,
+                                                      delegate: textViewDelegate,
                                                       mentionTextAttributes: [attribute],
                                                       defaultTextAttributes: [attribute2],
                                                       hideMentions: {

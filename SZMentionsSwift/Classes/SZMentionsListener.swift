@@ -117,7 +117,7 @@ public class SZMentionsListener: NSObject {
     /**
      @brief Initializer that allows for customization of text attributes for default text and mentions
      @param mentionTextView: - the text view to manage mentions for
-     @param textViewDelegate: - the object that will handle textview delegate methods
+     @param delegate: - the object that will handle textview delegate methods
      @param mentionTextAttributes - text style to show for mentions
      @param defaultTextAttributes - text style to show for default text
      @param spaceAfterMention - whether or not to add a space after adding a mention
@@ -127,7 +127,7 @@ public class SZMentionsListener: NSObject {
      */
     public init(
         mentionTextView textView: UITextView,
-        textViewDelegate: UITextViewDelegate? = nil,
+        delegate: UITextViewDelegate? = nil,
         mentionTextAttributes mentionAttributes: [AttributeContainer]? = nil,
         defaultTextAttributes defaultAttributes: [AttributeContainer]? = nil,
         spaceAfterMention spaceAfter: Bool = false,
@@ -153,7 +153,7 @@ public class SZMentionsListener: NSObject {
                                mentionTextAttributes: mentionTextAttributes)
         searchSpacesInMentions = searchSpaces
         mentionsTextView = textView
-        delegate = textViewDelegate
+        self.delegate = delegate
         spaceAfterMention = spaceAfter
         triggers = mentionTriggers
         cooldownInterval = interval
