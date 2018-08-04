@@ -396,7 +396,7 @@ class AddingMentions: QuickSpec {
                                           spaceAfterMention: spaceAfterMention,
                                           hideMentions: {},
                                           didHandleMentionOnReturn: { false },
-                                          showMentionsListWithString: { _ in })
+                                          showMentionsListWithString: { _, _ in })
             }
         }
     }

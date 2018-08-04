@@ -7,10 +7,14 @@ class SZExampleMention: CreateMention {
 
 var shouldAddMentionOnReturnKeyCalled = false
 var hidingMentionsList = false
+var mentionsString = ""
+var triggerString = ""
 
 let hideMentionsBlock: () -> Void = { hidingMentionsList = true }
-let showMentionsBlock: (String) -> Void = { _ in
+let showMentionsBlock: (String, String) -> Void = { (mention, trigger) in
     hidingMentionsList = false
+    mentionsString = mention
+    triggerString = trigger
 }
 let didHandleMentionBlock: () -> Bool = { () -> Bool in
     shouldAddMentionOnReturnKeyCalled = true

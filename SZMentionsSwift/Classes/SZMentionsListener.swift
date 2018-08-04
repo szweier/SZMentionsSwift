@@ -70,7 +70,7 @@ public class SZMentionsListener: NSObject {
      @param MentionString the current text entered after the mention trigger.
      Generally used for filtering a mentions list.
      */
-    private let showMentionsListWithString: (_ mentionString: String) -> Void
+    private let showMentionsListWithString: (_ mentionString: String, _ trigger: String) -> Void
 
     /**
      @brief Amount of time to delay between showMentions calls default:0.5
@@ -136,7 +136,7 @@ public class SZMentionsListener: NSObject {
         searchSpaces: Bool = false,
         hideMentions: @escaping () -> Void,
         didHandleMentionOnReturn: @escaping () -> Bool,
-        showMentionsListWithString: @escaping (String) -> Void) {
+        showMentionsListWithString: @escaping (String, String) -> Void) {
         #if swift(>=4.0)
             mentionTextAttributes = mentionAttributes ?? [SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue,
             value: UIColor.blue)]
@@ -262,7 +262,7 @@ extension SZMentionsListener {
                 let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSRange(location: location, length: 1))
                 
                 if substringTrigger == trigger {
-                    showMentionsListWithString(filterString)
+                    showMentionsListWithString(filterString, trigger)
                 }
             }
         }
@@ -319,7 +319,7 @@ extension SZMentionsListener {
             mentionEnabled = location == 0
 
             if location > 0 {
-                //Determine whether or not a space exists before the trigger.
+                //Determine whether or not a space exists before the triggter.
                 //(in the case of an @ trigger this avoids showing the mention list for an email address)
                 let substringRange = NSRange(location: location - 1, length: 1)
                 textBeforeTrigger = substring.substring(with: substringRange)
@@ -347,7 +347,7 @@ extension SZMentionsListener {
 
                 if let filterString = filterString, !(cooldownTimer?.isValid ?? false) {
                     stringCurrentlyBeingFiltered = filterString
-                    showMentionsListWithString(filterString)
+                    showMentionsListWithString(filterString, trigger)
                 }
                 activateCooldownTimer()
                 return

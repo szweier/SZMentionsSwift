@@ -13,6 +13,8 @@ class MentionsDisplay: QuickSpec {
                 mentionsListener = generateMentionsListener(searchSpacesInMentions: false)
                 textView.insertText("@t")
                 expect(hidingMentionsList).to(beFalsy())
+                expect(mentionsString).to(equal("t"))
+                expect(triggerString).to(equal("@"))
                 textView.insertText(" ")
                 expect(hidingMentionsList).to(beTruthy())
             }
@@ -21,6 +23,8 @@ class MentionsDisplay: QuickSpec {
                 mentionsListener = generateMentionsListener(searchSpacesInMentions: true)
                 textView.insertText("@t")
                 expect(hidingMentionsList).to(beFalsy())
+                expect(mentionsString).to(equal("t"))
+                expect(triggerString).to(equal("@"))
                 textView.insertText(" ")
                 expect(hidingMentionsList).to(beFalsy())
             }
@@ -29,6 +33,8 @@ class MentionsDisplay: QuickSpec {
                 mentionsListener = generateMentionsListener(searchSpacesInMentions: false)
                 textView.insertText("\n@t")
                 expect(hidingMentionsList).to(beFalsy())
+                expect(mentionsString).to(equal("t"))
+                expect(triggerString).to(equal("@"))
                 textView.insertText(" ")
                 expect(hidingMentionsList).to(beTruthy())
             }
@@ -37,6 +43,8 @@ class MentionsDisplay: QuickSpec {
                 mentionsListener = generateMentionsListener(searchSpacesInMentions: true)
                 textView.insertText("\n@t")
                 expect(hidingMentionsList).to(beFalsy())
+                expect(mentionsString).to(equal("t"))
+                expect(triggerString).to(equal("@"))
                 textView.insertText(" ")
                 expect(hidingMentionsList).to(beFalsy())
             }
