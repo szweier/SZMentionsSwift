@@ -9,7 +9,7 @@ workspace 'SZMentions'
 target 'SZMentionsSwift' do
   target 'SZMentionsSwiftTests' do
     inherit! :search_paths
-    pod 'Quick'
-    pod 'Nimble'
+    pod 'Quick', '1.3.1'
+    pod 'Nimble', '7.1.3'
   end
 end
