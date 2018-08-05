@@ -1,5 +1,5 @@
 //
-//  SZExampleAccessoryView.swift
+//  ExampleAccessoryView.swift
 //  SZMentionsExample
 //
 //  Created by Steven Zweier on 1/11/16.
@@ -9,45 +9,41 @@
 import UIKit
 import SZMentionsSwift
 
-class SZExampleAccessoryView: UIView {
-    struct SZAttribute: AttributeContainer {
+class ExampleAccessoryView: UIView {
+    struct Attribute: AttributeContainer {
         var name: String
         var value: NSObject
     }
     private let textView = UITextView()
     private let mentionsTableView = UITableView()
-    private var dataManager: SZExampleMentionsTableViewDataManager?
-    private var mentionAttributes: [AttributeContainer] {
-        return [
-            SZAttribute(
-                name: NSAttributedStringKey.foregroundColor.rawValue,
-                value: UIColor.black),
-            SZAttribute(
-                name: NSAttributedStringKey.font.rawValue,
-                value: UIFont(name: "ChalkboardSE-Bold", size: 12)!),
-            SZAttribute(
-                name: NSAttributedStringKey.backgroundColor.rawValue,
-                value: UIColor.lightGray)
-        ]
-    }
-    private var defaultAttributes: [AttributeContainer] {
-        return [
-            SZAttribute(
-                name: NSAttributedStringKey.foregroundColor.rawValue,
-                value: UIColor.gray),
-            SZAttribute(
-                name: NSAttributedStringKey.font.rawValue,
-                value: UIFont(name: "ArialMT", size: 12)!),
-            SZAttribute(
-                name: NSAttributedStringKey.backgroundColor.rawValue,
-                value: UIColor.white)
-        ]
-    }
+    private let mentionAttributes: [AttributeContainer] = [
+        Attribute(
+            name: NSAttributedStringKey.foregroundColor.rawValue,
+            value: UIColor.black),
+        Attribute(
+            name: NSAttributedStringKey.font.rawValue,
+            value: UIFont(name: "ChalkboardSE-Bold", size: 12)!),
+        Attribute(
+            name: NSAttributedStringKey.backgroundColor.rawValue,
+            value: UIColor.lightGray)
+    ]
+    private let defaultAttributes: [AttributeContainer] = [
+        Attribute(
+            name: NSAttributedStringKey.foregroundColor.rawValue,
+            value: UIColor.gray),
+        Attribute(
+            name: NSAttributedStringKey.font.rawValue,
+            value: UIFont(name: "ArialMT", size: 12)!),
+        Attribute(
+            name: NSAttributedStringKey.backgroundColor.rawValue,
+            value: UIColor.white)
+    ]
+    private var dataManager: ExampleMentionsTableViewDataManager?
     
     init(delegate: UITextViewDelegate) {
         super.init(frame: .zero)
         autoresizingMask = .flexibleHeight
-        let mentionsListener = SZMentionsListener(mentionTextView: textView,
+        let mentionsListener = MentionListener(mentionTextView: textView,
                                                   delegate: delegate,
                                                   mentionTextAttributes: mentionAttributes,
                                                   defaultTextAttributes: defaultAttributes,
@@ -61,26 +57,26 @@ class SZExampleAccessoryView: UIView {
         addConstraintsToTextView(textView)
         textView.text = "Test Steven Zweier mention"
         
-        let mention = SZExampleMention(name: "Steven Zweier",
+        let mention = ExampleMention(name: "Steven Zweier",
                                        range: NSRange(location: 5, length: 13))
         
         mentionsListener.insertExistingMentions([mention])
         
-        dataManager = SZExampleMentionsTableViewDataManager(
+        dataManager = ExampleMentionsTableViewDataManager(
             mentionTableView: mentionsTableView,
             mentionsListener: mentionsListener)
         
-        setupTableView(mentionsTableView, dataManager: dataManager!)
-        backgroundColor = UIColor.gray
+        setupTableView(mentionsTableView, dataManager: dataManager)
+        backgroundColor = .gray
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupTableView(_ tableView: UITableView, dataManager: SZExampleMentionsTableViewDataManager) {
+    private func setupTableView(_ tableView: UITableView, dataManager: ExampleMentionsTableViewDataManager?) {
         mentionsTableView.translatesAutoresizingMaskIntoConstraints = false
-        mentionsTableView.backgroundColor = UIColor.blue
+        mentionsTableView.backgroundColor = .blue
         mentionsTableView.delegate = dataManager
         mentionsTableView.dataSource = dataManager
     }
@@ -101,7 +97,7 @@ class SZExampleAccessoryView: UIView {
         )
     }
     
-    private func setupTextView(_ textView: UITextView, delegate: SZMentionsListener) {
+    private func setupTextView(_ textView: UITextView, delegate: MentionListener) {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.delegate = delegate
     }
@@ -111,7 +107,7 @@ class SZExampleAccessoryView: UIView {
     }
 }
 
-extension SZExampleAccessoryView {
+extension ExampleAccessoryView {
     func hideMentions() {
         if mentionsTableView.superview != nil {
             mentionsTableView.removeFromSuperview()

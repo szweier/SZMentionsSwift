@@ -1,5 +1,5 @@
 //
-//  SZExampleMention.swift
+//  ExampleMention.swift
 //  SZMentionsExample
 //
 //  Created by Steven Zweier on 1/12/16.
@@ -9,7 +9,7 @@
 import UIKit
 import SZMentionsSwift
 
-struct SZExampleMention: CreateMention {
+struct ExampleMention: CreateMention {
     var name: String = ""
     var range: NSRange = NSRange(location: 0, length: 0)
 }

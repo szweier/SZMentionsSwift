@@ -1,5 +1,10 @@
 # Change Log
 
+## [2.0.1](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.1)  (8/4/2018)
+
+#### Cleaned
+* Remove SZ prefix from class files
+
 ## [2.0.0](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.0)  (8/4/2018)
 
 #### Cleaned

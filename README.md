@@ -42,7 +42,7 @@ $ pod install
 
 Below is a quick run through of the objects used in this library but as always the best place to get an understanding of the current implementation of the SZMentionsSwift library is in the example code.
 
-#### SZMentionsSwiftListener
+#### MentionsSwiftListener
 
 This class manages the mention interaction.
 
@@ -93,7 +93,7 @@ This protocol contains the required properties for a mention being sent to the m
 
 This protocol contains the required properties for attributes to be applied to attributed text
 
-#### SZMention
+#### Mention
 
 This struct is returned via the `mentions` method, it includes the `range` of the mention as well as `object` containing the object sent to the mentions listener via the `addMention(_ mention: CreateMention)` method.
     

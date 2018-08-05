@@ -1,12 +1,12 @@
 //
-//  SZMentionHelper.swift
+//  Verifier.swift
 //  SZMentionsSwift
 //
 //  Created by Steve Zweier on 2/1/16.
 //  Copyright © 2016 Steven Zweier. All rights reserved.
 //
 
-internal class SZVerifier {
+internal class Verifier {
     static let attributeConsistencyError = "Default and mention attributes must contain the same attribute names: If default attributes specify NSForegroundColorAttributeName mention attributes must specify that same name as well. (Values do not need to match)"
 
     static func verifySetup(withDefaultTextAttributes defaultTextAttributes: [AttributeContainer],
