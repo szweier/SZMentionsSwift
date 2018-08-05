@@ -5,7 +5,7 @@ import Quick
 class MentionsDisplay: QuickSpec {
     override func spec() {
         describe("Mentions Display") {
-            var mentionsListener: SZMentionsListener!
+            var mentionsListener: MentionListener!
             let textView = UITextView()
 
             it("Should show the mentions list when typing a mention and hide when a space is added if search spaces is false") {
@@ -48,12 +48,12 @@ class MentionsDisplay: QuickSpec {
                 expect(hidingMentionsList).to(beFalsy())
             }
 
-            func generateMentionsListener(searchSpacesInMentions: Bool) -> SZMentionsListener {
-                return SZMentionsListener(mentionTextView: textView,
-                                          searchSpaces: searchSpacesInMentions,
-                                          hideMentions: hideMentions,
-                                          didHandleMentionOnReturn: didHandleMention,
-                                          showMentionsListWithString: showMentions)
+            func generateMentionsListener(searchSpacesInMentions: Bool) -> MentionListener {
+                return MentionListener(mentionTextView: textView,
+                                       searchSpaces: searchSpacesInMentions,
+                                       hideMentions: hideMentions,
+                                       didHandleMentionOnReturn: didHandleMention,
+                                       showMentionsListWithString: showMentions)
             }
         }
     }

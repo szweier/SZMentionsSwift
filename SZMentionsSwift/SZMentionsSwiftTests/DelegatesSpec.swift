@@ -38,22 +38,22 @@ class Delegates: QuickSpec {
     override func spec() {
         describe("Delegate Methods") {
             var textViewDelegate: TextViewDelegate!
-            var mentionsListener: SZMentionsListener!
+            var mentionsListener: MentionListener!
             let textView = UITextView()
 
             beforeEach {
-                let attribute = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
-                let attribute2 = SZAttribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.black)
+                let attribute = Attribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
+                let attribute2 = Attribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.black)
 
                 hidingMentionsList = false
                 textViewDelegate = TextViewDelegate()
-                mentionsListener = SZMentionsListener(mentionTextView: textView,
-                                                      delegate: textViewDelegate,
-                                                      mentionTextAttributes: [attribute],
-                                                      defaultTextAttributes: [attribute2],
-                                                      hideMentions: hideMentions,
-                                                      didHandleMentionOnReturn: didHandleMention,
-                                                      showMentionsListWithString: showMentions)
+                mentionsListener = MentionListener(mentionTextView: textView,
+                                                   delegate: textViewDelegate,
+                                                   mentionTextAttributes: [attribute],
+                                                   defaultTextAttributes: [attribute2],
+                                                   hideMentions: hideMentions,
+                                                   didHandleMentionOnReturn: didHandleMention,
+                                                   showMentionsListWithString: showMentions)
             }
 
             it("Should return false for textView(shouldInteractWith:in) for a text attachment when overridden") {
@@ -121,13 +121,8 @@ class Delegates: QuickSpec {
             it("Should allow for mentions to be added in advance") {
                 textView.text = "Testing Steven Zweier and Tiffany get mentioned correctly"
 
-                let mention = SZExampleMention()
-                mention.name = "Steve"
-                mention.range = NSRange(location: 8, length: 13)
-
-                let mention2 = SZExampleMention()
-                mention2.name = "Tiff"
-                mention2.range = NSRange(location: 26, length: 7)
+                let mention = ExampleMention(name: "Steve", range: NSRange(location: 8, length: 13))
+                let mention2 = ExampleMention(name: "Tiff", range: NSRange(location: 26, length: 7))
 
                 let insertMentions: Array<CreateMention> = [mention, mention2]
 
@@ -145,13 +140,8 @@ class Delegates: QuickSpec {
             it("Should throw an assertion if the mention range is beyond the text length") {
                 textView.text = "Testing Steven Zweier"
 
-                let mention = SZExampleMention()
-                mention.name = "Steve"
-                mention.range = NSRange(location: 8, length: 13)
-
-                let mention2 = SZExampleMention()
-                mention2.name = "Tiff"
-                mention2.range = NSRange(location: 26, length: 7)
+                let mention = ExampleMention(name: "Steve", range: NSRange(location: 8, length: 13))
+                let mention2 = ExampleMention(name: "Tiff", range: NSRange(location: 26, length: 7))
 
                 let insertMentions: Array<CreateMention> = [mention, mention2]
 

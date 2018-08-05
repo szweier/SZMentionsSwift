@@ -1,5 +1,5 @@
 //
-//  SZExampleViewController.swift
+//  ExampleViewController.swift
 //  SZMentionsExample
 //
 //  Created by Steven Zweier on 1/11/16.
@@ -9,13 +9,13 @@
 import UIKit
 import SZMentionsSwift
 
-class SZExampleViewController: UIViewController, UITextViewDelegate {
+class ExampleViewController: UIViewController, UITextViewDelegate {
 
-    private var myInputAccessoryView: SZExampleAccessoryView!
+    private var myInputAccessoryView: ExampleAccessoryView!
 
     init() {
         super.init(nibName: nil, bundle: nil)
-        myInputAccessoryView = SZExampleAccessoryView(delegate: self)
+        myInputAccessoryView = ExampleAccessoryView(delegate: self)
     }
 
     required init?(coder aDecoder: NSCoder) {

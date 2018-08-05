@@ -1,5 +1,5 @@
 //
-//  SZAttribute.swift
+//  Attribute.swift
 //  SZMentionsSwift
 //
 //  Created by Steven Zweier on 9/21/17.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-internal struct SZAttribute: AttributeContainer {
+internal struct Attribute: AttributeContainer {
     /**
      @brief Name of the attribute to set on a string
      */

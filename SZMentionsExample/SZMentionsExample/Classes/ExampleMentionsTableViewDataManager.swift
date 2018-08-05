@@ -1,5 +1,5 @@
 //
-//  SZExampleMentionsTableViewDataManager.swift
+//  ExampleMentionsTableViewDataManager.swift
 //  SZMentionsExample
 //
 //  Created by Steven Zweier on 1/12/16.
@@ -9,18 +9,18 @@
 import UIKit
 import SZMentionsSwift
 
-class SZExampleMentionsTableViewDataManager: NSObject {
+class ExampleMentionsTableViewDataManager: NSObject {
     private let cellIdentifier = "Cell"
-    private let listener: SZMentionsListener
-    private let mentions: [SZExampleMention] = {
+    private let listener: MentionListener
+    private let mentions: [ExampleMention] = {
         return [
             "Steven Zweier",
             "John Smith",
             "Joe Tesla"].map {
-                SZExampleMention(name: $0, range: NSRange(location: 0, length: 0))
+                ExampleMention(name: $0, range: NSRange(location: 0, length: 0))
         }
     }()
-    private var mentionsList: [SZExampleMention] {
+    private var mentionsList: [ExampleMention] {
         guard !mentions.isEmpty else { return mentions }
         return mentions.filter {
             return $0.name.lowercased().contains(filterString.lowercased())
@@ -29,7 +29,7 @@ class SZExampleMentionsTableViewDataManager: NSObject {
     private let tableView: UITableView
     private var filterString: String = ""
 
-    init(mentionTableView: UITableView, mentionsListener: SZMentionsListener) {
+    init(mentionTableView: UITableView, mentionsListener: MentionListener) {
         tableView = mentionTableView
         tableView.register(
             UITableViewCell.self,
@@ -44,13 +44,13 @@ class SZExampleMentionsTableViewDataManager: NSObject {
     }
 }
 
-extension SZExampleMentionsTableViewDataManager: UITableViewDelegate {
+extension ExampleMentionsTableViewDataManager: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         listener.addMention(mentionsList[indexPath.row])
     }
 }
 
-extension SZExampleMentionsTableViewDataManager: UITableViewDataSource {
+extension ExampleMentionsTableViewDataManager: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }

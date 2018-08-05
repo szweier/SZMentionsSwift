@@ -1,5 +1,5 @@
 //
-//  SZAttributedStringHelper.swift
+//  NSMutableAttributedString+Attributes.swift
 //  SZMentionsSwift
 //
 //  Created by Steve Zweier on 2/1/16.

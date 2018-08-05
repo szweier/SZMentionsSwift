@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.backgroundColor = UIColor.white
         window?.makeKeyAndVisible()
 
-        let exampleVC = SZExampleViewController()
+        let exampleVC = ExampleViewController()
         window?.rootViewController = exampleVC
 
         return true

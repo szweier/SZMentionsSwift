@@ -1,18 +1,18 @@
 //
-//  SZMentionHelper.swift
+//  Array+Mention.swift
 //  SZMentionsSwift
 //
 //  Created by Steve Zweier on 2/1/16.
 //  Copyright © 2016 Steven Zweier. All rights reserved.
 //
 
-internal extension Array where Element == SZMention {
+internal extension Array where Element == Mention {
     /**
      @brief returns the mention being edited (if a mention is being edited)
      @param range: the range to look for a mention
-     @return SZMention?: the mention being edited (if one exists)
+     @return Mention?: the mention being edited (if one exists)
      */
-    func mentionBeingEdited(at range: NSRange) -> SZMention? {
+    func mentionBeingEdited(at range: NSRange) -> Mention? {
         return filter { NSIntersectionRange(range, $0.range).length > 0 ||
             (range.location + range.length) > $0.range.location &&
             (range.location + range.length) < ($0.range.location + $0.range.length) }.first
@@ -40,9 +40,9 @@ internal extension Array where Element == SZMention {
     /**
      @brief Determines what mentions exist after a given range
      @param range: the range where text was changed
-     @return [SZMention]: list of mentions that exist after the provided range
+     @return [Mention]: list of mentions that exist after the provided range
      */
-    private func mentionsAfterTextEntry(_ range: NSRange) -> [SZMention] {
+    private func mentionsAfterTextEntry(_ range: NSRange) -> [Mention] {
         return filter { $0.range.location >= range.location + range.length }
     }
 }
