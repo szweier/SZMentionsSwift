@@ -1,5 +1,10 @@
 # Change Log
 
+## [2.0.2](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.2)  (8/7/2018)
+
+#### Fixed
+* Exception 'NSRangeException' for searchSpaces feature [Issue #69](https://github.com/szweier/SZMentionsSwift/issues/69)
+
 ## [2.0.1](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.1)  (8/4/2018)
 
 #### Cleaned
@@ -13,7 +18,7 @@
 * Renamed variables to remove redundancies
 
 #### Fixed
-* textView(_:shouldChangeTextIn:replacementString:) not been called [Issue #65](https://github.com/szweier/SZMentionsSwift/issues/65)
+* textView(_:shouldChangeTextIn:replacementString:) not being called [Issue #65](https://github.com/szweier/SZMentionsSwift/issues/65)
 
 #### Note
 * This release contains breaking changes. Please refer to the ReadMe and documentation within code for more information.
