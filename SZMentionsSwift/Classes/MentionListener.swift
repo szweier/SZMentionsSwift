@@ -310,7 +310,7 @@ extension MentionListener {
      @param range: the selected range
      */
     private func adjust(_ textView: UITextView, range: NSRange) {
-        let string = (textView.text as NSString).substring(to: range.location)
+        let string = (textView.text as NSString).substring(to: range.location + range.length)
         var textBeforeTrigger = " "
         let rangeTuple = string.range(of: triggers, options: NSString.CompareOptions.backwards)
         guard let location = rangeTuple.range?.location, let trigger = rangeTuple.foundString else { return }

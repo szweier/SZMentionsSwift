@@ -9,7 +9,7 @@ class AddingMentions: QuickSpec {
             var mentionsListener: MentionListener!
 
             beforeEach {
-                mentionsListener = generateMentionsListener(spaceAfterMention: false)
+                mentionsListener = generateMentionsListener(spaceAfterMention: false, searchSpaces: false)
             }
 
             it("Should add mention") {
@@ -136,7 +136,7 @@ class AddingMentions: QuickSpec {
             }
 
             it("Should test mention location is adjusted properly when a mention is inserted behind a mention when space after mention is true") {
-                mentionsListener = generateMentionsListener(spaceAfterMention: true)
+                mentionsListener = generateMentionsListener(spaceAfterMention: true, searchSpaces: false)
                 textView.insertText("@t")
                 let mention = ExampleMention(name: "Steven", range: NSRange())
                 mentionsListener.addMention(mention)
@@ -200,7 +200,7 @@ class AddingMentions: QuickSpec {
             }
 
             it("Should test that the correct mention range is replaced if multiple exist and that the selected range is correct when space after mention is true") {
-                mentionsListener = generateMentionsListener(spaceAfterMention: true)
+                mentionsListener = generateMentionsListener(spaceAfterMention: true, searchSpaces: false)
                 textView.insertText(" @st")
                 textView.selectedRange = NSRange(location: 0, length: 0)
                 textView.insertText("@st")
@@ -333,7 +333,19 @@ class AddingMentions: QuickSpec {
                 expect(textView.text.utf16.count).to(equal(5))
             }
 
-            func generateMentionsListener(spaceAfterMention: Bool) -> MentionListener {
+            it("Should not crash when selecting text within a mention being written") {
+                mentionsListener = generateMentionsListener(spaceAfterMention: false, searchSpaces: true)
+                textView.insertText("@")
+                textView.insertText("s")
+                textView.insertText("t")
+                textView.insertText("e")
+                textView.selectedRange = NSRange(location: 1, length: 1)
+                expect {
+                    mentionsListener.textViewDidChangeSelection(textView)
+                }.toNot(throwAssertion())
+            }
+
+            func generateMentionsListener(spaceAfterMention: Bool, searchSpaces: Bool) -> MentionListener {
                 let attribute = Attribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
                 let attribute2 = Attribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.black)
 
@@ -341,6 +353,7 @@ class AddingMentions: QuickSpec {
                                        mentionTextAttributes: [attribute],
                                        defaultTextAttributes: [attribute2],
                                        spaceAfterMention: spaceAfterMention,
+                                       searchSpaces: searchSpaces,
                                        hideMentions: {},
                                        didHandleMentionOnReturn: { false },
                                        showMentionsListWithString: { _, _ in })
