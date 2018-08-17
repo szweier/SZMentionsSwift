@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.0.3](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.3) (8/16/2018)
+
+#### Fixed
+* Double insertion of test when using predictive text on an empty textview [Issue #72](https://github.com/szweier/SZMentionsSwift/issues/72)
+* Assertion failure when inserting mention after emoji [Issue #73](https://github.com/szweier/SZMentionsSwift/issues/73)
+
 ## [2.0.2](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.2)  (8/7/2018)
 
 #### Fixed

@@ -137,6 +137,22 @@ class Delegates: QuickSpec {
                 expect((textView.attributedText.attribute(.foregroundColor, at: 33, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
             }
 
+            it("Should allow for mentions to be added in advance") {
+                textView.text = "test 🦅 Asim test"
+
+                let mention = ExampleMention(name: "Asim", range: NSRange(location: 8, length: 4))
+
+                let insertMentions: Array<CreateMention> = [mention]
+
+                mentionsListener.insertExistingMentions(insertMentions)
+
+                expect(mentionsListener.mentions.count).to(equal(1))
+
+                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 9, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                expect((textView.attributedText.attribute(.foregroundColor, at: 12, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+            }
+
             it("Should throw an assertion if the mention range is beyond the text length") {
                 textView.text = "Testing Steven Zweier"
 

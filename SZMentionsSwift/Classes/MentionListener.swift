@@ -187,7 +187,7 @@ extension MentionListener {
             existingMentions.forEach { mention in
                 let range = mention.range
                 assert(range.location != NSNotFound, "Mention must have a range to insert into")
-                assert(range.location + range.length < mutableAttributedString.string.count,
+                assert(range.location + range.length <= mutableAttributedString.string.utf16.count,
                        "Mention range is out of bounds for the text length")
 
                 let mention = Mention(range: range, object: mention)
@@ -444,14 +444,15 @@ extension MentionListener: UITextViewDelegate {
             _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
         }
 
-        resetTypingAttributes(for: textView)
+        if textView.text.isEmpty { resetEmpty(textView) }
+        else { resetTypingAttributes(for: textView) }
 
         if text == "\n", mentionEnabled, didHandleMentionOnReturn() {
             mentionEnabled = false
             hideMentions()
 
             return false
-        } else if text.count > 1 {
+        } else if text.utf16.count > 1 {
             // Pasting
             if let editedMention = mentions.mentionBeingEdited(at: range) {
                 clearMention(editedMention)
@@ -460,10 +461,10 @@ extension MentionListener: UITextViewDelegate {
             textView.delegate = nil
             if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
                 mutableAttributedString.replaceCharacters(in: range, with: NSAttributedString(string: text))
-                mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: range.location, length: text.count))
+                mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: range.location, length: text.utf16.count))
                 mentionsTextView.selectedRange = NSRange(location: 0, length: 0)
                 textView.attributedText = mutableAttributedString
-                mentionsTextView.selectedRange = NSRange(location: range.location + text.count, length: 0)
+                mentionsTextView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
             }
 
             mutableMentions.adjustMentions(forTextChangeAt: range, text: text)
