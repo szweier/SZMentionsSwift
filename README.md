@@ -80,6 +80,8 @@ Use one of the many initializers to setup your mentions listener.  Parameters ex
 
 ##### Methods
 
+`public func reset()` : Call this method to reset your textView's text to an empty string and also remove any existing mentions.
+
 `@discardableResult public func addMention(_ mention: CreateMention) -> Bool` : Call this method while adding a mention to apply the mention to the current text.
 
 `public func insertExistingMentions(_ existingMentions: [CreateMention])`: Insert mentions into an existing textview.  This is provided assuming you are given text
