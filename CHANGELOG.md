@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.0.4](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.4) (8/19/2018)
+
+#### Fixed
+* Allow for resetting of textView and mentionsListener by calling reset() [Issue #75](https://github.com/szweier/SZMentionsSwift/issues/75)
+* Using predictive text on when a textView has a lot of text results in scrolling to the top [Issue #76](https://github.com/szweier/SZMentionsSwift/issues/76)
+
 ## [2.0.3](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.3) (8/16/2018)
 
 #### Fixed
