@@ -59,7 +59,6 @@ class ExampleAccessoryView: UIView {
         
         let mention = ExampleMention(name: "Steven Zweier",
                                        range: NSRange(location: 5, length: 13))
-        
         mentionsListener.insertExistingMentions([mention])
         
         dataManager = ExampleMentionsTableViewDataManager(

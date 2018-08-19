@@ -157,6 +157,7 @@ public class MentionListener: NSObject {
                              mentionTextAttributes: mentionTextAttributes)
         searchSpacesInMentions = searchSpaces
         mentionsTextView = textView
+        mentionsTextView.layoutManager.allowsNonContiguousLayout = false
         self.delegate = delegate
         spaceAfterMention = spaceAfter
         triggers = mentionTriggers
@@ -165,7 +166,7 @@ public class MentionListener: NSObject {
         self.didHandleMentionOnReturn = didHandleMentionOnReturn
         self.showMentionsListWithString = showMentionsListWithString
         super.init()
-        resetEmpty(mentionsTextView)
+        reset(mentionsTextView)
         mentionsTextView.delegate = self
     }
 }
@@ -173,6 +174,13 @@ public class MentionListener: NSObject {
 // MARK: Public methods
 
 extension MentionListener {
+    /**
+     @brief Resets the textView to empty text and removes all mentions
+     */
+    public func reset() {
+        reset(mentionsTextView)
+    }
+
     /**
      @brief Insert mentions into an existing textview.  This is provided assuming you are given text
      along with a list of users mentioned in that text and want to prep the textview in advance.
@@ -291,7 +299,7 @@ extension MentionListener {
      @brief Resets the empty text view
      @param textView: the text view to reset
      */
-    private func resetEmpty(_ textView: UITextView) {
+    private func reset(_ textView: UITextView) {
         mutableMentions.removeAll()
         resetTypingAttributes(for: textView)
         textView.text = " "
@@ -383,7 +391,7 @@ extension MentionListener {
     @discardableResult private func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
         var shouldAdjust = true
 
-        if textView.text.isEmpty { resetEmpty(textView) }
+        if textView.text.isEmpty { reset(textView) }
 
         editingMention = false
 
@@ -444,7 +452,7 @@ extension MentionListener: UITextViewDelegate {
             _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
         }
 
-        if textView.text.isEmpty { resetEmpty(textView) }
+        if textView.text.isEmpty { reset(textView) }
         else { resetTypingAttributes(for: textView) }
 
         if text == "\n", mentionEnabled, didHandleMentionOnReturn() {

@@ -135,6 +135,18 @@ class AddingMentions: QuickSpec {
                 expect(mentionsListener.mentions.isEmpty).to(beTruthy())
             }
 
+            it("Should allow you to reset the mentionsListener and textView to the original state") {
+                textView.insertText("@St")
+                let mention = ExampleMention(name: "Steven", range: NSRange())
+                mentionsListener.addMention(mention)
+
+                expect(mentionsListener.mentions.count).to(equal(1))
+
+                mentionsListener.reset()
+
+                expect(mentionsListener.mentions.count).to(equal(0))
+            }
+
             it("Should test mention location is adjusted properly when a mention is inserted behind a mention when space after mention is true") {
                 mentionsListener = generateMentionsListener(spaceAfterMention: true, searchSpaces: false)
                 textView.insertText("@t")
