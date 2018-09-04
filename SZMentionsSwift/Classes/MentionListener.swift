@@ -157,7 +157,6 @@ public class MentionListener: NSObject {
                              mentionTextAttributes: mentionTextAttributes)
         searchSpacesInMentions = searchSpaces
         mentionsTextView = textView
-        mentionsTextView.layoutManager.allowsNonContiguousLayout = false
         self.delegate = delegate
         spaceAfterMention = spaceAfter
         triggers = mentionTriggers
@@ -473,6 +472,7 @@ extension MentionListener: UITextViewDelegate {
                 mentionsTextView.selectedRange = NSRange(location: 0, length: 0)
                 textView.attributedText = mutableAttributedString
                 mentionsTextView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
+                mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
             }
 
             mutableMentions.adjustMentions(forTextChangeAt: range, text: text)
