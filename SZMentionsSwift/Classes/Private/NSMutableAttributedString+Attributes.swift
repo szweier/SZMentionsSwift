@@ -14,7 +14,7 @@ internal extension NSMutableAttributedString {
      */
     func apply(_ attributes: [AttributeContainer], range: NSRange) {
         attributes.forEach { attribute in
-            addAttribute(NSAttributedStringKey(rawValue: attribute.name),
+            addAttribute(NSAttributedString.Key(rawValue: attribute.name),
                          value: attribute.value,
                          range: range)
         }

@@ -147,10 +147,10 @@ public class MentionListener: NSObject {
         hideMentions: @escaping () -> Void,
         didHandleMentionOnReturn: @escaping () -> Bool,
         showMentionsListWithString: @escaping (String, String) -> Void
-    ) {
-        mentionTextAttributes = mentionAttributes ?? [Attribute(name: NSAttributedStringKey.foregroundColor.rawValue,
+        ) {
+        mentionTextAttributes = mentionAttributes ?? [Attribute(name: NSAttributedString.Key.foregroundColor.rawValue,
                                                                 value: UIColor.blue)]
-        defaultTextAttributes = defaultAttributes ?? [Attribute(name: NSAttributedStringKey.foregroundColor.rawValue,
+        defaultTextAttributes = defaultAttributes ?? [Attribute(name: NSAttributedString.Key.foregroundColor.rawValue,
                                                                 value: UIColor.black)]
 
         Verifier.verifySetup(withDefaultTextAttributes: defaultTextAttributes,
@@ -288,9 +288,10 @@ extension MentionListener {
      @param textView: the textView to change the typingAttributes on
      */
     private func resetTypingAttributes(for textView: UITextView) {
-        var attributes = [String: Any]()
+        var attributes = [NSAttributedString.Key: Any]()
         for attribute in defaultTextAttributes {
-            attributes[attribute.name] = attribute.value
+            let key = NSAttributedString.Key(rawValue: attribute.name)
+            attributes[key] = attribute.name
         }
         textView.typingAttributes = attributes
     }
@@ -437,7 +438,7 @@ extension MentionListener {
                           selector: #selector(MentionListener.cooldownTimerFired(_:)), userInfo: nil,
                           repeats: false)
         cooldownTimer = timer
-        RunLoop.main.add(timer, forMode: RunLoopMode.defaultRunLoopMode)
+        RunLoop.main.add(timer, forMode: RunLoop.Mode.default)
     }
 }
 
