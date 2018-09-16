@@ -49,7 +49,7 @@ class Delegates: QuickSpec {
                 textViewDelegate = TextViewDelegate()
                 mentionsListener = MentionListener(mentionTextView: textView,
                                                    delegate: textViewDelegate,
-                                                   mentionTextAttributes: [attribute],
+                                                   attributesForMention: { _ in [attribute] },
                                                    defaultTextAttributes: [attribute2],
                                                    hideMentions: hideMentions,
                                                    didHandleMentionOnReturn: didHandleMention,
