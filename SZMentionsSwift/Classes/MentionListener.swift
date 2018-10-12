@@ -47,9 +47,9 @@ public class MentionListener: NSObject {
     private let defaultTextAttributes: [AttributeContainer]
 
     /**
-     @brief Text attributes to be applied to mentions.
+     @brief Block used to determine attributes for a given mention
      */
-    private let mentionTextAttributes: [AttributeContainer]
+    private let mentionTextAttributes: (CreateMention?) -> [AttributeContainer]
 
     /**
      @brief The UITextView being handled by the MentionListener
@@ -122,7 +122,7 @@ public class MentionListener: NSObject {
      @brief Initializer that allows for customization of text attributes for default text and mentions
      @param mentionTextView: - the text view to manage mentions for
      @param delegate: - the object that will handle textview delegate methods
-     @param mentionTextAttributes - text style to show for mentions
+     @param mentionTextAttributes - block used to determine text style to show for a given mention
      @param defaultTextAttributes - text style to show for default text
      @param spaceAfterMention - whether or not to add a space after adding a mention
      @param triggers - what text triggers showing the mentions list
@@ -138,7 +138,7 @@ public class MentionListener: NSObject {
     public init(
         mentionTextView textView: UITextView,
         delegate: UITextViewDelegate? = nil,
-        mentionTextAttributes mentionAttributes: [AttributeContainer]? = nil,
+        attributesForMention mentionAttributes: ((CreateMention?) -> [AttributeContainer])? = nil,
         defaultTextAttributes defaultAttributes: [AttributeContainer]? = nil,
         spaceAfterMention spaceAfter: Bool = false,
         triggers mentionTriggers: [String] = ["@"],
@@ -148,13 +148,14 @@ public class MentionListener: NSObject {
         didHandleMentionOnReturn: @escaping () -> Bool,
         showMentionsListWithString: @escaping (String, String) -> Void
     ) {
-        mentionTextAttributes = mentionAttributes ?? [Attribute(name: NSAttributedStringKey.foregroundColor.rawValue,
-                                                                value: UIColor.blue)]
+        mentionTextAttributes = mentionAttributes ?? { _ in
+            [Attribute(name: NSAttributedStringKey.foregroundColor.rawValue,
+                       value: UIColor.blue)] }
         defaultTextAttributes = defaultAttributes ?? [Attribute(name: NSAttributedStringKey.foregroundColor.rawValue,
                                                                 value: UIColor.black)]
 
         Verifier.verifySetup(withDefaultTextAttributes: defaultTextAttributes,
-                             mentionTextAttributes: mentionTextAttributes)
+                             mentionTextAttributes: mentionTextAttributes(nil))
         searchSpacesInMentions = searchSpaces
         mentionsTextView = textView
         self.delegate = delegate
@@ -191,16 +192,16 @@ extension MentionListener {
      */
     public func insertExistingMentions(_ existingMentions: [CreateMention]) {
         if let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as? NSMutableAttributedString {
-            existingMentions.forEach { mention in
-                let range = mention.range
+            existingMentions.forEach { createMention in
+                let range = createMention.range
                 assert(range.location != NSNotFound, "Mention must have a range to insert into")
                 assert(range.location + range.length <= mutableAttributedString.string.utf16.count,
                        "Mention range is out of bounds for the text length")
 
-                let mention = Mention(range: range, object: mention)
+                let mention = Mention(range: range, object: createMention)
                 mutableMentions.append(mention)
 
-                mutableAttributedString.apply(mentionTextAttributes, range: range)
+                mutableAttributedString.apply(mentionTextAttributes(createMention), range: range)
             }
 
             mentionsTextView.attributedText = mutableAttributedString
@@ -212,24 +213,24 @@ extension MentionListener {
      @param mention: the mention object to apply
      @return Bool: whether or not a mention was added
      */
-    @discardableResult public func addMention(_ mention: CreateMention) -> Bool {
+    @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard var currentMentionRange = currentMentionRange,
             let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as? NSMutableAttributedString
         else { return false }
 
         filterString = nil
 
-        let displayName = mention.name + (spaceAfterMention ? " " : "")
+        let displayName = createMention.name + (spaceAfterMention ? " " : "")
         mutableAttributedString.mutableString.replaceCharacters(in: currentMentionRange, with: displayName)
 
         mutableMentions.adjustMentions(forTextChangeAt: currentMentionRange, text: displayName)
 
-        currentMentionRange = NSRange(location: currentMentionRange.location, length: mention.name.utf16.count)
+        currentMentionRange = NSRange(location: currentMentionRange.location, length: createMention.name.utf16.count)
 
-        let mention = Mention(range: currentMentionRange, object: mention)
+        let mention = Mention(range: currentMentionRange, object: createMention)
         mutableMentions.append(mention)
 
-        mutableAttributedString.apply(mentionTextAttributes, range: currentMentionRange)
+        mutableAttributedString.apply(mentionTextAttributes(createMention), range: currentMentionRange)
 
         var selectedRange = NSRange(location: currentMentionRange.location + currentMentionRange.length, length: 0)
 

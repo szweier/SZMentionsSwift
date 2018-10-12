@@ -44,13 +44,12 @@ class ExampleAccessoryView: UIView {
         super.init(frame: .zero)
         autoresizingMask = .flexibleHeight
         let mentionsListener = MentionListener(mentionTextView: textView,
-                                                  delegate: delegate,
-                                                  mentionTextAttributes: mentionAttributes,
-                                                  defaultTextAttributes: defaultAttributes,
-                                                  spaceAfterMention: true,
-                                                  hideMentions: hideMentions,
-                                                  didHandleMentionOnReturn: didHandleMentionOnReturn,
-                                                  showMentionsListWithString: showMentionsListWithString)
+                                                    attributesForMention: { mention in self.mentionAttributes },
+                                                    defaultTextAttributes: defaultAttributes,
+                                                    spaceAfterMention: true,
+                                                    hideMentions: hideMentions,
+                                                    didHandleMentionOnReturn: didHandleMentionOnReturn,
+                                                    showMentionsListWithString: showMentionsListWithString)
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.delegate = mentionsListener
         addSubview(textView)
