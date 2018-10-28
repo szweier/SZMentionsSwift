@@ -47,6 +47,7 @@ class ExampleAccessoryView: UIView {
                                                     attributesForMention: { mention in self.mentionAttributes },
                                                     defaultTextAttributes: defaultAttributes,
                                                     spaceAfterMention: true,
+                                                    searchSpaces: false,
                                                     hideMentions: hideMentions,
                                                     didHandleMentionOnReturn: didHandleMentionOnReturn,
                                                     showMentionsListWithString: showMentionsListWithString)
