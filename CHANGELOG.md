@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.0.5](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.5) (10/8/2018)
+
+#### Fixed
+* Allow for mention text attributes to be set via a closure [Issue #80](https://github.com/szweier/SZMentionsSwift/issues/80)
+* Ensure that the mentions list is shown/hidden correctly when pasting text [Issue #84](https://github.com/szweier/SZMentionsSwift/issues/84)
+
 ## [2.0.4](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.4) (8/19/2018)
 
 #### Fixed
