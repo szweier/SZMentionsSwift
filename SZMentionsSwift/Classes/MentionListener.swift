@@ -475,8 +475,8 @@ extension MentionListener: UITextViewDelegate {
                 mentionsTextView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
                 mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
             }
-
             mutableMentions.adjustMentions(forTextChangeAt: range, text: text)
+            adjust(textView, range: textView.selectedRange)
             textView.delegate = self
 
             return false
