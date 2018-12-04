@@ -8,8 +8,8 @@
 
 import UIKit
 
-extension String {
-    internal func range(of strings: [String], options: NSString.CompareOptions, range: NSRange? = nil) -> (range: NSRange, foundString: String)? {
+internal extension String {
+    func range(of strings: [String], options: NSString.CompareOptions, range: NSRange? = nil) -> (range: NSRange, foundString: String)? {
         guard !strings.isEmpty else { return nil }
 
         let nsself = (self as NSString)

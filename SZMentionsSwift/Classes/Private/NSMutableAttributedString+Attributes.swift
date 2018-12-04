@@ -17,6 +17,11 @@ internal extension NSMutableAttributedString {
         addAttributes(Dictionary(uniqueKeysWithValues: keysAndValues), range: range)
     }
 
+    /**
+     @brief Applies mention attributes to specified ranges
+     @param mentions: mentions to add along with the position to add them
+     @param attributes: function to determine the attributes to apply to a specific mention
+     */
     func insertMentions(_ mentions: [(CreateMention, NSRange)],
                         with attributes: (CreateMention?) -> [AttributeContainer]) {
         mentions.forEach { createMention, range in

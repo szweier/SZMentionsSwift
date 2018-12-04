@@ -10,9 +10,10 @@ import UIKit
 
 public class MentionListener: NSObject {
     /**
-     @brief Array of mentions currently added to the textview
+     @brief Mutable array list of mentions managed by listener, accessible via the
+     public mentions property.
      */
-    public var mentions: [Mention] { return mutableMentions }
+    private(set) var mentions: [Mention] = []
 
     /**
      @brief An optional delegate that can be used to handle all UITextView delegate
@@ -73,12 +74,6 @@ public class MentionListener: NSObject {
      @brief Amount of time to delay between showMentions calls default:0.5
      */
     private let cooldownInterval: TimeInterval
-
-    /**
-     @brief Mutable array list of mentions managed by listener, accessible via the
-     public mentions property.
-     */
-    private var mutableMentions: [Mention] = []
 
     /**
      @brief Range of mention currently being edited.
@@ -168,7 +163,7 @@ extension MentionListener /* Public */ {
      @brief Resets the textView to empty text and removes all mentions
      */
     public func reset() {
-        mutableMentions.removeAll()
+        mentions = []
         mentionsTextView.reset(to: defaultTextAttributes)
     }
 
@@ -183,7 +178,7 @@ extension MentionListener /* Public */ {
      */
     public func insertExistingMentions(_ existingMentions: [(CreateMention, NSRange)]) {
         if let mutableAttributedString = mentionsTextView.mutableAttributedString {
-            mutableMentions.insertMentions(existingMentions)
+            mentions = mentions.insert(existingMentions)
             mutableAttributedString.insertMentions(existingMentions,
                                                    with: mentionTextAttributes)
 
@@ -206,13 +201,13 @@ extension MentionListener /* Public */ {
         let displayName = createMention.name + mentionPostFix
         mutableAttributedString.mutableString.replaceCharacters(in: currentMentionRange, with: displayName)
 
-        mutableMentions.adjustMentions(forTextChangeAt: currentMentionRange, text: displayName)
+        mentions = mentions.adjustMentions(forTextChangeAt: currentMentionRange, text: displayName)
 
         currentMentionRange = NSRange(location: currentMentionRange.location, length: createMention.name.utf16.count)
 
-        mutableMentions.append(Mention(range: currentMentionRange, object: createMention))
-
-        mutableAttributedString.apply(mentionTextAttributes(createMention), range: currentMentionRange)
+        mentions = mentions.insert([(createMention, currentMentionRange)])
+        mutableAttributedString.insertMentions([(createMention, currentMentionRange)],
+                                               with: mentionTextAttributes)
 
         var selectedRange = NSRange(location: NSMaxRange(currentMentionRange), length: 0)
 
@@ -331,10 +326,8 @@ extension MentionListener /* Private */ {
     }
 
     private func clearMention(_ mention: Mention) {
-        if let index = mutableMentions.index(of: mention) {
-            editingMention = true
-            mutableMentions.remove(at: index)
-        }
+        editingMention = true
+        mentions = mentions.remove([mention])
         if let mutableAttributedString = mentionsTextView.mutableAttributedString {
             mutableAttributedString.apply(defaultTextAttributes, range: mention.range)
             mentionsTextView.attributedText = mutableAttributedString
@@ -361,7 +354,7 @@ extension MentionListener /* Private */ {
             shouldAdjust = handleEditingMention(editedMention, textView: textView, range: range, text: text)
         }
 
-        mutableMentions.adjustMentions(forTextChangeAt: range, text: text)
+        mentions = mentions.adjustMentions(forTextChangeAt: range, text: text)
 
         _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
@@ -431,7 +424,7 @@ extension MentionListener: UITextViewDelegate {
                 mentionsTextView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
                 mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
             }
-            mutableMentions.adjustMentions(forTextChangeAt: range, text: text)
+            mentions = mentions.adjustMentions(forTextChangeAt: range, text: text)
             adjust(textView, range: textView.selectedRange)
             textView.delegate = self
 

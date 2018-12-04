@@ -25,32 +25,34 @@ internal extension Array where Element == Mention {
      @param range: the range where text was changed
      @param text: the text that was changed
      */
-    mutating func adjustMentions(forTextChangeAt range: NSRange, text: String) {
+    func adjustMentions(forTextChangeAt range: NSRange, text: String) -> [Mention] {
         let rangeAdjustment = text.utf16.count - range.length
-        mentionsAfterTextEntry(range).forEach { mention in
+        return compactMap { mention in
+            guard mention.range.location >= NSMaxRange(range) else { return mention }
             var adjustedMention = mention
             adjustedMention.range.location += rangeAdjustment
 
-            if let offset = index(of: mention) {
-                self[offset] = adjustedMention
-            }
+            return adjustedMention
         }
     }
 
     /**
-     @brief Determines what mentions exist after a given range
-     @param range: the range where text was changed
-     @return [Mention]: list of mentions that exist after the provided range
+     @brief inserts mentions into the mentions array
+     @param mentions: the mentions to add along with the position to add them in
      */
-    private func mentionsAfterTextEntry(_ range: NSRange) -> [Mention] {
-        return filter { $0.range.location >= NSMaxRange(range) }
-    }
-
-    mutating func insertMentions(_ mentions: [(CreateMention, NSRange)]) {
-        self += mentions.compactMap { createMention, range in
+    func insert(_ mentions: [(CreateMention, NSRange)]) -> [Mention] {
+        return self + mentions.compactMap { createMention, range in
             assert(range.location != NSNotFound, "Mention must have a range to insert into")
 
             return Mention(range: range, object: createMention)
         }
+    }
+
+    /**
+     @brief inserts mentions into the mentions array
+     @param mentions: the mentions to add along with the position to add them in
+     */
+    func remove(_ mentions: [Mention]) -> [Mention] {
+        return filter { !mentions.contains($0) }
     }
 }

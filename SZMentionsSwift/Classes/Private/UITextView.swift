@@ -8,8 +8,8 @@
 
 import UIKit
 
-extension UITextView {
-    internal var mutableAttributedString: NSMutableAttributedString? {
+internal extension UITextView {
+    var mutableAttributedString: NSMutableAttributedString? {
         return attributedText.mutableCopy() as? NSMutableAttributedString
     }
 
@@ -17,7 +17,7 @@ extension UITextView {
      @brief Reset typingAttributes for textView
      @param defaultAttributes: Attributes to reset to
      */
-    internal func resetTypingAttributes(to defaultAttributes: [AttributeContainer]) {
+    func resetTypingAttributes(to defaultAttributes: [AttributeContainer]) {
         var attributes = [NSAttributedString.Key: Any]()
         for attribute in defaultAttributes {
             attributes[attribute.name] = attribute.value
@@ -29,7 +29,7 @@ extension UITextView {
      @brief Resets the empty text view
      @param textView: the text view to reset
      */
-    internal func reset(to defaultAttributes: [AttributeContainer]) {
+    func reset(to defaultAttributes: [AttributeContainer]) {
         resetTypingAttributes(to: defaultAttributes)
         text = " "
         if let mutableAttributedString = mutableAttributedString {
