@@ -14,3 +14,9 @@ public protocol CreateMention {
      */
     var name: String { get }
 }
+
+internal extension CreateMention {
+    func mentionName(with spaceAfterMention: Bool) -> String {
+        return name + (spaceAfterMention ? " " : "")
+    }
+}

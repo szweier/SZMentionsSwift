@@ -81,11 +81,6 @@ public class MentionListener: NSObject {
     private var currentMentionRange: NSRange?
 
     /**
-     @brief Whether or not we are currently editing a mention.
-     */
-    private var editingMention: Bool = false
-
-    /**
      @brief String to filter by
      */
     private var filterString: String?
@@ -177,13 +172,9 @@ extension MentionListener /* Public */ {
      `range` is used the range to place the metion at
      */
     public func insertExistingMentions(_ existingMentions: [(CreateMention, NSRange)]) {
-        if let mutableAttributedString = mentionsTextView.mutableAttributedString {
-            mentions = mentions.insert(existingMentions)
-            mutableAttributedString.insertMentions(existingMentions,
-                                                   with: mentionTextAttributes)
-
-            mentionsTextView.attributedText = mutableAttributedString
-        }
+        mentions = mentions.insert(existingMentions)
+        mentionsTextView.insertMentions(existingMentions,
+                                        with: mentionTextAttributes)
     }
 
     /**
@@ -192,26 +183,22 @@ extension MentionListener /* Public */ {
      @return Bool: whether or not a mention was added
      */
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
-        guard var currentMentionRange = currentMentionRange,
-            let mutableAttributedString = mentionsTextView.mutableAttributedString
-        else { return false }
+        guard var currentMentionRange = currentMentionRange else { return false }
 
         filterString = nil
 
-        let displayName = createMention.name + mentionPostFix
-        mutableAttributedString.mutableString.replaceCharacters(in: currentMentionRange, with: displayName)
+        let displayName = createMention.mentionName(with: spaceAfterMention)
+        mentionsTextView.replace(charactersIn: currentMentionRange, with: displayName)
 
         mentions = mentions.adjustMentions(forTextChangeAt: currentMentionRange, text: displayName)
 
         currentMentionRange = NSRange(location: currentMentionRange.location, length: createMention.name.utf16.count)
 
         mentions = mentions.insert([(createMention, currentMentionRange)])
-        mutableAttributedString.insertMentions([(createMention, currentMentionRange)],
-                                               with: mentionTextAttributes)
+        mentionsTextView.insertMentions([(createMention, currentMentionRange)],
+                                        with: mentionTextAttributes)
 
         var selectedRange = NSRange(location: NSMaxRange(currentMentionRange), length: 0)
-
-        mentionsTextView.attributedText = mutableAttributedString
 
         if spaceAfterMention { selectedRange.location += 1 }
 
@@ -224,14 +211,6 @@ extension MentionListener /* Public */ {
 }
 
 extension MentionListener /* Internal */ {
-    /**
-     @brief The string to append when adding a mention to the TextView
-     @return String
-     */
-    internal var mentionPostFix: String {
-        return spaceAfterMention ? " " : ""
-    }
-
     /**
      @brief Calls show mentions if necessary when the timer fires
      @param timer: the timer that called the method
@@ -326,12 +305,8 @@ extension MentionListener /* Private */ {
     }
 
     private func clearMention(_ mention: Mention) {
-        editingMention = true
         mentions = mentions.remove([mention])
-        if let mutableAttributedString = mentionsTextView.mutableAttributedString {
-            mutableAttributedString.apply(defaultTextAttributes, range: mention.range)
-            mentionsTextView.attributedText = mutableAttributedString
-        }
+        mentionsTextView.apply(defaultTextAttributes, range: mention.range)
     }
 
     /**
@@ -346,12 +321,10 @@ extension MentionListener /* Private */ {
 
         if textView.text.isEmpty { reset() }
 
-        editingMention = false
-
         if let editedMention = mentions.mentionBeingEdited(at: range) {
             clearMention(editedMention)
-
-            shouldAdjust = handleEditingMention(editedMention, textView: textView, range: range, text: text)
+            handleEditingMention(editedMention, textView: textView, range: range, text: text)
+            shouldAdjust = false
         }
 
         mentions = mentions.adjustMentions(forTextChangeAt: range, text: text)
@@ -369,16 +342,11 @@ extension MentionListener /* Private */ {
      @param text: text to replace range
      */
     private func handleEditingMention(_: Mention, textView: UITextView,
-                                      range: NSRange, text: String) -> Bool {
-        if let mutableAttributedString = textView.mutableAttributedString {
-            mutableAttributedString.mutableString.replaceCharacters(in: range, with: text)
-            textView.attributedText = mutableAttributedString
-            textView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
+                                      range: NSRange, text: String) {
+        mentionsTextView.replace(charactersIn: range, with: text)
+        textView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
 
-            _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
-        }
-
-        return false
+        _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
     }
 
     /**
@@ -416,14 +384,12 @@ extension MentionListener: UITextViewDelegate {
             }
 
             textView.delegate = nil
-            if let mutableAttributedString = textView.mutableAttributedString {
-                mutableAttributedString.replaceCharacters(in: range, with: NSAttributedString(string: text))
-                mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: range.location, length: text.utf16.count))
-                mentionsTextView.selectedRange = NSRange(location: 0, length: 0)
-                textView.attributedText = mutableAttributedString
-                mentionsTextView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
-                mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
-            }
+            mentionsTextView.replace(charactersIn: range, with: text)
+            mentionsTextView.apply(defaultTextAttributes, range: NSRange(location: range.location,
+                                                                         length: text.utf16.count))
+            mentionsTextView.selectedRange = NSRange(location: range.location + text.utf16.count,
+                                                     length: 0)
+            mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
             mentions = mentions.adjustMentions(forTextChangeAt: range, text: text)
             adjust(textView, range: textView.selectedRange)
             textView.delegate = self
@@ -440,9 +406,8 @@ extension MentionListener: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
         if textView.selectedRange.location > 1 {
             let substring = (textView.attributedText.string as NSString).substring(with: NSRange(location: textView.selectedRange.location - 2, length: 2))
-            if substring == ". ", let mutableAttributedString = textView.mutableAttributedString {
-                mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: textView.selectedRange.location - 2, length: 2))
-                textView.attributedText = mutableAttributedString
+            if substring == ". " {
+                textView.apply(defaultTextAttributes, range: NSRange(location: textView.selectedRange.location - 2, length: 2))
             }
         }
         delegate?.textViewDidChange?(textView)
@@ -462,7 +427,7 @@ extension MentionListener: UITextViewDelegate {
     }
 
     public func textViewDidChangeSelection(_ textView: UITextView) {
-        if !editingMention { adjust(textView, range: textView.selectedRange) }
+        adjust(textView, range: textView.selectedRange)
         delegate?.textViewDidChangeSelection?(textView)
     }
 
