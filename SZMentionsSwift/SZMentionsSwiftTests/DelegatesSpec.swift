@@ -121,10 +121,12 @@ class Delegates: QuickSpec {
             it("Should allow for mentions to be added in advance") {
                 textView.text = "Testing Steven Zweier and Tiffany get mentioned correctly"
 
-                let mention = ExampleMention(name: "Steve", range: NSRange(location: 8, length: 13))
-                let mention2 = ExampleMention(name: "Tiff", range: NSRange(location: 26, length: 7))
+                let mention = (ExampleMention(name: "Steve") as CreateMention,
+                               NSRange(location: 8, length: 13))
+                let mention2 = (ExampleMention(name: "Tiff") as CreateMention,
+                                NSRange(location: 26, length: 7))
 
-                let insertMentions: Array<CreateMention> = [mention, mention2]
+                let insertMentions = [mention, mention2]
 
                 mentionsListener.insertExistingMentions(insertMentions)
 
@@ -140,9 +142,10 @@ class Delegates: QuickSpec {
             it("Should allow for mentions to be added in advance") {
                 textView.text = "test 🦅 Asim test"
 
-                let mention = ExampleMention(name: "Asim", range: NSRange(location: 8, length: 4))
+                let mention = (ExampleMention(name: "Asim") as CreateMention,
+                               NSRange(location: 8, length: 4))
 
-                let insertMentions: Array<CreateMention> = [mention]
+                let insertMentions: [(CreateMention, NSRange)] = [mention]
 
                 mentionsListener.insertExistingMentions(insertMentions)
 
@@ -156,10 +159,12 @@ class Delegates: QuickSpec {
             it("Should throw an assertion if the mention range is beyond the text length") {
                 textView.text = "Testing Steven Zweier"
 
-                let mention = ExampleMention(name: "Steve", range: NSRange(location: 8, length: 13))
-                let mention2 = ExampleMention(name: "Tiff", range: NSRange(location: 26, length: 7))
+                let mention = (ExampleMention(name: "Steve") as CreateMention,
+                               NSRange(location: 8, length: 13))
+                let mention2 = (ExampleMention(name: "Tiff") as CreateMention,
+                                NSRange(location: 26, length: 7))
 
-                let insertMentions: Array<CreateMention> = [mention, mention2]
+                let insertMentions: [(CreateMention, NSRange)] = [mention, mention2]
 
                 expect(mentionsListener.insertExistingMentions(insertMentions)).to(throwAssertion())
             }

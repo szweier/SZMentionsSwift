@@ -20,6 +20,6 @@ public struct Mention: Equatable {
     public private(set) var object: CreateMention
 
     public static func == (lhs: Mention, rhs: Mention) -> Bool {
-        return lhs.range == rhs.range && lhs.object.name == rhs.object.name && lhs.object.range == rhs.object.range
+        return lhs.range == rhs.range && lhs.object.name == rhs.object.name
     }
 }

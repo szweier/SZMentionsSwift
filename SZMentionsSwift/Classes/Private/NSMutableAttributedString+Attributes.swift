@@ -16,4 +16,15 @@ internal extension NSMutableAttributedString {
         let keysAndValues = attributes.compactMap { ($0.name, $0.value) }
         addAttributes(Dictionary(uniqueKeysWithValues: keysAndValues), range: range)
     }
+
+    func insertMentions(_ mentions: [(CreateMention, NSRange)],
+                        with attributes: (CreateMention?) -> [AttributeContainer]) {
+        mentions.forEach { createMention, range in
+            assert(range.location != NSNotFound, "Mention must have a range to insert into")
+            assert(NSMaxRange(range) <= string.utf16.count,
+                   "Mention range is out of bounds for the text length")
+
+            apply(attributes(createMention), range: range)
+        }
+    }
 }

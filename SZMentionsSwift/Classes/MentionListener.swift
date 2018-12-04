@@ -110,8 +110,6 @@ public class MentionListener: NSObject {
      */
     private var mentionEnabled = false
 
-    // MARK: Initialization
-
     /**
      @brief Initializer that allows for customization of text attributes for default text and mentions
      @param mentionTextView: - the text view to manage mentions for
@@ -160,7 +158,7 @@ public class MentionListener: NSObject {
         self.didHandleMentionOnReturn = didHandleMentionOnReturn
         self.showMentionsListWithString = showMentionsListWithString
         super.init()
-        reset(mentionsTextView)
+        reset()
         mentionsTextView.delegate = self
     }
 }
@@ -170,7 +168,8 @@ extension MentionListener /* Public */ {
      @brief Resets the textView to empty text and removes all mentions
      */
     public func reset() {
-        reset(mentionsTextView)
+        mutableMentions.removeAll()
+        mentionsTextView.reset(to: defaultTextAttributes)
     }
 
     /**
@@ -182,18 +181,11 @@ extension MentionListener /* Public */ {
      is returned in the mentions array in the object parameter of the Mention object.
      `range` is used the range to place the metion at
      */
-    public func insertExistingMentions(_ existingMentions: [CreateMention]) {
-        if let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as? NSMutableAttributedString {
-            mutableMentions += existingMentions.compactMap { createMention in
-                let range = createMention.range
-                assert(range.location != NSNotFound, "Mention must have a range to insert into")
-                assert(NSMaxRange(range) <= mutableAttributedString.string.utf16.count,
-                       "Mention range is out of bounds for the text length")
-
-                mutableAttributedString.apply(mentionTextAttributes(createMention), range: range)
-
-                return Mention(range: range, object: createMention)
-            }
+    public func insertExistingMentions(_ existingMentions: [(CreateMention, NSRange)]) {
+        if let mutableAttributedString = mentionsTextView.mutableAttributedString {
+            mutableMentions.insertMentions(existingMentions)
+            mutableAttributedString.insertMentions(existingMentions,
+                                                   with: mentionTextAttributes)
 
             mentionsTextView.attributedText = mutableAttributedString
         }
@@ -206,7 +198,7 @@ extension MentionListener /* Public */ {
      */
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard var currentMentionRange = currentMentionRange,
-            let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as? NSMutableAttributedString
+            let mutableAttributedString = mentionsTextView.mutableAttributedString
         else { return false }
 
         filterString = nil
@@ -276,33 +268,6 @@ extension MentionListener /* Internal */ {
 
 extension MentionListener /* Private */ {
     /**
-     @brief Reset typingAttributes for textView
-     @param textView: the textView to change the typingAttributes on
-     */
-    private func resetTypingAttributes(for textView: UITextView) {
-        var attributes = [NSAttributedString.Key: Any]()
-        for attribute in defaultTextAttributes {
-            attributes[attribute.name] = attribute.value
-        }
-        textView.typingAttributes = attributes
-    }
-
-    /**
-     @brief Resets the empty text view
-     @param textView: the text view to reset
-     */
-    private func reset(_ textView: UITextView) {
-        mutableMentions.removeAll()
-        resetTypingAttributes(for: textView)
-        textView.text = " "
-        if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
-            mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: 0, length: 1))
-            textView.attributedText = mutableAttributedString
-        }
-        textView.text = ""
-    }
-
-    /**
      @brief Uses the text view to determine the current mention being adjusted based on
      the currently selected range and the nearest trigger when doing a backward search.  It also
      sets the currentMentionRange to be used as the range to replace when adding a mention.
@@ -370,7 +335,7 @@ extension MentionListener /* Private */ {
             editingMention = true
             mutableMentions.remove(at: index)
         }
-        if let mutableAttributedString = mentionsTextView.attributedText.mutableCopy() as? NSMutableAttributedString {
+        if let mutableAttributedString = mentionsTextView.mutableAttributedString {
             mutableAttributedString.apply(defaultTextAttributes, range: mention.range)
             mentionsTextView.attributedText = mutableAttributedString
         }
@@ -386,7 +351,7 @@ extension MentionListener /* Private */ {
     @discardableResult private func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
         var shouldAdjust = true
 
-        if textView.text.isEmpty { reset(textView) }
+        if textView.text.isEmpty { reset() }
 
         editingMention = false
 
@@ -412,7 +377,7 @@ extension MentionListener /* Private */ {
      */
     private func handleEditingMention(_: Mention, textView: UITextView,
                                       range: NSRange, text: String) -> Bool {
-        if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
+        if let mutableAttributedString = textView.mutableAttributedString {
             mutableAttributedString.mutableString.replaceCharacters(in: range, with: text)
             textView.attributedText = mutableAttributedString
             textView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
@@ -441,16 +406,14 @@ extension MentionListener: UITextViewDelegate {
                          replacementText text: String) -> Bool {
         assert((textView.delegate?.isEqual(self))!, "Textview delegate must be set equal to MentionListener")
 
-        defer {
-            _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
-        }
-
-        if textView.text.isEmpty { reset(textView) }
-        else { resetTypingAttributes(for: textView) }
+        if textView.text.isEmpty { reset() }
+        else { textView.resetTypingAttributes(to: defaultTextAttributes) }
 
         if text == "\n", mentionEnabled, didHandleMentionOnReturn() {
             mentionEnabled = false
             hideMentions()
+
+            _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
             return false
         } else if text.utf16.count > 1 {
@@ -460,7 +423,7 @@ extension MentionListener: UITextViewDelegate {
             }
 
             textView.delegate = nil
-            if let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
+            if let mutableAttributedString = textView.mutableAttributedString {
                 mutableAttributedString.replaceCharacters(in: range, with: NSAttributedString(string: text))
                 mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: range.location, length: text.utf16.count))
                 mentionsTextView.selectedRange = NSRange(location: 0, length: 0)
@@ -472,8 +435,11 @@ extension MentionListener: UITextViewDelegate {
             adjust(textView, range: textView.selectedRange)
             textView.delegate = self
 
+            _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
+
             return false
         }
+        _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
         return shouldAdjust(textView, range: range, text: text)
     }
@@ -481,7 +447,7 @@ extension MentionListener: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
         if textView.selectedRange.location > 1 {
             let substring = (textView.attributedText.string as NSString).substring(with: NSRange(location: textView.selectedRange.location - 2, length: 2))
-            if substring == ". ", let mutableAttributedString = textView.attributedText.mutableCopy() as? NSMutableAttributedString {
+            if substring == ". ", let mutableAttributedString = textView.mutableAttributedString {
                 mutableAttributedString.apply(defaultTextAttributes, range: NSRange(location: textView.selectedRange.location - 2, length: 2))
                 textView.attributedText = mutableAttributedString
             }

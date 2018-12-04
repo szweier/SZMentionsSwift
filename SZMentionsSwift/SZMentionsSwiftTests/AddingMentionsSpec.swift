@@ -14,7 +14,7 @@ class AddingMentions: QuickSpec {
 
             it("Should add mention") {
                 textView.insertText("@t")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.count).to(equal(1))
@@ -22,7 +22,7 @@ class AddingMentions: QuickSpec {
 
             it("Should add mention to the correct starting point") {
                 textView.insertText("@t")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.first?.range.location).to(equal(0))
@@ -30,7 +30,7 @@ class AddingMentions: QuickSpec {
 
             it("Should add mention to the correct starting point when added after text") {
                 textView.insertText("Testing @t")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.first?.range.location).to(equal(8))
@@ -38,13 +38,13 @@ class AddingMentions: QuickSpec {
 
             it("Should have the correct length of the mention created") {
                 textView.insertText("@t")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.first?.range.length).to(equal(6))
 
                 textView.insertText("Testing @t")
-                let mention2 = ExampleMention(name: "Steven Zweier", range: NSRange())
+                let mention2 = ExampleMention(name: "Steven Zweier")
                 mentionsListener.addMention(mention2)
 
                 expect(mentionsListener.mentions.last?.range.length).to(equal(13))
@@ -52,7 +52,7 @@ class AddingMentions: QuickSpec {
 
             it("Should have the correct length of the mention created") {
                 textView.insertText("@t")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.first?.range.length).to(equal(6))
@@ -65,7 +65,7 @@ class AddingMentions: QuickSpec {
 
             it("Should adjust the location of an existing mention correctly") {
                 textView.insertText("Testing @t")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.first?.range.location).to(equal(8))
@@ -97,7 +97,7 @@ class AddingMentions: QuickSpec {
 
             it("Should adjust the location of an existing mention correctly") {
                 textView.insertText("@t")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.first?.range.location).to(equal(0))
@@ -111,7 +111,7 @@ class AddingMentions: QuickSpec {
                 if mentionsListener.textView(textView, shouldChangeTextIn: NSRange(location: 0, length: 0), replacementText: "t") {
                     textView.insertText("t")
                 }
-                let mention2 = ExampleMention(name: "Steven Zweier", range: NSRange())
+                let mention2 = ExampleMention(name: "Steven Zweier")
                 mentionsListener.addMention(mention2)
 
                 expect(mentionsListener.mentions[1].range.location).to(equal(0))
@@ -121,7 +121,7 @@ class AddingMentions: QuickSpec {
 
             it("Should remove the mention when editing the middle of a mention") {
                 textView.insertText("Testing @t")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.count).to(equal(1))
@@ -137,7 +137,7 @@ class AddingMentions: QuickSpec {
 
             it("Should allow you to reset the mentionsListener and textView to the original state") {
                 textView.insertText("@St")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.count).to(equal(1))
@@ -150,7 +150,7 @@ class AddingMentions: QuickSpec {
             it("Should test mention location is adjusted properly when a mention is inserted behind a mention when space after mention is true") {
                 mentionsListener = generateMentionsListener(spaceAfterMention: true, searchSpaces: false)
                 textView.insertText("@t")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.first?.range.location).to(equal(0))
@@ -161,7 +161,7 @@ class AddingMentions: QuickSpec {
                 if mentionsListener.textView(textView, shouldChangeTextIn: NSRange(location: 0, length: 0), replacementText: "@t") {
                     textView.insertText("@t")
                 }
-                let mention2 = ExampleMention(name: "Steven Zweier", range: NSRange())
+                let mention2 = ExampleMention(name: "Steven Zweier")
                 mentionsListener.addMention(mention2)
 
                 expect(mentionsListener.mentions[1].range.location).to(equal(0))
@@ -171,7 +171,7 @@ class AddingMentions: QuickSpec {
 
             it("Should test editing after mention does not delete the mention") {
                 textView.insertText("Testing @t")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 textView.insertText(" ")
@@ -189,7 +189,7 @@ class AddingMentions: QuickSpec {
 
             it("Should test that pasting text before a leading mention resets its attributes") {
                 textView.insertText("@s")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
                 textView.selectedRange = NSRange(location: 0, length: 0)
                 if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "test") {
@@ -203,7 +203,7 @@ class AddingMentions: QuickSpec {
                 textView.selectedRange = NSRange(location: 0, length: 0)
                 textView.insertText("@st")
 
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
 
                 mentionsListener.addMention(mention)
 
@@ -217,7 +217,7 @@ class AddingMentions: QuickSpec {
                 textView.selectedRange = NSRange(location: 0, length: 0)
                 textView.insertText("@st")
 
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
 
                 mentionsListener.addMention(mention)
 
@@ -227,7 +227,7 @@ class AddingMentions: QuickSpec {
 
             it("Should test that adding text immediately after the mention changes back to default attributes") {
                 textView.insertText("@s")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 if mentionsListener.textView(textView, shouldChangeTextIn: textView.selectedRange, replacementText: "test") {
@@ -239,7 +239,7 @@ class AddingMentions: QuickSpec {
 
             it("Should test that the mention position is correct to start text on a new line") {
                 textView.insertText("\n@t")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.first?.range.location).to(equal(1))
@@ -247,7 +247,7 @@ class AddingMentions: QuickSpec {
 
             it("Should test that mention position is correct in the middle of new line text") {
                 textView.insertText("Testing \nnew line @t")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.first?.range.location).to(equal(18))
@@ -255,7 +255,7 @@ class AddingMentions: QuickSpec {
 
             it("Should accurately detect whether or not a mention is being edited") {
                 textView.insertText("@s")
-                let mention = ExampleMention(name: "Steven", range: NSRange())
+                let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.mentionBeingEdited(at: NSRange(location: 0, length: 0))).to(beNil())
@@ -266,13 +266,13 @@ class AddingMentions: QuickSpec {
 
             it("Should not crash when deleting two mentions at a time") {
                 textView.insertText("@St")
-                let mention = ExampleMention(name: "Steven Zweier", range: NSRange())
+                let mention = ExampleMention(name: "Steven Zweier")
                 mentionsListener.addMention(mention)
 
                 textView.insertText(" ")
 
                 textView.insertText("@Jo")
-                let mention2 = ExampleMention(name: "John Smith", range: NSRange())
+                let mention2 = ExampleMention(name: "John Smith")
                 mentionsListener.addMention(mention2)
 
                 textView.selectedRange = NSRange(location: 0, length: textView.text.utf16.count)
@@ -285,7 +285,7 @@ class AddingMentions: QuickSpec {
 
             it("Should remove existing mention when pasting text within the mention") {
                 textView.insertText("@St")
-                let mention = ExampleMention(name: "Steven Zweier", range: NSRange())
+                let mention = ExampleMention(name: "Steven Zweier")
                 mentionsListener.addMention(mention)
 
                 textView.selectedRange = NSRange(location: 7, length: 0)
@@ -307,7 +307,7 @@ class AddingMentions: QuickSpec {
 
             it("Should call reset empty") {
                 textView.insertText("@t")
-                let mention = ExampleMention(name: "John Smith", range: NSRange())
+                let mention = ExampleMention(name: "John Smith")
                 mentionsListener.addMention(mention)
                 XCTAssertTrue(mentionsListener.mentions.count == 1)
                 textView.attributedText = NSAttributedString(string: "test")
@@ -317,7 +317,7 @@ class AddingMentions: QuickSpec {
             }
 
             it("Should not add mention if range is nil") {
-                let mention = ExampleMention(name: "John Smith", range: NSRange())
+                let mention = ExampleMention(name: "John Smith")
                 expect(mentionsListener.addMention(mention)).to(beFalsy())
             }
 

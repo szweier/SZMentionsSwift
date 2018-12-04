@@ -56,9 +56,8 @@ class ExampleAccessoryView: UIView {
         addConstraintsToTextView(textView)
         textView.text = "Test Steven Zweier mention"
         
-        let mention = ExampleMention(name: "Steven Zweier",
-                                       range: NSRange(location: 5, length: 13))
-        mentionsListener.insertExistingMentions([mention])
+        let mention = ExampleMention(name: "Steven Zweier")
+        mentionsListener.insertExistingMentions([(mention, NSRange(location: 5, length: 13))])
         
         dataManager = ExampleMentionsTableViewDataManager(
             mentionTableView: mentionsTableView,

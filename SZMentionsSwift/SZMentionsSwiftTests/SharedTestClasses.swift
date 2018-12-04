@@ -2,7 +2,6 @@
 
 struct ExampleMention: CreateMention {
     var name = ""
-    var range = NSRange(location: 0, length: 0)
 }
 
 var shouldAddMentionOnReturnKeyCalled = false

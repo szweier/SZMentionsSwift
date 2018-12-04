@@ -22,6 +22,7 @@
 		DB4A8BDF21B62AA8004490A6 /* AddingMentionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsSpec.swift */; };
 		DB4A8BE021B62AAD004490A6 /* MentionsDisplaySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */; };
 		DB4A8BE121B62AB0004490A6 /* SharedTestClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */; };
+		DB6C1C1121B6BBE500C178AC /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6C1C1021B6BBE500C178AC /* UITextView.swift */; };
 		DBC779F31FDB6161006CD115 /* StringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC779F21FDB6161006CD115 /* StringHelper.swift */; };
 		DBE8B4A11C657F200090EF32 /* NSMutableAttributedString+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49B1C657F200090EF32 /* NSMutableAttributedString+Attributes.swift */; };
 		DBE8B4A31C657F200090EF32 /* Array+Mention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49D1C657F200090EF32 /* Array+Mention.swift */; };
@@ -65,6 +66,7 @@
 		DB4A8BD721B61D2E004490A6 /* Array+MentionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+MentionTests.swift"; sourceTree = "<group>"; };
 		DB4A8BD921B62371004490A6 /* NSMutableAttributedString+AttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+AttributesTests.swift"; sourceTree = "<group>"; };
 		DB4A8BDB21B6262A004490A6 /* StringHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelperTests.swift; sourceTree = "<group>"; };
+		DB6C1C1021B6BBE500C178AC /* UITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.swift; sourceTree = "<group>"; };
 		DBC779F21FDB6161006CD115 /* StringHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelper.swift; sourceTree = "<group>"; };
 		DBE8B49B1C657F200090EF32 /* NSMutableAttributedString+Attributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Attributes.swift"; sourceTree = "<group>"; };
 		DBE8B49D1C657F200090EF32 /* Array+Mention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Mention.swift"; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 				DB2330161E24832D00242C33 /* Verifier.swift */,
 				DB1DF4B21F74A2AD00EA8E63 /* Attribute.swift */,
 				DBC779F21FDB6161006CD115 /* StringHelper.swift */,
+				DB6C1C1021B6BBE500C178AC /* UITextView.swift */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -400,6 +403,7 @@
 				DB2330171E24832D00242C33 /* Verifier.swift in Sources */,
 				DBE8B4A41C657F200090EF32 /* AttributeContainer.swift in Sources */,
 				DB1DF4BB1F74A66700EA8E63 /* CreateMention.swift in Sources */,
+				DB6C1C1121B6BBE500C178AC /* UITextView.swift in Sources */,
 				DBE8B4A31C657F200090EF32 /* Array+Mention.swift in Sources */,
 				DBE8B4A61C657F200090EF32 /* MentionListener.swift in Sources */,
 			);

@@ -45,4 +45,12 @@ internal extension Array where Element == Mention {
     private func mentionsAfterTextEntry(_ range: NSRange) -> [Mention] {
         return filter { $0.range.location >= NSMaxRange(range) }
     }
+
+    mutating func insertMentions(_ mentions: [(CreateMention, NSRange)]) {
+        self += mentions.compactMap { createMention, range in
+            assert(range.location != NSNotFound, "Mention must have a range to insert into")
+
+            return Mention(range: range, object: createMention)
+        }
+    }
 }

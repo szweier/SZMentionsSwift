@@ -3,11 +3,6 @@ import Quick
 @testable import SZMentionsSwift
 
 class MentionsArrayTests: QuickSpec {
-    struct ExampleMention: CreateMention {
-        var name: String = ""
-        var range: NSRange = NSRange(location: 0, length: 0)
-    }
-
     override func spec() {
         describe("Search") {
             let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]

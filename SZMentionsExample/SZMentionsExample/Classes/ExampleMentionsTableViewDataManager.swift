@@ -17,7 +17,7 @@ class ExampleMentionsTableViewDataManager: NSObject {
             "Steven Zweier",
             "John Smith",
             "Joe Tesla"].map {
-                ExampleMention(name: $0, range: NSRange(location: 0, length: 0))
+                ExampleMention(name: $0)
         }
     }()
     private var mentionsList: [ExampleMention] {
