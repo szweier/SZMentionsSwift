@@ -23,6 +23,7 @@
 		DB4A8BE021B62AAD004490A6 /* MentionsDisplaySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */; };
 		DB4A8BE121B62AB0004490A6 /* SharedTestClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */; };
 		DB6C1C1121B6BBE500C178AC /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6C1C1021B6BBE500C178AC /* UITextView.swift */; };
+		DB6C1C1321B7140100C178AC /* NSRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6C1C1221B7140100C178AC /* NSRange.swift */; };
 		DBC779F31FDB6161006CD115 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC779F21FDB6161006CD115 /* String.swift */; };
 		DBE8B4A31C657F200090EF32 /* Array+Mention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49D1C657F200090EF32 /* Array+Mention.swift */; };
 		DBE8B4A41C657F200090EF32 /* AttributeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49E1C657F200090EF32 /* AttributeContainer.swift */; };
@@ -65,6 +66,7 @@
 		DB4A8BD921B62371004490A6 /* NSMutableAttributedString+AttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+AttributesTests.swift"; sourceTree = "<group>"; };
 		DB4A8BDB21B6262A004490A6 /* StringHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelperTests.swift; sourceTree = "<group>"; };
 		DB6C1C1021B6BBE500C178AC /* UITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.swift; sourceTree = "<group>"; };
+		DB6C1C1221B7140100C178AC /* NSRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRange.swift; sourceTree = "<group>"; };
 		DBC779F21FDB6161006CD115 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		DBE8B49D1C657F200090EF32 /* Array+Mention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Mention.swift"; sourceTree = "<group>"; };
 		DBE8B49E1C657F200090EF32 /* AttributeContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeContainer.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				DB2330161E24832D00242C33 /* Verifier.swift */,
 				DB1DF4B21F74A2AD00EA8E63 /* Attribute.swift */,
 				DBC779F21FDB6161006CD115 /* String.swift */,
+				DB6C1C1221B7140100C178AC /* NSRange.swift */,
 				DB6C1C1021B6BBE500C178AC /* UITextView.swift */,
 			);
 			path = Private;
@@ -393,6 +396,7 @@
 			files = (
 				DB1DF4B51F74A3D200EA8E63 /* Mention.swift in Sources */,
 				DBC779F31FDB6161006CD115 /* String.swift in Sources */,
+				DB6C1C1321B7140100C178AC /* NSRange.swift in Sources */,
 				DB1DF4B31F74A2AD00EA8E63 /* Attribute.swift in Sources */,
 				DB2330171E24832D00242C33 /* Verifier.swift in Sources */,
 				DBE8B4A41C657F200090EF32 /* AttributeContainer.swift in Sources */,

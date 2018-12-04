@@ -55,4 +55,11 @@ internal extension Array where Element == Mention {
     func remove(_ mentions: [Mention]) -> [Mention] {
         return filter { !mentions.contains($0) }
     }
+
+    func add(_ mention: CreateMention, spaceAfterMention: Bool, at range: NSRange) -> [Mention] {
+        let adjustedRange = range.adjusted(for: mention.name)
+        return adjustMentions(forTextChangeAt: range,
+                              text: mention.mentionName(with: spaceAfterMention))
+            .insert([(mention, adjustedRange)])
+    }
 }

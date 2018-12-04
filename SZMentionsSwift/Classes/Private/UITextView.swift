@@ -44,7 +44,8 @@ internal extension UITextView {
     func apply(_ attributes: [AttributeContainer], range: NSRange) {
         let keysAndValues = attributes.compactMap { ($0.name, $0.value) }
         let newMutableAttributedString = mutableAttributedString
-        newMutableAttributedString?.addAttributes(Dictionary(uniqueKeysWithValues: keysAndValues), range: range)
+        newMutableAttributedString?.addAttributes(Dictionary(uniqueKeysWithValues: keysAndValues),
+                                                  range: range)
         attributedText = newMutableAttributedString
     }
 
@@ -56,7 +57,8 @@ internal extension UITextView {
     func insertMentions(_ mentions: [(CreateMention, NSRange)],
                         with attributes: (CreateMention?) -> [AttributeContainer]) {
         mentions.forEach { createMention, range in
-            assert(range.location != NSNotFound, "Mention must have a range to insert into")
+            assert(range.location != NSNotFound,
+                   "Mention must have a range to insert into")
             assert(NSMaxRange(range) <= attributedText.string.utf16.count,
                    "Mention range is out of bounds for the text length")
 
@@ -64,9 +66,22 @@ internal extension UITextView {
         }
     }
 
+    func addMention(_ mention: CreateMention,
+                    spaceAfterMention: Bool,
+                    at range: NSRange,
+                    with attributes: (CreateMention?) -> [AttributeContainer]) {
+        replace(charactersIn: range, with: mention.mentionName(with: spaceAfterMention))
+        let adjustedRange = range.adjusted(for: mention.name)
+        insertMentions([(mention, adjustedRange)], with: attributes)
+
+        selectedRange = NSRange(location: NSMaxRange(adjustedRange) + (spaceAfterMention ? 1 : 0),
+                                length: 0)
+    }
+
     func replace(charactersIn range: NSRange, with text: String) {
         let newMutableAttributedString = mutableAttributedString
         newMutableAttributedString?.mutableString.replaceCharacters(in: range, with: text)
         attributedText = newMutableAttributedString
+        selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
     }
 }

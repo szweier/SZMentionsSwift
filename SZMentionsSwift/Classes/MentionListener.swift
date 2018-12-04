@@ -10,7 +10,7 @@ import UIKit
 
 public class MentionListener: NSObject {
     /**
-     @brief Mutable array list of mentions managed by listener, accessible via the
+     @brief Array list of mentions managed by listener, accessible via the
      public mentions property.
      */
     private(set) var mentions: [Mention] = []
@@ -185,25 +185,17 @@ extension MentionListener /* Public */ {
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard var currentMentionRange = currentMentionRange else { return false }
 
+        mentionsTextView.addMention(createMention,
+                                    spaceAfterMention: spaceAfterMention,
+                                    at: currentMentionRange,
+                                    with: mentionTextAttributes)
+        mentions = mentions.add(createMention,
+                                spaceAfterMention: spaceAfterMention,
+                                at: currentMentionRange)
+
+        currentMentionRange = currentMentionRange.adjusted(for: createMention.name)
+
         filterString = nil
-
-        let displayName = createMention.mentionName(with: spaceAfterMention)
-        mentionsTextView.replace(charactersIn: currentMentionRange, with: displayName)
-
-        mentions = mentions.adjustMentions(forTextChangeAt: currentMentionRange, text: displayName)
-
-        currentMentionRange = NSRange(location: currentMentionRange.location, length: createMention.name.utf16.count)
-
-        mentions = mentions.insert([(createMention, currentMentionRange)])
-        mentionsTextView.insertMentions([(createMention, currentMentionRange)],
-                                        with: mentionTextAttributes)
-
-        var selectedRange = NSRange(location: NSMaxRange(currentMentionRange), length: 0)
-
-        if spaceAfterMention { selectedRange.location += 1 }
-
-        mentionsTextView.selectedRange = selectedRange
-
         hideMentions()
 
         return true
@@ -222,7 +214,8 @@ extension MentionListener /* Internal */ {
             if mentionsTextView.selectedRange.location >= 1 {
                 guard let rangeTuple = mentionsTextView.text.range(of: triggers,
                                                                    options: NSString.CompareOptions.backwards,
-                                                                   range: NSRange(location: 0, length: NSMaxRange(mentionsTextView.selectedRange))) else { return }
+                                                                   range: NSRange(location: 0,
+                                                                                  length: NSMaxRange(mentionsTextView.selectedRange))) else { return }
 
                 var location: Int = 0
 
@@ -323,7 +316,7 @@ extension MentionListener /* Private */ {
 
         if let editedMention = mentions.mentionBeingEdited(at: range) {
             clearMention(editedMention)
-            handleEditingMention(editedMention, textView: textView, range: range, text: text)
+            handleEditingMention(textView: textView, range: range, text: text)
             shouldAdjust = false
         }
 
@@ -336,15 +329,13 @@ extension MentionListener /* Private */ {
 
     /**
      @brief Resets the attributes of the mention to default attributes
-     @param mention: the mention being edited
      @param textView: the mention text view
      @param range: the current range selected
      @param text: text to replace range
      */
-    private func handleEditingMention(_: Mention, textView: UITextView,
+    private func handleEditingMention(textView: UITextView,
                                       range: NSRange, text: String) {
         mentionsTextView.replace(charactersIn: range, with: text)
-        textView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
 
         _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
     }
@@ -387,8 +378,6 @@ extension MentionListener: UITextViewDelegate {
             mentionsTextView.replace(charactersIn: range, with: text)
             mentionsTextView.apply(defaultTextAttributes, range: NSRange(location: range.location,
                                                                          length: text.utf16.count))
-            mentionsTextView.selectedRange = NSRange(location: range.location + text.utf16.count,
-                                                     length: 0)
             mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
             mentions = mentions.adjustMentions(forTextChangeAt: range, text: text)
             adjust(textView, range: textView.selectedRange)
