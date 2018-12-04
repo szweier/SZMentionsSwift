@@ -42,8 +42,8 @@ class Delegates: QuickSpec {
             let textView = UITextView()
 
             beforeEach {
-                let attribute = Attribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
-                let attribute2 = Attribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.black)
+                let attribute = Attribute(name: .foregroundColor, value: UIColor.red)
+                let attribute2 = Attribute(name: .foregroundColor, value: UIColor.black)
 
                 hidingMentionsList = false
                 textViewDelegate = TextViewDelegate()

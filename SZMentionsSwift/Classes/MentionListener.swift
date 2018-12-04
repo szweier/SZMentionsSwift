@@ -143,9 +143,9 @@ public class MentionListener: NSObject {
         showMentionsListWithString: @escaping (String, String) -> Void
     ) {
         mentionTextAttributes = mentionAttributes ?? { _ in
-            [Attribute(name: NSAttributedStringKey.foregroundColor.rawValue,
+            [Attribute(name: .foregroundColor,
                        value: UIColor.blue)] }
-        defaultTextAttributes = defaultAttributes ?? [Attribute(name: NSAttributedStringKey.foregroundColor.rawValue,
+        defaultTextAttributes = defaultAttributes ?? [Attribute(name: .foregroundColor,
                                                                 value: UIColor.black)]
 
         Verifier.verifySetup(withDefaultTextAttributes: defaultTextAttributes,
@@ -280,7 +280,7 @@ extension MentionListener /* Private */ {
      @param textView: the textView to change the typingAttributes on
      */
     private func resetTypingAttributes(for textView: UITextView) {
-        var attributes = [String: Any]()
+        var attributes = [NSAttributedString.Key: Any]()
         for attribute in defaultTextAttributes {
             attributes[attribute.name] = attribute.value
         }
@@ -432,7 +432,7 @@ extension MentionListener /* Private */ {
                           selector: #selector(MentionListener.cooldownTimerFired(_:)), userInfo: nil,
                           repeats: false)
         cooldownTimer = timer
-        RunLoop.main.add(timer, forMode: RunLoopMode.defaultRunLoopMode)
+        RunLoop.main.add(timer, forMode: RunLoop.Mode.default)
     }
 }
 

@@ -11,31 +11,31 @@ import SZMentionsSwift
 
 class ExampleAccessoryView: UIView {
     struct Attribute: AttributeContainer {
-        var name: String
+        var name: NSAttributedString.Key
         var value: NSObject
     }
     private let textView = UITextView()
     private let mentionsTableView = UITableView()
     private let mentionAttributes: [AttributeContainer] = [
         Attribute(
-            name: NSAttributedStringKey.foregroundColor.rawValue,
+            name: .foregroundColor,
             value: UIColor.black),
         Attribute(
-            name: NSAttributedStringKey.font.rawValue,
+            name: .font,
             value: UIFont(name: "ChalkboardSE-Bold", size: 12)!),
         Attribute(
-            name: NSAttributedStringKey.backgroundColor.rawValue,
+            name: .backgroundColor,
             value: UIColor.lightGray)
     ]
     private let defaultAttributes: [AttributeContainer] = [
         Attribute(
-            name: NSAttributedStringKey.foregroundColor.rawValue,
+            name: .foregroundColor,
             value: UIColor.gray),
         Attribute(
-            name: NSAttributedStringKey.font.rawValue,
+            name: .font,
             value: UIFont(name: "ArialMT", size: 12)!),
         Attribute(
-            name: NSAttributedStringKey.backgroundColor.rawValue,
+            name: .backgroundColor,
             value: UIColor.white)
     ]
     private var dataManager: ExampleMentionsTableViewDataManager?

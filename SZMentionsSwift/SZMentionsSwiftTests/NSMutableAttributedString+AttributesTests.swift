@@ -9,8 +9,8 @@ class NSMutableAttributedStringAttributesTests: QuickSpec {
                 let attributedString = NSMutableAttributedString(string:
                     "Test string, test string, test string, test string, test string, test string, test string, test string, test string.")
                 let attributes = [
-                    Attribute(name: NSAttributedStringKey.backgroundColor.rawValue, value: UIColor.red),
-                    Attribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.blue),
+                    Attribute(name: .backgroundColor, value: UIColor.red),
+                    Attribute(name: .foregroundColor, value: UIColor.blue),
                 ]
                 attributedString.apply(attributes, range: NSRange(location: 0, length: attributedString.length))
                 expect(attributedString.attributes(at: 0, effectiveRange: nil)[.backgroundColor] as? UIColor).to(equal(UIColor.red))

@@ -358,8 +358,8 @@ class AddingMentions: QuickSpec {
             }
 
             func generateMentionsListener(spaceAfterMention: Bool, searchSpaces: Bool) -> MentionListener {
-                let attribute = Attribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
-                let attribute2 = Attribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.black)
+                let attribute = Attribute(name: .foregroundColor, value: UIColor.red)
+                let attribute2 = Attribute(name: .foregroundColor, value: UIColor.black)
 
                 return MentionListener(mentionTextView: textView,
                                        attributesForMention: { _ in [attribute] },

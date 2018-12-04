@@ -12,7 +12,7 @@ public protocol AttributeContainer {
     /**
      @brief Name of the attribute to set on a string
      */
-    var name: String { get }
+    var name: NSAttributedString.Key { get }
 
     /**
      @brief Value of the attribute to set on a string
