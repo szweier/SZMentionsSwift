@@ -13,9 +13,11 @@ internal extension Array where Element == Mention {
      @return Mention?: the mention being edited (if one exists)
      */
     func mentionBeingEdited(at range: NSRange) -> Mention? {
-        return filter { NSIntersectionRange(range, $0.range).length > 0 ||
-            (range.location + range.length) > $0.range.location &&
-            (range.location + range.length) < ($0.range.location + $0.range.length) }.first
+        return first {
+            NSIntersectionRange(range, $0.range).length > 0 ||
+                NSMaxRange(range) > $0.range.location &&
+                NSMaxRange(range) < NSMaxRange($0.range)
+        }
     }
 
     /**
@@ -27,12 +29,10 @@ internal extension Array where Element == Mention {
         let rangeAdjustment = text.utf16.count - range.length
         mentionsAfterTextEntry(range).forEach { mention in
             var adjustedMention = mention
-            adjustedMention.range = NSRange(
-                location: mention.range.location + rangeAdjustment,
-                length: mention.range.length
-            )
-            if let index = index(of: mention) {
-                self[index] = adjustedMention
+            adjustedMention.range.location += rangeAdjustment
+
+            if let offset = index(of: mention) {
+                self[offset] = adjustedMention
             }
         }
     }
@@ -43,6 +43,6 @@ internal extension Array where Element == Mention {
      @return [Mention]: list of mentions that exist after the provided range
      */
     private func mentionsAfterTextEntry(_ range: NSRange) -> [Mention] {
-        return filter { $0.range.location >= range.location + range.length }
+        return filter { $0.range.location >= NSMaxRange(range) }
     }
 }

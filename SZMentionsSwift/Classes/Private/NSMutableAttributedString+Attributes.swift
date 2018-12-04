@@ -13,10 +13,7 @@ internal extension NSMutableAttributedString {
      @param range: the range to apply the attributes to
      */
     func apply(_ attributes: [AttributeContainer], range: NSRange) {
-        attributes.forEach { attribute in
-            addAttribute(NSAttributedStringKey(rawValue: attribute.name),
-                         value: attribute.value,
-                         range: range)
-        }
+        let keysAndValues = attributes.compactMap { (NSAttributedStringKey(rawValue: $0.name), $0.value) }
+        addAttributes(Dictionary(uniqueKeysWithValues: keysAndValues), range: range)
     }
 }

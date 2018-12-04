@@ -10,15 +10,18 @@
 		3E6360DF78BF59315B1D5224 /* Pods_SZMentionsSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F45C31FC9BB2965568D9D8F /* Pods_SZMentionsSwiftTests.framework */; };
 		7F61A2A45075B6179E9B4B40 /* Pods_SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6363D30311E857C64563F5D /* Pods_SZMentionsSwift.framework */; };
 		DB0403C11C44A017000904DB /* SZMentionsSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = DB0403C01C44A017000904DB /* SZMentionsSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DB0AB4A41EAAC175003F84DB /* AttributeSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A31EAAC175003F84DB /* AttributeSpec.swift */; };
-		DB0AB4A61EAAC48A003F84DB /* DelegatesSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A51EAAC48A003F84DB /* DelegatesSpec.swift */; };
-		DB0AB4A81EAACC92003F84DB /* SharedTestClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */; };
+		DB0AB4A41EAAC175003F84DB /* VerifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A31EAAC175003F84DB /* VerifierTests.swift */; };
 		DB1DF4B31F74A2AD00EA8E63 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DF4B21F74A2AD00EA8E63 /* Attribute.swift */; };
 		DB1DF4B51F74A3D200EA8E63 /* Mention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DF4B41F74A3D200EA8E63 /* Mention.swift */; };
 		DB1DF4BB1F74A66700EA8E63 /* CreateMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DF4BA1F74A66700EA8E63 /* CreateMention.swift */; };
 		DB2330171E24832D00242C33 /* Verifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2330161E24832D00242C33 /* Verifier.swift */; };
-		DB3DB5DB1EA176FC004CBD91 /* MentionsDisplaySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */; };
-		DB3DB5DD1EA17EB8004CBD91 /* AddingMentionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsSpec.swift */; };
+		DB4A8BD821B61D2E004490A6 /* Array+MentionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A8BD721B61D2E004490A6 /* Array+MentionTests.swift */; };
+		DB4A8BDA21B62371004490A6 /* NSMutableAttributedString+AttributesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A8BD921B62371004490A6 /* NSMutableAttributedString+AttributesTests.swift */; };
+		DB4A8BDC21B6262A004490A6 /* StringHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A8BDB21B6262A004490A6 /* StringHelperTests.swift */; };
+		DB4A8BDE21B62A9A004490A6 /* DelegatesSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A51EAAC48A003F84DB /* DelegatesSpec.swift */; };
+		DB4A8BDF21B62AA8004490A6 /* AddingMentionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsSpec.swift */; };
+		DB4A8BE021B62AAD004490A6 /* MentionsDisplaySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */; };
+		DB4A8BE121B62AB0004490A6 /* SharedTestClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */; };
 		DBC779F31FDB6161006CD115 /* StringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC779F21FDB6161006CD115 /* StringHelper.swift */; };
 		DBE8B4A11C657F200090EF32 /* NSMutableAttributedString+Attributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49B1C657F200090EF32 /* NSMutableAttributedString+Attributes.swift */; };
 		DBE8B4A31C657F200090EF32 /* Array+Mention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49D1C657F200090EF32 /* Array+Mention.swift */; };
@@ -50,7 +53,7 @@
 		DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SZMentionsSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB0403C01C44A017000904DB /* SZMentionsSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SZMentionsSwift.h; sourceTree = "<group>"; };
 		DB0403C21C44A017000904DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DB0AB4A31EAAC175003F84DB /* AttributeSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeSpec.swift; sourceTree = "<group>"; };
+		DB0AB4A31EAAC175003F84DB /* VerifierTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifierTests.swift; sourceTree = "<group>"; };
 		DB0AB4A51EAAC48A003F84DB /* DelegatesSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegatesSpec.swift; sourceTree = "<group>"; };
 		DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedTestClasses.swift; sourceTree = "<group>"; };
 		DB1DF4B21F74A2AD00EA8E63 /* Attribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
@@ -59,6 +62,9 @@
 		DB2330161E24832D00242C33 /* Verifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Verifier.swift; sourceTree = "<group>"; };
 		DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionsDisplaySpec.swift; sourceTree = "<group>"; };
 		DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddingMentionsSpec.swift; sourceTree = "<group>"; };
+		DB4A8BD721B61D2E004490A6 /* Array+MentionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+MentionTests.swift"; sourceTree = "<group>"; };
+		DB4A8BD921B62371004490A6 /* NSMutableAttributedString+AttributesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+AttributesTests.swift"; sourceTree = "<group>"; };
+		DB4A8BDB21B6262A004490A6 /* StringHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelperTests.swift; sourceTree = "<group>"; };
 		DBC779F21FDB6161006CD115 /* StringHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelper.swift; sourceTree = "<group>"; };
 		DBE8B49B1C657F200090EF32 /* NSMutableAttributedString+Attributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSMutableAttributedString+Attributes.swift"; sourceTree = "<group>"; };
 		DBE8B49D1C657F200090EF32 /* Array+Mention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Mention.swift"; sourceTree = "<group>"; };
@@ -167,12 +173,15 @@
 		DBF2DF5D1C4B1067001B9788 /* SZMentionsSwiftTests */ = {
 			isa = PBXGroup;
 			children = (
-				DBF2DF601C4B1067001B9788 /* Info.plist */,
-				DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */,
-				DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */,
-				DB0AB4A31EAAC175003F84DB /* AttributeSpec.swift */,
 				DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsSpec.swift */,
+				DB4A8BD721B61D2E004490A6 /* Array+MentionTests.swift */,
 				DB0AB4A51EAAC48A003F84DB /* DelegatesSpec.swift */,
+				DBF2DF601C4B1067001B9788 /* Info.plist */,
+				DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */,
+				DB4A8BD921B62371004490A6 /* NSMutableAttributedString+AttributesTests.swift */,
+				DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */,
+				DB0AB4A31EAAC175003F84DB /* VerifierTests.swift */,
+				DB4A8BDB21B6262A004490A6 /* StringHelperTests.swift */,
 			);
 			path = SZMentionsSwiftTests;
 			sourceTree = "<group>";
@@ -400,11 +409,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB3DB5DB1EA176FC004CBD91 /* MentionsDisplaySpec.swift in Sources */,
-				DB0AB4A61EAAC48A003F84DB /* DelegatesSpec.swift in Sources */,
-				DB0AB4A81EAACC92003F84DB /* SharedTestClasses.swift in Sources */,
-				DB0AB4A41EAAC175003F84DB /* AttributeSpec.swift in Sources */,
-				DB3DB5DD1EA17EB8004CBD91 /* AddingMentionsSpec.swift in Sources */,
+				DB4A8BE021B62AAD004490A6 /* MentionsDisplaySpec.swift in Sources */,
+				DB4A8BDA21B62371004490A6 /* NSMutableAttributedString+AttributesTests.swift in Sources */,
+				DB4A8BDE21B62A9A004490A6 /* DelegatesSpec.swift in Sources */,
+				DB4A8BDF21B62AA8004490A6 /* AddingMentionsSpec.swift in Sources */,
+				DB4A8BDC21B6262A004490A6 /* StringHelperTests.swift in Sources */,
+				DB0AB4A41EAAC175003F84DB /* VerifierTests.swift in Sources */,
+				DB4A8BD821B61D2E004490A6 /* Array+MentionTests.swift in Sources */,
+				DB4A8BE121B62AB0004490A6 /* SharedTestClasses.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

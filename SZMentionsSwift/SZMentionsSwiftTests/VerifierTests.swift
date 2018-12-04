@@ -2,7 +2,7 @@ import Nimble
 import Quick
 @testable import SZMentionsSwift
 
-class AttributeSpec: QuickSpec {
+class VerifierTests: QuickSpec {
     override func spec() {
         describe("Attribute Handling") {
             let attribute = Attribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)

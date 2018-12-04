@@ -9,21 +9,24 @@
 import UIKit
 
 extension String {
-    internal func range(of strings: [String], options: NSString.CompareOptions, range: NSRange? = nil) -> (range: NSRange?, foundString: String?) {
-        guard !strings.isEmpty else { return (nil, nil) }
-        var i = 0
-        var foundRange: NSRange?
-        var string = ""
-        repeat {
-            string = strings[i]
-            if let range = range {
-                foundRange = (self as NSString).range(of: string, options: options, range: range)
-            } else {
-                foundRange = (self as NSString).range(of: string, options: options)
-            }
-            i += 1
-        } while foundRange?.location == NSNotFound && i < strings.count
+    internal func range(of strings: [String], options: NSString.CompareOptions, range: NSRange? = nil) -> (range: NSRange, foundString: String)? {
+        guard !strings.isEmpty else { return nil }
 
-        return (foundRange, string)
+        let nsself = (self as NSString)
+        var foundRange: NSRange?
+
+        let string = strings.first {
+            if let range = range {
+                foundRange = nsself.range(of: $0, options: options, range: range)
+            } else {
+                foundRange = nsself.range(of: $0, options: options)
+            }
+
+            return foundRange?.location != NSNotFound
+        }
+
+        guard let range = foundRange, let found = string else { return nil }
+
+        return (range, found)
     }
 }
