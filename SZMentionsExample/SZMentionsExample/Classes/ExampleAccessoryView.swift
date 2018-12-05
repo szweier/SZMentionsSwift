@@ -46,7 +46,7 @@ class ExampleAccessoryView: UIView {
         let mentionsListener = MentionListener(mentionTextView: textView,
                                                     attributesForMention: { mention in self.mentionAttributes },
                                                     defaultTextAttributes: defaultAttributes,
-                                                    spaceAfterMention: true,
+                                                    spaceAfterMention: false,
                                                     hideMentions: hideMentions,
                                                     didHandleMentionOnReturn: didHandleMentionOnReturn,
                                                     showMentionsListWithString: showMentionsListWithString)

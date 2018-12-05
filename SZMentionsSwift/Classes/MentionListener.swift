@@ -130,9 +130,8 @@ public class MentionListener: NSObject {
         didHandleMentionOnReturn: @escaping () -> Bool,
         showMentionsListWithString: @escaping (String, String) -> Void
     ) {
-        mentionTextAttributes = mentionAttributes ?? { _ in
-            [Attribute(name: .foregroundColor,
-                       value: UIColor.blue)] }
+        mentionTextAttributes = mentionAttributes ?? { _ in [Attribute(name: .foregroundColor,
+                                                                       value: UIColor.blue)] }
         defaultTextAttributes = defaultAttributes ?? [Attribute(name: .foregroundColor,
                                                                 value: UIColor.black)]
 
@@ -282,7 +281,7 @@ extension MentionListener /* Private */ {
                     range: NSRange(location: 0, length: NSMaxRange(textView.selectedRange))
                 )
                 filterString = (mentionString as NSString).replacingOccurrences(of: trigger, with: "")
-                filterString = filterString?.replacingOccurrences(of: "\n", with: "")
+                    .replacingOccurrences(of: "\n", with: "")
 
                 if let filterString = filterString, !(cooldownTimer?.isValid ?? false) {
                     stringCurrentlyBeingFiltered = filterString
@@ -316,7 +315,7 @@ extension MentionListener /* Private */ {
 
         if let editedMention = mentions.mentionBeingEdited(at: range) {
             clearMention(editedMention)
-            handleEditingMention(textView: textView, range: range, text: text)
+            mentionsTextView.replace(charactersIn: range, with: text)
             shouldAdjust = false
         }
 
@@ -325,19 +324,6 @@ extension MentionListener /* Private */ {
         _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
         return shouldAdjust
-    }
-
-    /**
-     @brief Resets the attributes of the mention to default attributes
-     @param textView: the mention text view
-     @param range: the current range selected
-     @param text: text to replace range
-     */
-    private func handleEditingMention(textView: UITextView,
-                                      range: NSRange, text: String) {
-        mentionsTextView.replace(charactersIn: range, with: text)
-
-        _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
     }
 
     /**
@@ -376,8 +362,8 @@ extension MentionListener: UITextViewDelegate {
 
             textView.delegate = nil
             mentionsTextView.replace(charactersIn: range, with: text)
-            mentionsTextView.apply(defaultTextAttributes, range: NSRange(location: range.location,
-                                                                         length: text.utf16.count))
+            mentionsTextView.apply(defaultTextAttributes,
+                                   range: NSRange(location: range.location, length: text.utf16.count))
             mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
             mentions = mentions.adjustMentions(forTextChangeAt: range, text: text)
             adjust(textView, range: textView.selectedRange)
@@ -393,12 +379,6 @@ extension MentionListener: UITextViewDelegate {
     }
 
     public func textViewDidChange(_ textView: UITextView) {
-        if textView.selectedRange.location > 1 {
-            let substring = (textView.attributedText.string as NSString).substring(with: NSRange(location: textView.selectedRange.location - 2, length: 2))
-            if substring == ". " {
-                textView.apply(defaultTextAttributes, range: NSRange(location: textView.selectedRange.location - 2, length: 2))
-            }
-        }
         delegate?.textViewDidChange?(textView)
     }
 

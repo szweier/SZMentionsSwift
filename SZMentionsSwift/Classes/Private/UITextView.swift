@@ -81,6 +81,7 @@ internal extension UITextView {
     func replace(charactersIn range: NSRange, with text: String) {
         let newMutableAttributedString = mutableAttributedString
         newMutableAttributedString?.mutableString.replaceCharacters(in: range, with: text)
+        selectedRange = NSRange(location: 0, length: 0)
         attributedText = newMutableAttributedString
         selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
     }

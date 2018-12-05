@@ -51,13 +51,17 @@ class AddingMentions: QuickSpec {
             }
 
             it("Should have the correct length of the mention created") {
-                textView.insertText("@t")
+                if mentionsListener.textView(textView, shouldChangeTextIn: NSRange(location: 0, length: 0), replacementText: "@t") {
+                    textView.insertText("@t")
+                }
                 let mention = ExampleMention(name: "Steven")
                 mentionsListener.addMention(mention)
 
                 expect(mentionsListener.mentions.first?.range.length).to(equal(6))
 
-                textView.insertText(". ")
+                if mentionsListener.textView(textView, shouldChangeTextIn: NSRange(location: 6, length: 0), replacementText: ". ") {
+                    textView.insertText(". ")
+                }
 
                 expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
                 expect((textView.attributedText.attribute(.foregroundColor, at: 7, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
