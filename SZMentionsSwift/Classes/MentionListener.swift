@@ -212,7 +212,7 @@ extension MentionListener /* Internal */ {
 
             if mentionsTextView.selectedRange.location >= 1 {
                 guard let rangeTuple = mentionsTextView.text.range(of: triggers,
-                                                                   options: NSString.CompareOptions.backwards,
+                                                                   options: .backwards,
                                                                    range: NSRange(location: 0,
                                                                                   length: NSMaxRange(mentionsTextView.selectedRange))) else { return }
 
@@ -222,7 +222,9 @@ extension MentionListener /* Internal */ {
 
                 if location + 1 >= mentionsTextView.text.utf16.count { return }
 
-                let substringTrigger = (mentionsTextView.text as NSString).substring(with: NSRange(location: location, length: 1))
+                let startIndex = mentionsTextView.text.index(mentionsTextView.text.startIndex, offsetBy: location)
+                let endIndex = mentionsTextView.text.index(startIndex, offsetBy: 1)
+                let substringTrigger = mentionsTextView.text[startIndex ..< endIndex]
 
                 if substringTrigger == rangeTuple.foundString {
                     showMentionsListWithString(filterString, rangeTuple.foundString)
@@ -241,14 +243,17 @@ extension MentionListener /* Private */ {
      @param range: the selected range
      */
     private func adjust(_ textView: UITextView, range: NSRange) {
-        let string = (textView.text as NSString).substring(to: NSMaxRange(range))
+        let startIndex = mentionsTextView.text.startIndex
+        let endIndex = mentionsTextView.text.index(startIndex,
+                                                   offsetBy: min(NSMaxRange(range), mentionsTextView.text.count))
+        let string = String(mentionsTextView.text[startIndex ..< endIndex])
+
         var textBeforeTrigger = " "
 
-        guard let rangeTuple = string.range(of: triggers, options: NSString.CompareOptions.backwards) else { return }
+        guard let rangeTuple = string.range(of: triggers, options: .backwards) else { return }
 
         let location = rangeTuple.range.location
         let trigger = rangeTuple.foundString
-        let substring = (string as NSString)
 
         mentionEnabled = false
 
@@ -258,8 +263,9 @@ extension MentionListener /* Private */ {
             if location > 0 {
                 // Determine whether or not a space exists before the triggter.
                 // (in the case of an @ trigger this avoids showing the mention list for an email address)
-                let substringRange = NSRange(location: location - 1, length: 1)
-                textBeforeTrigger = substring.substring(with: substringRange)
+                let startIndex = mentionsTextView.text.index(mentionsTextView.text.startIndex, offsetBy: location - 1)
+                let endIndex = mentionsTextView.text.index(startIndex, offsetBy: 1)
+                textBeforeTrigger = String(mentionsTextView.text[startIndex ..< endIndex])
                 mentionEnabled = textBeforeTrigger == " " || textBeforeTrigger == "\n"
             }
         }
@@ -267,21 +273,22 @@ extension MentionListener /* Private */ {
         if mentionEnabled {
             var mentionString: String = ""
             if searchSpacesInMentions {
-                mentionString = substring.substring(with: NSRange(location: location, length: (textView.selectedRange.location - location) + textView.selectedRange.length))
-            } else if let stringBeingTyped = substring.components(separatedBy: textBeforeTrigger).last,
+                let startIndex = mentionsTextView.text.index(mentionsTextView.text.startIndex, offsetBy: location)
+                let endIndex = mentionsTextView.text.index(startIndex, offsetBy: textView.selectedRange.location - location + textView.selectedRange.length)
+                mentionString = String(mentionsTextView.text[startIndex ..< endIndex])
+            } else if let stringBeingTyped = string.components(separatedBy: textBeforeTrigger).last,
                 let stringForMention = stringBeingTyped.components(separatedBy: " ").last,
-                (stringForMention as NSString).range(of: trigger).location != NSNotFound {
+                stringForMention.range(of: trigger, options: .anchored) != nil {
                 mentionString = stringForMention
             }
 
             if !mentionString.isEmpty {
                 currentMentionRange = (textView.text as NSString).range(
                     of: mentionString,
-                    options: NSString.CompareOptions.backwards,
+                    options: .backwards,
                     range: NSRange(location: 0, length: NSMaxRange(textView.selectedRange))
                 )
-                filterString = (mentionString as NSString).replacingOccurrences(of: trigger, with: "")
-                    .replacingOccurrences(of: "\n", with: "")
+                filterString = mentionString.replacingOccurrences(of: trigger, with: "").replacingOccurrences(of: "\n", with: "")
 
                 if let filterString = filterString, !(cooldownTimer?.isValid ?? false) {
                     stringCurrentlyBeingFiltered = filterString
