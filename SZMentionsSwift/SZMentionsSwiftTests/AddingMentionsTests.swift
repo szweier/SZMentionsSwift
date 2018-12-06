@@ -184,11 +184,11 @@ class AddingMentions: QuickSpec {
                 update(text: "@s", type: .insert, on: mentionsListener)
                 addMention(named: "Steven", on: mentionsListener)
 
-                expect(mentionsListener.mentions.mentionBeingEdited(at: NSRange(location: 0, length: 0))).to(beNil())
+                expect(mentionsListener.mentions |> mentionBeingEdited(at: NSRange(location: 0, length: 0))).to(beNil())
 
                 update(text: "t", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
 
-                expect(mentionsListener.mentions.mentionBeingEdited(at: NSRange(location: 1, length: 0))).to(beNil())
+                expect(mentionsListener.mentions |> mentionBeingEdited(at: NSRange(location: 1, length: 0))).to(beNil())
             }
 
             it("Should not crash when deleting two mentions at a time") {

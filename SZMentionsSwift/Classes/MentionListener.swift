@@ -173,7 +173,7 @@ extension MentionListener /* Public */ {
      `range` is used the range to place the metion at
      */
     public func insertExistingMentions(_ existingMentions: [(CreateMention, NSRange)]) {
-        mentions = mentions.insert(existingMentions)
+        mentions |> insert(existingMentions)
         mentionsTextView.attributedText |> insert(existingMentions, with: mentionTextAttributes)
     }
 
@@ -190,9 +190,9 @@ extension MentionListener /* Public */ {
                                                                    at: currentMentionRange,
                                                                    with: mentionTextAttributes)
         mentionsTextView.selectedRange = rangeToSelect
-        mentions = mentions.add(createMention,
-                                spaceAfterMention: spaceAfterMention,
-                                at: currentMentionRange)
+        mentions |> add(createMention,
+                        spaceAfterMention: spaceAfterMention,
+                        at: currentMentionRange)
 
         filterString = nil
         hideMentions()
@@ -303,7 +303,7 @@ extension MentionListener /* Private */ {
     }
 
     private func clearMention(_ mention: Mention) {
-        mentions = mentions.remove([mention])
+        mentions |> remove([mention])
         mentionsTextView.attributedText |> apply(defaultTextAttributes, range: mention.range)
     }
 
@@ -319,13 +319,13 @@ extension MentionListener /* Private */ {
 
         if textView.text.isEmpty { reset() }
 
-        if let editedMention = mentions.mentionBeingEdited(at: range) {
+        if let editedMention = mentions |> mentionBeingEdited(at: range) {
             clearMention(editedMention)
             mentionsTextView.selectedRange = mentionsTextView.attributedText |> replace(charactersIn: range, with: text)
             shouldAdjust = false
         }
 
-        mentions = mentions.adjusted(forTextChangeAt: range, text: text)
+        mentions |> adjusted(forTextChangeAt: range, text: text)
 
         _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
@@ -362,7 +362,7 @@ extension MentionListener: UITextViewDelegate {
             return false
         } else if text.utf16.count > 1 {
             // Pasting
-            if let editedMention = mentions.mentionBeingEdited(at: range) {
+            if let editedMention = mentions |> mentionBeingEdited(at: range) {
                 clearMention(editedMention)
             }
 
@@ -377,7 +377,7 @@ extension MentionListener: UITextViewDelegate {
 
             mentionsTextView.attributedText |> apply(defaultTextAttributes, range: range.adjustLength(for: text))
             mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
-            mentions = mentions.adjusted(forTextChangeAt: range, text: text)
+            mentions |> adjusted(forTextChangeAt: range, text: text)
             adjust(textView, range: textView.selectedRange)
             textView.delegate = self
 
