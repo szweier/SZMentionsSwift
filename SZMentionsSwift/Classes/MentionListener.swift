@@ -29,7 +29,7 @@ public class MentionListener: NSObject {
     /**
      @brief Tell listener that mention searches can contain spaces, default: false
      */
-    private let searchSpacesInMentions: Bool
+    private let searchSpaces: Bool
 
     /**
      @brief Triggers to start a mention. Default: @
@@ -49,7 +49,7 @@ public class MentionListener: NSObject {
     /**
      @brief The UITextView being handled by the MentionListener
      */
-    private let mentionsTextView: UITextView
+    internal let mentionsTextView: UITextView
 
     /**
      @brief Called when the UITextView is not editing a mention.
@@ -102,7 +102,7 @@ public class MentionListener: NSObject {
 
     /**
      @brief Initializer that allows for customization of text attributes for default text and mentions
-     @param mentionTextView: - the text view to manage mentions for
+     @param mentionsTextView: - the text view to manage mentions for
      @param delegate: - the object that will handle textview delegate methods
      @param mentionTextAttributes - block used to determine text style to show for a given mention
      @param defaultTextAttributes - text style to show for default text
@@ -118,31 +118,32 @@ public class MentionListener: NSObject {
      @param showMentionsListWithString - block of code that is run when the mentions list is to be shown
      */
     public init(
-        mentionTextView textView: UITextView,
+        mentionsTextView: UITextView,
         delegate: UITextViewDelegate? = nil,
-        attributesForMention mentionAttributes: ((CreateMention?) -> [AttributeContainer])? = nil,
-        defaultTextAttributes defaultAttributes: [AttributeContainer]? = nil,
-        spaceAfterMention spaceAfter: Bool = false,
-        triggers mentionTriggers: [String] = ["@"],
-        cooldownInterval interval: TimeInterval = 0.5,
+        mentionTextAttributes: ((CreateMention?) -> [AttributeContainer])? = nil,
+        defaultTextAttributes: [AttributeContainer]? = nil,
+        spaceAfterMention: Bool = false,
+        triggers: [String] = ["@"],
+        cooldownInterval: TimeInterval = 0.5,
         searchSpaces: Bool = false,
         hideMentions: @escaping () -> Void,
         didHandleMentionOnReturn: @escaping () -> Bool,
         showMentionsListWithString: @escaping (String, String) -> Void
     ) {
-        mentionTextAttributes = mentionAttributes ?? { _ in [Attribute(name: .foregroundColor,
-                                                                       value: UIColor.blue)] }
-        defaultTextAttributes = defaultAttributes ?? [Attribute(name: .foregroundColor,
-                                                                value: UIColor.black)]
+        self.mentionTextAttributes = mentionTextAttributes ?? { _ in
+            [Attribute(name: .foregroundColor, value: UIColor.blue)]
+        }
+        self.defaultTextAttributes = defaultTextAttributes ?? [Attribute(name: .foregroundColor,
+                                                                         value: UIColor.black)]
+        Verifier.verifySetup(withDefaultTextAttributes: self.defaultTextAttributes,
+                             mentionTextAttributes: self.mentionTextAttributes(nil))
 
-        Verifier.verifySetup(withDefaultTextAttributes: defaultTextAttributes,
-                             mentionTextAttributes: mentionTextAttributes(nil))
-        searchSpacesInMentions = searchSpaces
-        mentionsTextView = textView
+        self.searchSpaces = searchSpaces
+        self.mentionsTextView = mentionsTextView
         self.delegate = delegate
-        spaceAfterMention = spaceAfter
-        triggers = mentionTriggers
-        cooldownInterval = interval
+        self.spaceAfterMention = spaceAfterMention
+        self.triggers = triggers
+        self.cooldownInterval = cooldownInterval
         self.hideMentions = hideMentions
         self.didHandleMentionOnReturn = didHandleMentionOnReturn
         self.showMentionsListWithString = showMentionsListWithString
@@ -172,8 +173,8 @@ extension MentionListener /* Public */ {
      */
     public func insertExistingMentions(_ existingMentions: [(CreateMention, NSRange)]) {
         mentions = mentions.insert(existingMentions)
-        mentionsTextView.insertMentions(existingMentions,
-                                        with: mentionTextAttributes)
+        mentionsTextView.insert(existingMentions,
+                                with: mentionTextAttributes)
     }
 
     /**
@@ -182,17 +183,15 @@ extension MentionListener /* Public */ {
      @return Bool: whether or not a mention was added
      */
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
-        guard var currentMentionRange = currentMentionRange else { return false }
+        guard let currentMentionRange = currentMentionRange else { return false }
 
-        mentionsTextView.addMention(createMention,
-                                    spaceAfterMention: spaceAfterMention,
-                                    at: currentMentionRange,
-                                    with: mentionTextAttributes)
+        mentionsTextView.add(createMention,
+                             spaceAfterMention: spaceAfterMention,
+                             at: currentMentionRange,
+                             with: mentionTextAttributes)
         mentions = mentions.add(createMention,
                                 spaceAfterMention: spaceAfterMention,
                                 at: currentMentionRange)
-
-        currentMentionRange = currentMentionRange.adjusted(for: createMention.name)
 
         filterString = nil
         hideMentions()
@@ -211,14 +210,13 @@ extension MentionListener /* Internal */ {
             stringCurrentlyBeingFiltered = filterString
 
             if mentionsTextView.selectedRange.location >= 1 {
-                guard let rangeTuple = mentionsTextView.text.range(of: triggers,
-                                                                   options: .backwards,
-                                                                   range: NSRange(location: 0,
-                                                                                  length: NSMaxRange(mentionsTextView.selectedRange))) else { return }
+                let rangeTuple = mentionsTextView.text.range(of: triggers,
+                                                             options: .backwards,
+                                                             range: NSRange(location: 0,
+                                                                            length: NSMaxRange(mentionsTextView.selectedRange)))
+                guard rangeTuple.range.location != NSNotFound else { return }
 
-                var location: Int = 0
-
-                if rangeTuple.range.location != NSNotFound { location = rangeTuple.range.location }
+                let location: Int = rangeTuple.range.location
 
                 if location + 1 >= mentionsTextView.text.utf16.count { return }
 
@@ -250,7 +248,7 @@ extension MentionListener /* Private */ {
 
         var textBeforeTrigger = " "
 
-        guard let rangeTuple = string.range(of: triggers, options: .backwards) else { return }
+        let rangeTuple = string.range(of: triggers, options: .backwards)
 
         let location = rangeTuple.range.location
         let trigger = rangeTuple.foundString
@@ -272,7 +270,7 @@ extension MentionListener /* Private */ {
 
         if mentionEnabled {
             var mentionString: String = ""
-            if searchSpacesInMentions {
+            if searchSpaces {
                 let startIndex = mentionsTextView.text.index(mentionsTextView.text.startIndex, offsetBy: location)
                 let endIndex = mentionsTextView.text.index(startIndex, offsetBy: textView.selectedRange.location - location + textView.selectedRange.length)
                 mentionString = String(mentionsTextView.text[startIndex ..< endIndex])
@@ -349,7 +347,9 @@ extension MentionListener /* Private */ {
 extension MentionListener: UITextViewDelegate {
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                          replacementText text: String) -> Bool {
-        assert((textView.delegate?.isEqual(self))!, "Textview delegate must be set equal to MentionListener")
+        defer {
+            _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
+        }
 
         if textView.text.isEmpty { reset() }
         else { textView.resetTypingAttributes(to: defaultTextAttributes) }
@@ -357,8 +357,6 @@ extension MentionListener: UITextViewDelegate {
         if text == "\n", mentionEnabled, didHandleMentionOnReturn() {
             mentionEnabled = false
             hideMentions()
-
-            _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
             return false
         } else if text.utf16.count > 1 {
@@ -369,18 +367,14 @@ extension MentionListener: UITextViewDelegate {
 
             textView.delegate = nil
             mentionsTextView.replace(charactersIn: range, with: text)
-            mentionsTextView.apply(defaultTextAttributes,
-                                   range: NSRange(location: range.location, length: text.utf16.count))
+            mentionsTextView.apply(defaultTextAttributes, range: range.adjustLength(for: text))
             mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
             mentions = mentions.adjustMentions(forTextChangeAt: range, text: text)
             adjust(textView, range: textView.selectedRange)
             textView.delegate = self
 
-            _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
-
             return false
         }
-        _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
         return shouldAdjust(textView, range: range, text: text)
     }

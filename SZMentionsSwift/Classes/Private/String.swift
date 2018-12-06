@@ -9,11 +9,9 @@
 import UIKit
 
 internal extension String {
-    func range(of strings: [String], options: NSString.CompareOptions, range: NSRange? = nil) -> (range: NSRange, foundString: String)? {
-        guard !strings.isEmpty else { return nil }
-
+    func range(of strings: [String], options: NSString.CompareOptions, range: NSRange? = nil) -> (range: NSRange, foundString: String) {
         let nsself = (self as NSString)
-        var foundRange: NSRange?
+        var foundRange = NSRange(location: NSNotFound, length: 0)
 
         let string = strings.first {
             if let range = range {
@@ -22,11 +20,9 @@ internal extension String {
                 foundRange = nsself.range(of: $0, options: options)
             }
 
-            return foundRange?.location != NSNotFound
-        }
+            return foundRange.location != NSNotFound
+        } ?? ""
 
-        guard let range = foundRange, let found = string else { return nil }
-
-        return (range, found)
+        return (foundRange, string)
     }
 }

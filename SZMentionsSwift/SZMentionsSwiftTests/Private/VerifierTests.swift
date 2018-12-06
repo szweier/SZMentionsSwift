@@ -4,7 +4,7 @@ import Quick
 
 class VerifierTests: QuickSpec {
     override func spec() {
-        describe("Attribute Handling") {
+        describe("Attributes Match") {
             let attribute = Attribute(name: .foregroundColor, value: UIColor.red)
             let attribute2 = Attribute(name: .backgroundColor, value: UIColor.black)
 

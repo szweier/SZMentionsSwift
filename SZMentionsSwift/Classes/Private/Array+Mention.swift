@@ -5,6 +5,7 @@
 //  Created by Steve Zweier on 2/1/16.
 //  Copyright © 2016 Steven Zweier. All rights reserved.
 //
+import UIKit
 
 internal extension Array where Element == Mention {
     /**
@@ -42,9 +43,7 @@ internal extension Array where Element == Mention {
      */
     func insert(_ mentions: [(CreateMention, NSRange)]) -> [Mention] {
         return self + mentions.compactMap { createMention, range in
-            assert(range.location != NSNotFound, "Mention must have a range to insert into")
-
-            return Mention(range: range, object: createMention)
+            Mention(range: range, object: createMention)
         }
     }
 
@@ -57,7 +56,7 @@ internal extension Array where Element == Mention {
     }
 
     func add(_ mention: CreateMention, spaceAfterMention: Bool, at range: NSRange) -> [Mention] {
-        let adjustedRange = range.adjusted(for: mention.name)
+        let adjustedRange = range.adjustLength(for: mention.name)
         return adjustMentions(forTextChangeAt: range,
                               text: mention.mentionName(with: spaceAfterMention))
             .insert([(mention, adjustedRange)])

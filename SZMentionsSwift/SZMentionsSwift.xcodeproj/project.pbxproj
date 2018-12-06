@@ -9,22 +9,23 @@
 /* Begin PBXBuildFile section */
 		3E6360DF78BF59315B1D5224 /* Pods_SZMentionsSwiftTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F45C31FC9BB2965568D9D8F /* Pods_SZMentionsSwiftTests.framework */; };
 		7F61A2A45075B6179E9B4B40 /* Pods_SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6363D30311E857C64563F5D /* Pods_SZMentionsSwift.framework */; };
-		DB0403C11C44A017000904DB /* SZMentionsSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = DB0403C01C44A017000904DB /* SZMentionsSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		DB0AB4A41EAAC175003F84DB /* VerifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A31EAAC175003F84DB /* VerifierTests.swift */; };
+		DB17C44821B87623003D6740 /* NSRangeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB17C44721B87623003D6740 /* NSRangeTests.swift */; };
+		DB17C44921B877AB003D6740 /* Array+MentionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A8BD721B61D2E004490A6 /* Array+MentionTests.swift */; };
+		DB17C44A21B877AF003D6740 /* UITextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A8BD921B62371004490A6 /* UITextViewTests.swift */; };
+		DB17C44B21B877B1003D6740 /* VerifierTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A31EAAC175003F84DB /* VerifierTests.swift */; };
+		DB17C44C21B877B4003D6740 /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A8BDB21B6262A004490A6 /* StringTests.swift */; };
+		DB17C45521B88307003D6740 /* CreateMentionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB17C44E21B87A10003D6740 /* CreateMentionTests.swift */; };
+		DB17C45621B88307003D6740 /* DelegatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A51EAAC48A003F84DB /* DelegatesTests.swift */; };
+		DB17C45721B88307003D6740 /* MentionsDisplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DA1EA176FC004CBD91 /* MentionsDisplayTests.swift */; };
 		DB1DF4B31F74A2AD00EA8E63 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DF4B21F74A2AD00EA8E63 /* Attribute.swift */; };
 		DB1DF4B51F74A3D200EA8E63 /* Mention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DF4B41F74A3D200EA8E63 /* Mention.swift */; };
 		DB1DF4BB1F74A66700EA8E63 /* CreateMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DF4BA1F74A66700EA8E63 /* CreateMention.swift */; };
 		DB2330171E24832D00242C33 /* Verifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB2330161E24832D00242C33 /* Verifier.swift */; };
-		DB4A8BD821B61D2E004490A6 /* Array+MentionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A8BD721B61D2E004490A6 /* Array+MentionTests.swift */; };
-		DB4A8BDA21B62371004490A6 /* UITextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A8BD921B62371004490A6 /* UITextViewTests.swift */; };
-		DB4A8BDC21B6262A004490A6 /* StringHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A8BDB21B6262A004490A6 /* StringHelperTests.swift */; };
-		DB4A8BDE21B62A9A004490A6 /* DelegatesSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A51EAAC48A003F84DB /* DelegatesSpec.swift */; };
-		DB4A8BDF21B62AA8004490A6 /* AddingMentionsSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsSpec.swift */; };
-		DB4A8BE021B62AAD004490A6 /* MentionsDisplaySpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */; };
-		DB4A8BE121B62AB0004490A6 /* SharedTestClasses.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */; };
 		DB6C1C1121B6BBE500C178AC /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6C1C1021B6BBE500C178AC /* UITextView.swift */; };
 		DB6C1C1321B7140100C178AC /* NSRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6C1C1221B7140100C178AC /* NSRange.swift */; };
 		DBC779F31FDB6161006CD115 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC779F21FDB6161006CD115 /* String.swift */; };
+		DBDC67BE21B88B0F000CF22C /* AddingMentionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsTests.swift */; };
+		DBDC67C121B8B0F0000CF22C /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC67C021B8B0F0000CF22C /* Helper.swift */; };
 		DBE8B4A31C657F200090EF32 /* Array+Mention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49D1C657F200090EF32 /* Array+Mention.swift */; };
 		DBE8B4A41C657F200090EF32 /* AttributeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B49E1C657F200090EF32 /* AttributeContainer.swift */; };
 		DBE8B4A61C657F200090EF32 /* MentionListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B4A01C657F200090EF32 /* MentionListener.swift */; };
@@ -51,23 +52,24 @@
 		6F45C31FC9BB2965568D9D8F /* Pods_SZMentionsSwiftTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SZMentionsSwiftTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A5AFEFC8D8EFB782CF480EC /* Pods-SZMentionsSwift.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SZMentionsSwift.release.xcconfig"; path = "../Pods/Target Support Files/Pods-SZMentionsSwift/Pods-SZMentionsSwift.release.xcconfig"; sourceTree = "<group>"; };
 		DB0403BD1C44A017000904DB /* SZMentionsSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SZMentionsSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB0403C01C44A017000904DB /* SZMentionsSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SZMentionsSwift.h; sourceTree = "<group>"; };
 		DB0403C21C44A017000904DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB0AB4A31EAAC175003F84DB /* VerifierTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifierTests.swift; sourceTree = "<group>"; };
-		DB0AB4A51EAAC48A003F84DB /* DelegatesSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegatesSpec.swift; sourceTree = "<group>"; };
-		DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedTestClasses.swift; sourceTree = "<group>"; };
+		DB0AB4A51EAAC48A003F84DB /* DelegatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DelegatesTests.swift; sourceTree = "<group>"; };
+		DB17C44721B87623003D6740 /* NSRangeTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSRangeTests.swift; sourceTree = "<group>"; };
+		DB17C44E21B87A10003D6740 /* CreateMentionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateMentionTests.swift; sourceTree = "<group>"; };
 		DB1DF4B21F74A2AD00EA8E63 /* Attribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
 		DB1DF4B41F74A3D200EA8E63 /* Mention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mention.swift; sourceTree = "<group>"; };
 		DB1DF4BA1F74A66700EA8E63 /* CreateMention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMention.swift; sourceTree = "<group>"; };
 		DB2330161E24832D00242C33 /* Verifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Verifier.swift; sourceTree = "<group>"; };
-		DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionsDisplaySpec.swift; sourceTree = "<group>"; };
-		DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddingMentionsSpec.swift; sourceTree = "<group>"; };
+		DB3DB5DA1EA176FC004CBD91 /* MentionsDisplayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionsDisplayTests.swift; sourceTree = "<group>"; };
+		DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddingMentionsTests.swift; sourceTree = "<group>"; };
 		DB4A8BD721B61D2E004490A6 /* Array+MentionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+MentionTests.swift"; sourceTree = "<group>"; };
 		DB4A8BD921B62371004490A6 /* UITextViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextViewTests.swift; sourceTree = "<group>"; };
-		DB4A8BDB21B6262A004490A6 /* StringHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelperTests.swift; sourceTree = "<group>"; };
+		DB4A8BDB21B6262A004490A6 /* StringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
 		DB6C1C1021B6BBE500C178AC /* UITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.swift; sourceTree = "<group>"; };
 		DB6C1C1221B7140100C178AC /* NSRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSRange.swift; sourceTree = "<group>"; };
 		DBC779F21FDB6161006CD115 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		DBDC67C021B8B0F0000CF22C /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		DBE8B49D1C657F200090EF32 /* Array+Mention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Mention.swift"; sourceTree = "<group>"; };
 		DBE8B49E1C657F200090EF32 /* AttributeContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeContainer.swift; sourceTree = "<group>"; };
 		DBE8B4A01C657F200090EF32 /* MentionListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MentionListener.swift; sourceTree = "<group>"; };
@@ -141,20 +143,39 @@
 			isa = PBXGroup;
 			children = (
 				DBE8B4991C657F200090EF32 /* Classes */,
-				DB0403C01C44A017000904DB /* SZMentionsSwift.h */,
 				DB0403C21C44A017000904DB /* Info.plist */,
 			);
 			path = SZMentionsSwift;
 			sourceTree = "<group>";
 		};
+		DB17C44D21B879AD003D6740 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				DB4A8BD721B61D2E004490A6 /* Array+MentionTests.swift */,
+				DB17C44721B87623003D6740 /* NSRangeTests.swift */,
+				DB4A8BDB21B6262A004490A6 /* StringTests.swift */,
+				DB4A8BD921B62371004490A6 /* UITextViewTests.swift */,
+				DB0AB4A31EAAC175003F84DB /* VerifierTests.swift */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
+		DBDC67BF21B8B0DF000CF22C /* Test Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				DBDC67C021B8B0F0000CF22C /* Helper.swift */,
+			);
+			path = "Test Helpers";
+			sourceTree = "<group>";
+		};
 		DBE8B4991C657F200090EF32 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				DBE8B49A1C657F200090EF32 /* Private */,
 				DBE8B49E1C657F200090EF32 /* AttributeContainer.swift */,
 				DB1DF4BA1F74A66700EA8E63 /* CreateMention.swift */,
 				DB1DF4B41F74A3D200EA8E63 /* Mention.swift */,
 				DBE8B4A01C657F200090EF32 /* MentionListener.swift */,
+				DBE8B49A1C657F200090EF32 /* Private */,
 			);
 			path = Classes;
 			sourceTree = SOURCE_ROOT;
@@ -163,11 +184,11 @@
 			isa = PBXGroup;
 			children = (
 				DBE8B49D1C657F200090EF32 /* Array+Mention.swift */,
-				DB2330161E24832D00242C33 /* Verifier.swift */,
 				DB1DF4B21F74A2AD00EA8E63 /* Attribute.swift */,
-				DBC779F21FDB6161006CD115 /* String.swift */,
 				DB6C1C1221B7140100C178AC /* NSRange.swift */,
+				DBC779F21FDB6161006CD115 /* String.swift */,
 				DB6C1C1021B6BBE500C178AC /* UITextView.swift */,
+				DB2330161E24832D00242C33 /* Verifier.swift */,
 			);
 			path = Private;
 			sourceTree = "<group>";
@@ -175,15 +196,13 @@
 		DBF2DF5D1C4B1067001B9788 /* SZMentionsSwiftTests */ = {
 			isa = PBXGroup;
 			children = (
-				DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsSpec.swift */,
-				DB4A8BD721B61D2E004490A6 /* Array+MentionTests.swift */,
-				DB0AB4A51EAAC48A003F84DB /* DelegatesSpec.swift */,
+				DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsTests.swift */,
+				DB17C44E21B87A10003D6740 /* CreateMentionTests.swift */,
+				DB0AB4A51EAAC48A003F84DB /* DelegatesTests.swift */,
 				DBF2DF601C4B1067001B9788 /* Info.plist */,
-				DB3DB5DA1EA176FC004CBD91 /* MentionsDisplaySpec.swift */,
-				DB4A8BD921B62371004490A6 /* UITextViewTests.swift */,
-				DB0AB4A71EAACC92003F84DB /* SharedTestClasses.swift */,
-				DB0AB4A31EAAC175003F84DB /* VerifierTests.swift */,
-				DB4A8BDB21B6262A004490A6 /* StringHelperTests.swift */,
+				DB3DB5DA1EA176FC004CBD91 /* MentionsDisplayTests.swift */,
+				DB17C44D21B879AD003D6740 /* Private */,
+				DBDC67BF21B8B0DF000CF22C /* Test Helpers */,
 			);
 			path = SZMentionsSwiftTests;
 			sourceTree = "<group>";
@@ -195,7 +214,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB0403C11C44A017000904DB /* SZMentionsSwift.h in Headers */,
 				DBE8B4B41C6580360090EF32 /* AttributeContainer.swift in Headers */,
 				DBE8B4B61C6580360090EF32 /* MentionListener.swift in Headers */,
 				DBE8B4B91C6580400090EF32 /* Array+Mention.swift in Headers */,
@@ -385,7 +403,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"${SRCROOT}\"";
+			shellScript = "\"${PODS_ROOT}/SwiftFormat/CommandLineTool/swiftformat\" \"${SRCROOT}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -411,14 +429,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB4A8BE021B62AAD004490A6 /* MentionsDisplaySpec.swift in Sources */,
-				DB4A8BDA21B62371004490A6 /* UITextViewTests.swift in Sources */,
-				DB4A8BDE21B62A9A004490A6 /* DelegatesSpec.swift in Sources */,
-				DB4A8BDF21B62AA8004490A6 /* AddingMentionsSpec.swift in Sources */,
-				DB4A8BDC21B6262A004490A6 /* StringHelperTests.swift in Sources */,
-				DB0AB4A41EAAC175003F84DB /* VerifierTests.swift in Sources */,
-				DB4A8BD821B61D2E004490A6 /* Array+MentionTests.swift in Sources */,
-				DB4A8BE121B62AB0004490A6 /* SharedTestClasses.swift in Sources */,
+				DB17C45521B88307003D6740 /* CreateMentionTests.swift in Sources */,
+				DB17C44C21B877B4003D6740 /* StringTests.swift in Sources */,
+				DB17C44B21B877B1003D6740 /* VerifierTests.swift in Sources */,
+				DB17C44921B877AB003D6740 /* Array+MentionTests.swift in Sources */,
+				DB17C44A21B877AF003D6740 /* UITextViewTests.swift in Sources */,
+				DB17C45721B88307003D6740 /* MentionsDisplayTests.swift in Sources */,
+				DB17C44821B87623003D6740 /* NSRangeTests.swift in Sources */,
+				DB17C45621B88307003D6740 /* DelegatesTests.swift in Sources */,
+				DBDC67C121B8B0F0000CF22C /* Helper.swift in Sources */,
+				DBDC67BE21B88B0F000CF22C /* AddingMentionsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
