@@ -25,13 +25,15 @@ internal extension Array where Element == Mention {
      @brief adjusts the positioning of mentions that exist after the range where text was edited
      @param range: the range where text was changed
      @param text: the text that was changed
+
+     @return [Mention]: A new mention array
      */
-    func adjustMentions(forTextChangeAt range: NSRange, text: String) -> [Mention] {
-        let rangeAdjustment = text.utf16.count - range.length
+    func adjusted(forTextChangeAt range: NSRange, text: String) -> [Mention] {
+        let remainingLengthOfMention = text.utf16.count - range.length
         return compactMap { mention in
             guard mention.range.location >= NSMaxRange(range) else { return mention }
             var adjustedMention = mention
-            adjustedMention.range.location += rangeAdjustment
+            adjustedMention.range.location += remainingLengthOfMention
 
             return adjustedMention
         }
@@ -40,25 +42,35 @@ internal extension Array where Element == Mention {
     /**
      @brief inserts mentions into the mentions array
      @param mentions: the mentions to add along with the position to add them in
+
+     @return [Mention]: A new mention array
      */
     func insert(_ mentions: [(CreateMention, NSRange)]) -> [Mention] {
-        return self + mentions.compactMap { createMention, range in
+        return self + mentions.map { createMention, range in
             Mention(range: range, object: createMention)
         }
     }
 
     /**
-     @brief inserts mentions into the mentions array
-     @param mentions: the mentions to add along with the position to add them in
+     @brief removes mentions from the mentions array
+     @param mentions: the mentions to remove
+
+     @return [Mention]: A new mention array
      */
     func remove(_ mentions: [Mention]) -> [Mention] {
         return filter { !mentions.contains($0) }
     }
 
+    /**
+     @brief adds mentions into the mentions array
+     @param mentions: the mentions to add along with the position to add them in
+
+     @return [Mention]: A new mention array
+     */
     func add(_ mention: CreateMention, spaceAfterMention: Bool, at range: NSRange) -> [Mention] {
         let adjustedRange = range.adjustLength(for: mention.name)
-        return adjustMentions(forTextChangeAt: range,
-                              text: mention.mentionName(with: spaceAfterMention))
+        return adjusted(forTextChangeAt: range,
+                        text: mention.mentionName(with: spaceAfterMention))
             .insert([(mention, adjustedRange)])
     }
 }

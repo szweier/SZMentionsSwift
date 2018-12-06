@@ -32,7 +32,7 @@ class MentionsArrayTests: QuickSpec {
                 let insertText = "Test "
                 expect(mentions[0].range.location).to(equal(0))
                 expect(mentions[1].range.location).to(equal(15))
-                mentions = mentions.adjustMentions(forTextChangeAt: NSRange(location: 5, length: 0), text: insertText)
+                mentions = mentions.adjusted(forTextChangeAt: NSRange(location: 5, length: 0), text: insertText)
                 expect(mentions[0].range.location).to(equal(0))
                 expect(mentions[1].range.location).to(equal(15 + insertText.count))
             }

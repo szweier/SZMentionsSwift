@@ -17,5 +17,5 @@ internal struct Attribute: AttributeContainer {
     /**
      @brief Value of the attribute to set on a string
      */
-    var value: NSObject
+    var value: Any
 }

@@ -12,7 +12,7 @@ import SZMentionsSwift
 class ExampleAccessoryView: UIView {
     struct Attribute: AttributeContainer {
         var name: NSAttributedString.Key
-        var value: NSObject
+        var value: Any
     }
     private let textView = UITextView()
     private let mentionsTableView = UITableView()

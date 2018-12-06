@@ -159,7 +159,8 @@ extension MentionListener /* Public */ {
      */
     public func reset() {
         mentions = []
-        mentionsTextView.reset(to: defaultTextAttributes)
+        mentionsTextView.text = ""
+        mentionsTextView.typingAttributes = defaultTextAttributes.dictionary
     }
 
     /**
@@ -173,8 +174,7 @@ extension MentionListener /* Public */ {
      */
     public func insertExistingMentions(_ existingMentions: [(CreateMention, NSRange)]) {
         mentions = mentions.insert(existingMentions)
-        mentionsTextView.insert(existingMentions,
-                                with: mentionTextAttributes)
+        mentionsTextView.attributedText |> insert(existingMentions, with: mentionTextAttributes)
     }
 
     /**
@@ -185,10 +185,11 @@ extension MentionListener /* Public */ {
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard let currentMentionRange = currentMentionRange else { return false }
 
-        mentionsTextView.add(createMention,
-                             spaceAfterMention: spaceAfterMention,
-                             at: currentMentionRange,
-                             with: mentionTextAttributes)
+        let rangeToSelect = mentionsTextView.attributedText |> add(createMention,
+                                                                   spaceAfterMention: spaceAfterMention,
+                                                                   at: currentMentionRange,
+                                                                   with: mentionTextAttributes)
+        mentionsTextView.selectedRange = rangeToSelect
         mentions = mentions.add(createMention,
                                 spaceAfterMention: spaceAfterMention,
                                 at: currentMentionRange)
@@ -303,7 +304,7 @@ extension MentionListener /* Private */ {
 
     private func clearMention(_ mention: Mention) {
         mentions = mentions.remove([mention])
-        mentionsTextView.apply(defaultTextAttributes, range: mention.range)
+        mentionsTextView.attributedText |> apply(defaultTextAttributes, range: mention.range)
     }
 
     /**
@@ -320,11 +321,11 @@ extension MentionListener /* Private */ {
 
         if let editedMention = mentions.mentionBeingEdited(at: range) {
             clearMention(editedMention)
-            mentionsTextView.replace(charactersIn: range, with: text)
+            mentionsTextView.selectedRange = mentionsTextView.attributedText |> replace(charactersIn: range, with: text)
             shouldAdjust = false
         }
 
-        mentions = mentions.adjustMentions(forTextChangeAt: range, text: text)
+        mentions = mentions.adjusted(forTextChangeAt: range, text: text)
 
         _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
@@ -352,7 +353,7 @@ extension MentionListener: UITextViewDelegate {
         }
 
         if textView.text.isEmpty { reset() }
-        else { textView.resetTypingAttributes(to: defaultTextAttributes) }
+        else { textView.typingAttributes = defaultTextAttributes.dictionary }
 
         if text == "\n", mentionEnabled, didHandleMentionOnReturn() {
             mentionEnabled = false
@@ -366,10 +367,17 @@ extension MentionListener: UITextViewDelegate {
             }
 
             textView.delegate = nil
-            mentionsTextView.replace(charactersIn: range, with: text)
-            mentionsTextView.apply(defaultTextAttributes, range: range.adjustLength(for: text))
+            let originalText = mentionsTextView.attributedText
+
+            // The following snippet is because if you click on a predictive text without this snippet
+            // the predictive text will be added twice.
+            _ = mentionsTextView.attributedText |> replace(charactersIn: range, with: text)
+            mentionsTextView.attributedText = originalText
+            mentionsTextView.selectedRange = mentionsTextView.attributedText |> replace(charactersIn: range, with: text)
+
+            mentionsTextView.attributedText |> apply(defaultTextAttributes, range: range.adjustLength(for: text))
             mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
-            mentions = mentions.adjustMentions(forTextChangeAt: range, text: text)
+            mentions = mentions.adjusted(forTextChangeAt: range, text: text)
             adjust(textView, range: textView.selectedRange)
             textView.delegate = self
 

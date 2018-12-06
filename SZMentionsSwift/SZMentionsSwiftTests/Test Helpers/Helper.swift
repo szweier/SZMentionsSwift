@@ -35,7 +35,7 @@ func update(text: String, type: TextUpdate, at range: NSRange? = nil, on listene
         case .delete:
             textView.deleteBackward()
         case .replace:
-            textView.replace(charactersIn: textView.selectedRange, with: text)
+            textView.selectedRange = textView.attributedText |> replace(charactersIn: textView.selectedRange, with: text)
         }
     }
 }
