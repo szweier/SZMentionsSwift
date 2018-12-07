@@ -315,7 +315,7 @@ extension MentionListener /* Private */ {
      @param text: the text to replace the range with
      @return Bool: whether or not the textView should adjust the text itself
      */
-    @discardableResult private func shouldAdjust(_ textView: UITextView, range: NSRange, text: String) -> Bool {
+    @discardableResult private func shouldAdjust(_: UITextView, range: NSRange, text: String) -> Bool {
         var shouldAdjust = true
 
         if mentions |> mentionBeingEdited(at: range) |> clearMention() {
