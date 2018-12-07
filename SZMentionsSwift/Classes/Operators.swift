@@ -13,10 +13,10 @@ precedencegroup ForwardApplication {
 
 infix operator |>: ForwardApplication
 
-func |> <A, B>(a: A, f: (A) -> B) -> B {
+internal func |> <A, B>(a: A, f: (A) -> B) -> B {
     return f(a)
 }
 
-func |> <A, B>(a: inout A, f: (inout A) -> B) -> B {
+internal func |> <A, B>(a: inout A, f: (inout A) -> B) -> B {
     return f(&a)
 }

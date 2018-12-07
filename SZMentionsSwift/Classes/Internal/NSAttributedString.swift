@@ -8,8 +8,8 @@
 
 import UIKit
 
-extension NSAttributedString {
-    internal var mutableAttributedText: NSMutableAttributedString {
+internal extension NSAttributedString {
+    var mutableAttributedText: NSMutableAttributedString {
         return mutableCopy() as! NSMutableAttributedString
     }
 }
@@ -19,7 +19,7 @@ extension NSAttributedString {
  @param attributes: the attributes to apply
  @param range: the range to apply the attributes to
  */
-func apply(_ attributes: [AttributeContainer], range: NSRange) -> (inout NSAttributedString) -> Void {
+internal func apply(_ attributes: [AttributeContainer], range: NSRange) -> (inout NSAttributedString) -> Void {
     return { string in
         let attributedText = string.mutableAttributedText
         attributedText.addAttributes(attributes.dictionary, range: range)
@@ -33,8 +33,8 @@ func apply(_ attributes: [AttributeContainer], range: NSRange) -> (inout NSAttri
  @param mentions: mentions to add along with the position to add them
  @param attributes: function to determine the attributes to apply to a specific mention
  */
-func insert(_ mentions: [(CreateMention, NSRange)],
-            with attributes: @escaping (CreateMention?) -> [AttributeContainer]) -> (inout NSAttributedString) -> Void {
+internal func insert(_ mentions: [(CreateMention, NSRange)],
+                     with attributes: @escaping (CreateMention?) -> [AttributeContainer]) -> (inout NSAttributedString) -> Void {
     return { string in
         var attributedText = string
         mentions.forEach { createMention, range in
@@ -54,7 +54,7 @@ func insert(_ mentions: [(CreateMention, NSRange)],
  @param range: The range of characters to replace
  @param text: The text to replace the characters with
  */
-func replace(charactersIn range: NSRange, with text: String) -> (inout NSAttributedString) -> NSRange {
+internal func replace(charactersIn range: NSRange, with text: String) -> (inout NSAttributedString) -> NSRange {
     return { string in
         let attributedText = string.mutableAttributedText
         attributedText.mutableString.replaceCharacters(in: range, with: text)
@@ -71,10 +71,10 @@ func replace(charactersIn range: NSRange, with text: String) -> (inout NSAttribu
  @param range: The position to add the mention to
  @param attributes: Function to determine the attributes to apply to a specific mention
  */
-func add(_ mention: CreateMention,
-         spaceAfterMention: Bool,
-         at range: NSRange,
-         with attributes: @escaping (CreateMention?) -> [AttributeContainer]) -> (inout NSAttributedString) -> NSRange {
+internal func add(_ mention: CreateMention,
+                  spaceAfterMention: Bool,
+                  at range: NSRange,
+                  with attributes: @escaping (CreateMention?) -> [AttributeContainer]) -> (inout NSAttributedString) -> NSRange {
     return { string in
         var attributedText = string
         _ = attributedText |> replace(charactersIn: range, with: mention.mentionName(with: spaceAfterMention))

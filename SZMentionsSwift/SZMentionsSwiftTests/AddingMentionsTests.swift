@@ -218,18 +218,6 @@ class AddingMentions: QuickSpec {
                 expect(mentionsListener.mentions.count).to(equal(0))
             }
 
-            it("Should call reset empty") {
-                update(text: "@t", type: .insert, on: mentionsListener)
-                addMention(named: "John Smith", on: mentionsListener)
-
-                expect(mentionsListener.mentions.count).to(equal(1))
-
-                textView.text = ""
-                update(text: "", type: .insert, on: mentionsListener)
-
-                expect(mentionsListener.mentions.isEmpty).to(beTruthy())
-            }
-
             it("Should not add mention if range is nil") {
                 expect(addMention(named: "John Smith", on: mentionsListener)).to(beFalsy())
             }

@@ -20,6 +20,7 @@
 		DB1940B121B99FDB00CE2EDE /* AttributeContainerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1940B021B99FDB00CE2EDE /* AttributeContainerTests.swift */; };
 		DB1940B321B9BAC300CE2EDE /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1940B221B9BAC300CE2EDE /* Operators.swift */; };
 		DB1940B521B9DAAB00CE2EDE /* OperatorsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1940B421B9DAAB00CE2EDE /* OperatorsTests.swift */; };
+		DB1940B721BA144900CE2EDE /* UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1940B621BA144900CE2EDE /* UITextView.swift */; };
 		DB1DF4B31F74A2AD00EA8E63 /* Attribute.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DF4B21F74A2AD00EA8E63 /* Attribute.swift */; };
 		DB1DF4B51F74A3D200EA8E63 /* Mention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DF4B41F74A3D200EA8E63 /* Mention.swift */; };
 		DB1DF4BB1F74A66700EA8E63 /* CreateMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DF4BA1F74A66700EA8E63 /* CreateMention.swift */; };
@@ -63,6 +64,7 @@
 		DB1940B021B99FDB00CE2EDE /* AttributeContainerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeContainerTests.swift; sourceTree = "<group>"; };
 		DB1940B221B9BAC300CE2EDE /* Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		DB1940B421B9DAAB00CE2EDE /* OperatorsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperatorsTests.swift; sourceTree = "<group>"; };
+		DB1940B621BA144900CE2EDE /* UITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextView.swift; sourceTree = "<group>"; };
 		DB1DF4B21F74A2AD00EA8E63 /* Attribute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Attribute.swift; sourceTree = "<group>"; };
 		DB1DF4B41F74A3D200EA8E63 /* Mention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mention.swift; sourceTree = "<group>"; };
 		DB1DF4BA1F74A66700EA8E63 /* CreateMention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMention.swift; sourceTree = "<group>"; };
@@ -154,7 +156,7 @@
 			path = SZMentionsSwift;
 			sourceTree = "<group>";
 		};
-		DB17C44D21B879AD003D6740 /* Private */ = {
+		DB17C44D21B879AD003D6740 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
 				DB4A8BD721B61D2E004490A6 /* MentionsArrayTests.swift */,
@@ -163,7 +165,7 @@
 				DB4A8BD921B62371004490A6 /* NSAttributedStringTests.swift */,
 				DB0AB4A31EAAC175003F84DB /* VerifierTests.swift */,
 			);
-			path = Private;
+			path = Internal;
 			sourceTree = "<group>";
 		};
 		DBDC67BF21B8B0DF000CF22C /* Test Helpers */ = {
@@ -182,12 +184,12 @@
 				DB1DF4BA1F74A66700EA8E63 /* CreateMention.swift */,
 				DB1DF4B41F74A3D200EA8E63 /* Mention.swift */,
 				DBE8B4A01C657F200090EF32 /* MentionListener.swift */,
-				DBE8B49A1C657F200090EF32 /* Private */,
+				DBE8B49A1C657F200090EF32 /* Internal */,
 			);
 			path = Classes;
 			sourceTree = SOURCE_ROOT;
 		};
-		DBE8B49A1C657F200090EF32 /* Private */ = {
+		DBE8B49A1C657F200090EF32 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
 				DBE8B49D1C657F200090EF32 /* MentionsArray.swift */,
@@ -196,8 +198,9 @@
 				DBC779F21FDB6161006CD115 /* String.swift */,
 				DB6C1C1021B6BBE500C178AC /* NSAttributedString.swift */,
 				DB2330161E24832D00242C33 /* Verifier.swift */,
+				DB1940B621BA144900CE2EDE /* UITextView.swift */,
 			);
-			path = Private;
+			path = Internal;
 			sourceTree = "<group>";
 		};
 		DBF2DF5D1C4B1067001B9788 /* SZMentionsSwiftTests */ = {
@@ -209,7 +212,7 @@
 				DB0AB4A51EAAC48A003F84DB /* DelegatesTests.swift */,
 				DBF2DF601C4B1067001B9788 /* Info.plist */,
 				DB3DB5DA1EA176FC004CBD91 /* MentionsDisplayTests.swift */,
-				DB17C44D21B879AD003D6740 /* Private */,
+				DB17C44D21B879AD003D6740 /* Internal */,
 				DBDC67BF21B8B0DF000CF22C /* Test Helpers */,
 				DB1940B421B9DAAB00CE2EDE /* OperatorsTests.swift */,
 			);
@@ -422,6 +425,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB1DF4B51F74A3D200EA8E63 /* Mention.swift in Sources */,
+				DB1940B721BA144900CE2EDE /* UITextView.swift in Sources */,
 				DBC779F31FDB6161006CD115 /* String.swift in Sources */,
 				DB6C1C1321B7140100C178AC /* NSRange.swift in Sources */,
 				DB1DF4B31F74A2AD00EA8E63 /* Attribute.swift in Sources */,

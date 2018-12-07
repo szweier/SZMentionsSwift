@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension NSRange {
+internal extension NSRange {
     func adjustLength(for text: String) -> NSRange {
         return NSRange(location: location, length: text.utf16.count)
     }
