@@ -1,11 +1,11 @@
 PODS:
-  - Nimble (7.1.3)
-  - Quick (1.3.1)
-  - SwiftFormat/CLI (0.34.1)
+  - Nimble (7.3.1)
+  - Quick (1.3.2)
+  - SwiftFormat/CLI (0.35.9)
 
 DEPENDENCIES:
-  - Nimble (= 7.1.3)
-  - Quick (= 1.3.1)
+  - Nimble (= 7.3.1)
+  - Quick (= 1.3.2)
   - SwiftFormat/CLI
 
 SPEC REPOS:
@@ -15,10 +15,10 @@ SPEC REPOS:
     - SwiftFormat
 
 SPEC CHECKSUMS:
-  Nimble: 2839b01d1b31f6a6a7777a221f0d91cf52e8e27b
-  Quick: d17304d58d0d169dd0bd1c6e5c28e3318de32a1a
-  SwiftFormat: 30408c64fbbb409387426b5cdd8225e0bd357e15
+  Nimble: 04f732da099ea4d153122aec8c2a88fd0c7219ae
+  Quick: 2623cb30d7a7f41ca62f684f679586558f483d46
+  SwiftFormat: f1cf26ab5ce1f59aeaee018edc7e6d88e05bfb39
 
-PODFILE CHECKSUM: ef13260eca0b92c1b2d08ef313bf2f0ffc4c8663
+PODFILE CHECKSUM: 1e2c8b39693cef0ecd7d3970c5da18d15ceb07b8
 
 COCOAPODS: 1.5.3
