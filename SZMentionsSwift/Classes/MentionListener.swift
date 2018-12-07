@@ -327,8 +327,6 @@ extension MentionListener /* Private */ {
 
         mentions |> adjusted(forTextChangeAt: range, text: text)
 
-        _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
-
         return shouldAdjust
     }
 
@@ -348,9 +346,7 @@ extension MentionListener /* Private */ {
 extension MentionListener: UITextViewDelegate {
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                          replacementText text: String) -> Bool {
-        defer {
-            _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
-        }
+        _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
 
         textView.typingAttributes = defaultTextAttributes.dictionary
 
@@ -403,8 +399,8 @@ extension MentionListener: UITextViewDelegate {
     }
 
     public func textViewDidChangeSelection(_ textView: UITextView) {
-        adjust(textView, range: textView.selectedRange)
         delegate?.textViewDidChangeSelection?(textView)
+        adjust(textView, range: textView.selectedRange)
     }
 
     public func textViewDidEndEditing(_ textView: UITextView) {
