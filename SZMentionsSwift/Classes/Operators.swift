@@ -20,3 +20,35 @@ internal func |> <A, B>(a: A, f: (A) -> B) -> B {
 internal func |> <A, B>(a: inout A, f: (inout A) -> B) -> B {
     return f(&a)
 }
+
+precedencegroup ForwardComposition {
+    associativity: left
+    higherThan: ForwardApplication
+}
+
+infix operator >>>: ForwardComposition
+
+func >>> <A, B, C>(f: @escaping (A) -> B, g: @escaping (B) -> C) -> ((A) -> C) {
+    return { a in
+        g(f(a))
+    }
+}
+
+precedencegroup EffectfulComposition {
+    associativity: left
+    higherThan: ForwardApplication
+}
+
+infix operator >=>: EffectfulComposition
+
+internal func >=> <A, B, C>(
+    _ f: @escaping (A) -> B?,
+    _ g: @escaping (B) -> C?
+) -> ((A) -> C?) {
+    return { a in
+        guard let b = f(a) else { return nil }
+        let c = g(b)
+
+        return c
+    }
+}
