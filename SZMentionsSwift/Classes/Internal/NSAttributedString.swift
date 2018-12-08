@@ -77,10 +77,10 @@ internal func add(_ mention: CreateMention,
                   with attributes: @escaping (CreateMention?) -> [AttributeContainer]) -> (NSAttributedString) -> NSAttributedString {
     return { string in
         var attributedText = string
-        attributedText = attributedText |> replace(charactersIn: range, with: mention.mentionName(with: spaceAfterMention))
-
         let adjustedRange = range.adjustLength(for: mention.name)
-        attributedText = attributedText |> insert([(mention, adjustedRange)], with: attributes)
+        attributedText = attributedText
+            |> replace(charactersIn: range, with: mention.mentionName(with: spaceAfterMention))
+            >>> insert([(mention, adjustedRange)], with: attributes)
 
         return attributedText
     }

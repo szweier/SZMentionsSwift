@@ -357,16 +357,15 @@ extension MentionListener: UITextViewDelegate {
             // The following snippet is because if you click on a predictive text without this snippet
             // the predictive text will be added twice.
             let originalText = mentionsTextView.attributedText
-            _ = mentionsTextView.attributedText
+            mentionsTextView.attributedText = mentionsTextView.attributedText
                 |> replace(charactersIn: range, with: text)
             mentionsTextView.attributedText = originalText
             mentionsTextView.attributedText = mentionsTextView.attributedText
                 |> replace(charactersIn: range, with: text)
+                >>> apply(defaultTextAttributes, range: range.adjustLength(for: text))
 
             mentionsTextView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
 
-            mentionsTextView.attributedText = mentionsTextView.attributedText
-                |> apply(defaultTextAttributes, range: range.adjustLength(for: text))
             mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
             mentions = mentions |> adjusted(forTextChangeAt: range, text: text)
             adjust(textView, range: textView.selectedRange)
