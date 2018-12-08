@@ -174,7 +174,8 @@ extension MentionListener /* Public */ {
      */
     public func insertExistingMentions(_ existingMentions: [(CreateMention, NSRange)]) {
         mentions = mentions |> insert(existingMentions)
-        mentionsTextView.attributedText |> insert(existingMentions, with: mentionTextAttributes)
+        mentionsTextView.attributedText = mentionsTextView.attributedText
+            |> insert(existingMentions, with: mentionTextAttributes)
     }
 
     /**
@@ -185,9 +186,12 @@ extension MentionListener /* Public */ {
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard let currentMentionRange = currentMentionRange else { return false }
 
-        mentionsTextView.attributedText
+        mentionsTextView.attributedText = mentionsTextView.attributedText
             |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange, with: mentionTextAttributes)
-            |> selectRange(on: mentionsTextView)
+
+        let adjustedRange = currentMentionRange.adjustLength(for: createMention.name)
+        mentionsTextView.selectedRange = NSRange(location: NSMaxRange(adjustedRange) + (spaceAfterMention ? 1 : 0),
+                                                 length: 0)
 
         mentions = mentions |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange)
 
@@ -289,7 +293,7 @@ extension MentionListener /* Private */ {
         return { mention in
             guard let mention = mention else { return false }
             self.mentions = self.mentions |> remove([mention])
-            self.mentionsTextView.attributedText
+            self.mentionsTextView.attributedText = self.mentionsTextView.attributedText
                 |> apply(self.defaultTextAttributes, range: mention.range)
 
             return true
@@ -307,9 +311,10 @@ extension MentionListener /* Private */ {
         var shouldAdjust = true
 
         if let clearedMention = mentions |> mentionBeingEdited(at: range) >=> clearMention(), clearedMention {
-            mentionsTextView.attributedText
+            mentionsTextView.attributedText = mentionsTextView.attributedText
                 |> replace(charactersIn: range, with: text)
-                |> selectRange(on: mentionsTextView)
+
+            mentionsTextView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
 
             shouldAdjust = false
         }
@@ -355,11 +360,12 @@ extension MentionListener: UITextViewDelegate {
             _ = mentionsTextView.attributedText
                 |> replace(charactersIn: range, with: text)
             mentionsTextView.attributedText = originalText
-            mentionsTextView.attributedText
+            mentionsTextView.attributedText = mentionsTextView.attributedText
                 |> replace(charactersIn: range, with: text)
-                |> selectRange(on: mentionsTextView)
 
-            mentionsTextView.attributedText
+            mentionsTextView.selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
+
+            mentionsTextView.attributedText = mentionsTextView.attributedText
                 |> apply(defaultTextAttributes, range: range.adjustLength(for: text))
             mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
             mentions = mentions |> adjusted(forTextChangeAt: range, text: text)

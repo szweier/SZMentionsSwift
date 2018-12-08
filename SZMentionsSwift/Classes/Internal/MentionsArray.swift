@@ -79,6 +79,6 @@ internal func add(_ mention: CreateMention, spaceAfterMention: Bool, at range: N
         let adjustedRange = range.adjustLength(for: mention.name)
         return mentions
             |> adjusted(forTextChangeAt: range, text: mention.mentionName(with: spaceAfterMention))
-            |> insert([(mention, adjustedRange)])
+            >>> insert([(mention, adjustedRange)])
     }
 }

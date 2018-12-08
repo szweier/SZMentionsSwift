@@ -17,10 +17,6 @@ internal func |> <A, B>(a: A, f: (A) -> B) -> B {
     return f(a)
 }
 
-internal func |> <A, B>(a: inout A, f: (inout A) -> B) -> B {
-    return f(&a)
-}
-
 precedencegroup ForwardComposition {
     associativity: left
     higherThan: ForwardApplication
