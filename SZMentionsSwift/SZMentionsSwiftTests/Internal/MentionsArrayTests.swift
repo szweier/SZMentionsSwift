@@ -32,7 +32,7 @@ class MentionsArrayTests: QuickSpec {
                 let insertText = "Test "
                 expect(mentions[0].range.location).to(equal(0))
                 expect(mentions[1].range.location).to(equal(15))
-                mentions |> adjusted(forTextChangeAt: NSRange(location: 5, length: 0), text: insertText)
+                mentions = mentions |> adjusted(forTextChangeAt: NSRange(location: 5, length: 0), text: insertText)
                 expect(mentions[0].range.location).to(equal(0))
                 expect(mentions[1].range.location).to(equal(15 + insertText.count))
             }
@@ -79,7 +79,7 @@ class MentionsArrayTests: QuickSpec {
             it("Should return a new mentions array with a mention inserted") {
                 var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
                 let createMentionObject = ExampleMention(name: "Test Mention")
-                mentions |> insert([(createMentionObject, NSRange(location: 15, length: 12))])
+                mentions = mentions |> insert([(createMentionObject, NSRange(location: 15, length: 12))])
                 expect(mentions.count).to(equal(2))
                 expect(mentions[1]).to(equal(Mention(range: NSRange(location: 15, length: 12), object: createMentionObject)))
             }
@@ -89,14 +89,14 @@ class MentionsArrayTests: QuickSpec {
             it("Should return an array with a single item removed") {
                 var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention()),
                                            Mention(range: NSRange(location: 13, length: 10), object: ExampleMention())]
-                mentions |> remove([mentions[0]])
+                mentions = mentions |> remove([mentions[0]])
                 expect(mentions.count).to(equal(1))
             }
 
             it("Should return an array with a multiple items removed") {
                 var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention()),
                                            Mention(range: NSRange(location: 13, length: 10), object: ExampleMention())]
-                mentions |> remove([mentions[0], mentions[1]])
+                mentions = mentions |> remove([mentions[0], mentions[1]])
                 expect(mentions.isEmpty).to(beTrue())
             }
         }
@@ -105,7 +105,7 @@ class MentionsArrayTests: QuickSpec {
             it("Should return an array with a single item added") {
                 var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
                 let mentionToAdd = ExampleMention(name: "Added Mention")
-                mentions |> SZMentionsSwift.add(mentionToAdd, spaceAfterMention: false, at: NSRange(location: 0, length: 0))
+                mentions = mentions |> SZMentionsSwift.add(mentionToAdd, spaceAfterMention: false, at: NSRange(location: 0, length: 0))
                 expect(mentions.count).to(equal(2))
                 expect(mentions[0]).to(equal(Mention(range: NSRange(location: 13, length: 10), object: ExampleMention())))
                 expect(mentions[1]).to(equal(Mention(range: NSRange(location: 0, length: 13), object: mentionToAdd)))
