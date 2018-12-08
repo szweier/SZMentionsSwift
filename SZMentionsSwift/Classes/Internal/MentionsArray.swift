@@ -29,10 +29,10 @@ internal func mentionBeingEdited(at range: NSRange) -> ([Mention]) -> Mention? {
 
  @return [Mention]: A new mention array
  */
-internal func adjusted(forTextChangeAt range: NSRange, text: String) -> (inout [Mention]) -> Void {
+internal func adjusted(forTextChangeAt range: NSRange, text: String) -> ([Mention]) -> [Mention] {
     return { mentions in
         let remainingLengthOfMention = text.utf16.count - range.length
-        mentions = mentions.compactMap { mention in
+        return mentions.compactMap { mention in
             guard mention.range.location >= NSMaxRange(range) else { return mention }
             var adjustedMention = mention
             adjustedMention.range.location += remainingLengthOfMention
@@ -48,9 +48,9 @@ internal func adjusted(forTextChangeAt range: NSRange, text: String) -> (inout [
 
  @return [Mention]: A new mention array
  */
-internal func insert(_ newMentions: [(CreateMention, NSRange)]) -> (inout [Mention]) -> Void {
+internal func insert(_ newMentions: [(CreateMention, NSRange)]) -> ([Mention]) -> [Mention] {
     return { mentions in
-        mentions = mentions + newMentions.map { createMention, range in
+        mentions + newMentions.map { createMention, range in
             Mention(range: range, object: createMention)
         }
     }
@@ -62,10 +62,9 @@ internal func insert(_ newMentions: [(CreateMention, NSRange)]) -> (inout [Menti
 
  @return [Mention]: A new mention array
  */
-internal func remove(_ mentionsToRemove: [Mention]) -> (inout [Mention]) -> Void {
+internal func remove(_ mentionsToRemove: [Mention]) -> ([Mention]) -> [Mention] {
     return { mentions in
-        mentions = mentions.filter { !mentionsToRemove.contains($0)
-        }
+        mentions.filter { !mentionsToRemove.contains($0) }
     }
 }
 
@@ -75,11 +74,11 @@ internal func remove(_ mentionsToRemove: [Mention]) -> (inout [Mention]) -> Void
 
  @return [Mention]: A new mention array
  */
-internal func add(_ mention: CreateMention, spaceAfterMention: Bool, at range: NSRange) -> (inout [Mention]) -> Void {
+internal func add(_ mention: CreateMention, spaceAfterMention: Bool, at range: NSRange) -> ([Mention]) -> [Mention] {
     return { mentions in
         let adjustedRange = range.adjustLength(for: mention.name)
-        mentions |> adjusted(forTextChangeAt: range,
-                             text: mention.mentionName(with: spaceAfterMention))
-        mentions |> insert([(mention, adjustedRange)])
+        return mentions
+            |> adjusted(forTextChangeAt: range, text: mention.mentionName(with: spaceAfterMention))
+            |> insert([(mention, adjustedRange)])
     }
 }
