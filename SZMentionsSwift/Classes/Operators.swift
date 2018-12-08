@@ -48,3 +48,14 @@ internal func >=> <A, B, C>(
         return c
     }
 }
+
+internal func >=> <A, B, C>(
+    _ f: @escaping (A) -> (B, Int),
+    _ g: @escaping (B) -> (C, Int)
+) -> ((A) -> (C, Int)) {
+    return { a in
+        let (b, _) = f(a)
+        let (c, endIndex) = g(b)
+        return (c, endIndex)
+    }
+}

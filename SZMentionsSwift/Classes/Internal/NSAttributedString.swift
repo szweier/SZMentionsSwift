@@ -19,12 +19,12 @@ internal extension NSAttributedString {
  @param attributes: the attributes to apply
  @param range: the range to apply the attributes to
  */
-internal func apply(_ attributes: [AttributeContainer], range: NSRange) -> (NSAttributedString) -> NSAttributedString {
+internal func apply(_ attributes: [AttributeContainer], range: NSRange) -> (NSAttributedString) -> (NSAttributedString, Int) {
     return { string in
         let attributedText = string.mutableAttributedText
         attributedText.addAttributes(attributes.dictionary, range: range)
 
-        return attributedText
+        return (attributedText, NSMaxRange(range))
     }
 }
 
@@ -34,8 +34,9 @@ internal func apply(_ attributes: [AttributeContainer], range: NSRange) -> (NSAt
  @param attributes: function to determine the attributes to apply to a specific mention
  */
 internal func insert(_ mentions: [(CreateMention, NSRange)],
-                     with attributes: @escaping (CreateMention?) -> [AttributeContainer]) -> (NSAttributedString) -> NSAttributedString {
+                     with attributes: @escaping (CreateMention?) -> [AttributeContainer]) -> (NSAttributedString) -> (NSAttributedString, Int) {
     return { string in
+        var endIndex: Int = NSNotFound
         var attributedText = string
         mentions.forEach { createMention, range in
             assert(range.location != NSNotFound,
@@ -43,10 +44,10 @@ internal func insert(_ mentions: [(CreateMention, NSRange)],
             assert(NSMaxRange(range) <= attributedText.string.utf16.count,
                    "Mention range is out of bounds for the text length")
 
-            attributedText = attributedText |> apply(attributes(createMention), range: range)
+            (attributedText, endIndex) = attributedText |> apply(attributes(createMention), range: range)
         }
 
-        return attributedText
+        return (attributedText, endIndex)
     }
 }
 
@@ -55,12 +56,13 @@ internal func insert(_ mentions: [(CreateMention, NSRange)],
  @param range: The range of characters to replace
  @param text: The text to replace the characters with
  */
-internal func replace(charactersIn range: NSRange, with text: String) -> (NSAttributedString) -> NSAttributedString {
+internal func replace(charactersIn range: NSRange, with text: String) -> (NSAttributedString) -> (NSAttributedString, Int) {
     return { string in
         let attributedText = string.mutableAttributedText
         attributedText.mutableString.replaceCharacters(in: range, with: text)
+        let endIndex = range.location + text.utf16.count
 
-        return attributedText
+        return (attributedText, endIndex)
     }
 }
 
@@ -74,14 +76,16 @@ internal func replace(charactersIn range: NSRange, with text: String) -> (NSAttr
 internal func add(_ mention: CreateMention,
                   spaceAfterMention: Bool,
                   at range: NSRange,
-                  with attributes: @escaping (CreateMention?) -> [AttributeContainer]) -> (NSAttributedString) -> NSAttributedString {
+                  with attributes: @escaping (CreateMention?) -> [AttributeContainer]) -> (NSAttributedString) -> (NSAttributedString, Int) {
     return { string in
         var attributedText = string
         let adjustedRange = range.adjustLength(for: mention.name)
-        attributedText = attributedText
+        var endIndex: Int = NSNotFound
+        (attributedText, _) = attributedText
             |> replace(charactersIn: range, with: mention.mentionName(with: spaceAfterMention))
-            >>> insert([(mention, adjustedRange)], with: attributes)
+            >=> insert([(mention, adjustedRange)], with: attributes)
+        endIndex = range.location + mention.mentionName(with: spaceAfterMention).count
 
-        return attributedText
+        return (attributedText, endIndex)
     }
 }

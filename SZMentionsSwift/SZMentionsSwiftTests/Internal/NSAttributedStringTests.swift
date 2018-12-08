@@ -16,7 +16,7 @@ class NSAttributedStringTests: QuickSpec {
             it("Should apply attributes passed to apply function") {
                 var attributedText = NSAttributedString(string:
                     "Test string, test string, test string, test string, test string, test string, test string, test string, test string.")
-                attributedText = attributedText
+                (attributedText, _) = attributedText
                     |> apply(mentionAttributes, range: NSRange(location: 0, length: attributedText.length))
 
                 expect(attributedText.attributes(at: 0, effectiveRange: nil)[.backgroundColor] as? UIColor).to(equal(UIColor.red))
@@ -25,7 +25,7 @@ class NSAttributedStringTests: QuickSpec {
 
             it("Should insert existing mentions") {
                 var attributedText = NSAttributedString(string: "Test Steven Zweier")
-                attributedText = attributedText
+                (attributedText, _) = attributedText
                     |> insert([(ExampleMention(name: "Steven Zweier"), NSRange(location: 5, length: 13))],
                               with: mentionAttributesClosure)
 
@@ -36,7 +36,7 @@ class NSAttributedStringTests: QuickSpec {
             pending("Should throw assertion if range location is NSNotFound") {
                 var attributedText = NSAttributedString(string: "Test Steven Zweier")
                 expect(
-                    attributedText = attributedText
+                    (attributedText, _) = attributedText
                         |> insert([(ExampleMention(name: "Steven Zweier"), NSRange(location: NSNotFound, length: 13))],
                                   with: mentionAttributesClosure)
                 ).to(throwAssertion())
@@ -46,7 +46,7 @@ class NSAttributedStringTests: QuickSpec {
                 var attributedText = NSAttributedString(string: "Test Steven Zweier")
 
                 expect {
-                    attributedText = attributedText
+                    (attributedText, _) = attributedText
                         |> insert([(ExampleMention(name: "Steven Zweier"), NSRange(location: 30, length: 13))],
                                   with: mentionAttributesClosure)
                 }.to(throwAssertion())
@@ -54,10 +54,10 @@ class NSAttributedStringTests: QuickSpec {
 
             it("Should add mention") {
                 var attributedText = NSAttributedString(string: "Test @ste")
-                attributedText = attributedText |> SZMentionsSwift.add(ExampleMention(name: "Steven Zweier"),
-                                                                       spaceAfterMention: false,
-                                                                       at: NSRange(location: 5, length: 4),
-                                                                       with: mentionAttributesClosure)
+                (attributedText, _) = attributedText |> SZMentionsSwift.add(ExampleMention(name: "Steven Zweier"),
+                                                                            spaceAfterMention: false,
+                                                                            at: NSRange(location: 5, length: 4),
+                                                                            with: mentionAttributesClosure)
 
                 expect(attributedText.attributes(at: 2, effectiveRange: nil)[.backgroundColor] as? UIColor).to(beNil())
                 expect(attributedText.attributes(at: 2, effectiveRange: nil)[.foregroundColor] as? UIColor).to(beNil())
@@ -73,8 +73,9 @@ class NSAttributedStringTests: QuickSpec {
                 let textView = UITextView()
                 textView.attributedText = NSAttributedString(string:
                     "Test string, test string, test string, test string, test string, test string, test string, test string, test string.")
-                textView.attributedText = textView.attributedText
+                let (text, _) = textView.attributedText
                     |> apply(mentionAttributes, range: NSRange(location: 0, length: textView.attributedText.length))
+                textView.attributedText = text
 
                 expect(textView.typingAttributes[.backgroundColor] as? UIColor).to(equal(UIColor.red))
                 expect(textView.typingAttributes[.foregroundColor] as? UIColor).to(equal(UIColor.blue))
