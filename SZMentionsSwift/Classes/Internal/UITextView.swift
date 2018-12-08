@@ -9,7 +9,5 @@
 import UIKit
 
 func selectRange(on textView: UITextView) -> (NSRange) -> Void {
-    return { range in
-        textView.selectedRange = range
-    }
+    return { range in textView.selectedRange = range }
 }
