@@ -173,7 +173,7 @@ extension MentionListener /* Public */ {
      `range` is used the range to place the metion at
      */
     public func insertExistingMentions(_ existingMentions: [(CreateMention, NSRange)]) {
-        mentions |> insert(existingMentions)
+        mentions = mentions |> insert(existingMentions)
         mentionsTextView.attributedText |> insert(existingMentions, with: mentionTextAttributes)
     }
 
@@ -185,10 +185,11 @@ extension MentionListener /* Public */ {
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard let currentMentionRange = currentMentionRange else { return false }
 
-        mentionsTextView.attributedText |>
-            add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange, with: mentionTextAttributes) |>
-            selectRange(on: mentionsTextView)
-        mentions |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange)
+        mentionsTextView.attributedText
+            |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange, with: mentionTextAttributes)
+            |> selectRange(on: mentionsTextView)
+
+        mentions = mentions |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange)
 
         filterString = nil
         hideMentions()
@@ -211,11 +212,8 @@ extension MentionListener /* Internal */ {
                                                              options: .backwards,
                                                              range: NSRange(location: 0,
                                                                             length: NSMaxRange(mentionsTextView.selectedRange)))
-                guard rangeTuple.range.location != NSNotFound else { return }
-
-                let location: Int = rangeTuple.range.location
-
-                if location + 1 >= mentionsTextView.text.utf16.count { return }
+                let location = rangeTuple.range.location
+                guard location != NSNotFound, location <= mentionsTextView.text.utf16.count else { return }
 
                 let startIndex = mentionsTextView.text.index(mentionsTextView.text.startIndex, offsetBy: location)
                 let endIndex = mentionsTextView.text.index(startIndex, offsetBy: 1)
@@ -244,32 +242,21 @@ extension MentionListener /* Private */ {
         let string = String(mentionsTextView.text[startIndex ..< endIndex])
 
         var textBeforeTrigger = " "
-
         let rangeTuple = string.range(of: triggers, options: .backwards)
-
         let location = rangeTuple.range.location
-        let trigger = rangeTuple.foundString
 
         mentionEnabled = false
+        let trigger = rangeTuple.foundString
 
         if location != NSNotFound {
-            mentionEnabled = location == 0
-
-            if location > 0 {
-                // Determine whether or not a space exists before the triggter.
-                // (in the case of an @ trigger this avoids showing the mention list for an email address)
-                let startIndex = mentionsTextView.text.index(mentionsTextView.text.startIndex, offsetBy: location - 1)
-                let endIndex = mentionsTextView.text.index(startIndex, offsetBy: 1)
-                textBeforeTrigger = String(mentionsTextView.text[startIndex ..< endIndex])
-                mentionEnabled = textBeforeTrigger == " " || textBeforeTrigger == "\n"
-            }
+            (mentionEnabled, textBeforeTrigger) = mentionsTextView.text.isMentionEnabledAt(location)
         }
 
         if mentionEnabled {
             var mentionString: String = ""
             if searchSpaces {
                 let startIndex = mentionsTextView.text.index(mentionsTextView.text.startIndex, offsetBy: location)
-                let endIndex = mentionsTextView.text.index(startIndex, offsetBy: textView.selectedRange.location - location + textView.selectedRange.length)
+                let endIndex = mentionsTextView.text.index(startIndex, offsetBy: NSMaxRange(textView.selectedRange) - location)
                 mentionString = String(mentionsTextView.text[startIndex ..< endIndex])
             } else if let stringBeingTyped = string.components(separatedBy: textBeforeTrigger).last,
                 let stringForMention = stringBeingTyped.components(separatedBy: " ").last,
@@ -301,8 +288,9 @@ extension MentionListener /* Private */ {
     private func clearMention() -> (Mention?) -> Bool {
         return { mention in
             guard let mention = mention else { return false }
-            self.mentions |> remove([mention])
-            self.mentionsTextView.attributedText |> apply(self.defaultTextAttributes, range: mention.range)
+            self.mentions = self.mentions |> remove([mention])
+            self.mentionsTextView.attributedText
+                |> apply(self.defaultTextAttributes, range: mention.range)
 
             return true
         }
@@ -318,14 +306,15 @@ extension MentionListener /* Private */ {
     @discardableResult private func shouldAdjust(_: UITextView, range: NSRange, text: String) -> Bool {
         var shouldAdjust = true
 
-        if mentions |> mentionBeingEdited(at: range) |> clearMention() {
-            mentionsTextView.attributedText |>
-                replace(charactersIn: range, with: text) |>
-                selectRange(on: mentionsTextView)
+        if let clearedMention = mentions |> mentionBeingEdited(at: range) >=> clearMention(), clearedMention {
+            mentionsTextView.attributedText
+                |> replace(charactersIn: range, with: text)
+                |> selectRange(on: mentionsTextView)
+
             shouldAdjust = false
         }
 
-        mentions |> adjusted(forTextChangeAt: range, text: text)
+        mentions = mentions |> adjusted(forTextChangeAt: range, text: text)
 
         return shouldAdjust
     }
@@ -357,21 +346,23 @@ extension MentionListener: UITextViewDelegate {
             return false
         } else if text.utf16.count > 1 {
             // Pasting
-            _ = mentions |> mentionBeingEdited(at: range) |> clearMention()
+            _ = mentions |> mentionBeingEdited(at: range) >=> clearMention()
 
             textView.delegate = nil
             // The following snippet is because if you click on a predictive text without this snippet
             // the predictive text will be added twice.
             let originalText = mentionsTextView.attributedText
-            _ = mentionsTextView.attributedText |> replace(charactersIn: range, with: text)
+            _ = mentionsTextView.attributedText
+                |> replace(charactersIn: range, with: text)
             mentionsTextView.attributedText = originalText
-            mentionsTextView.attributedText |>
-                replace(charactersIn: range, with: text) |>
-                selectRange(on: mentionsTextView)
+            mentionsTextView.attributedText
+                |> replace(charactersIn: range, with: text)
+                |> selectRange(on: mentionsTextView)
 
-            mentionsTextView.attributedText |> apply(defaultTextAttributes, range: range.adjustLength(for: text))
+            mentionsTextView.attributedText
+                |> apply(defaultTextAttributes, range: range.adjustLength(for: text))
             mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
-            mentions |> adjusted(forTextChangeAt: range, text: text)
+            mentions = mentions |> adjusted(forTextChangeAt: range, text: text)
             adjust(textView, range: textView.selectedRange)
             textView.delegate = self
 
