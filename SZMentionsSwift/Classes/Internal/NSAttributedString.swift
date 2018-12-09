@@ -19,12 +19,16 @@ internal extension NSAttributedString {
  @param attributes: the attributes to apply
  @param range: the range to apply the attributes to
  */
-internal func apply(_ attributes: [AttributeContainer], range: NSRange) -> (NSAttributedString) -> (NSAttributedString, Int) {
+internal func apply(_ attributes: [AttributeContainer], range: NSRange) -> (NSAttributedString) -> (NSAttributedString, NSRange) {
     return { string in
+        assert(range.location != NSNotFound,
+               "Mention must have a range to insert into")
+        assert(NSMaxRange(range) <= string.string.utf16.count,
+               "Mention range is out of bounds for the text length")
         let attributedText = string.mutableAttributedText
         attributedText.addAttributes(attributes.dictionary, range: range)
 
-        return (attributedText, NSMaxRange(range))
+        return (attributedText, NSRange(location: NSMaxRange(range), length: 0))
     }
 }
 
@@ -33,21 +37,15 @@ internal func apply(_ attributes: [AttributeContainer], range: NSRange) -> (NSAt
  @param mentions: mentions to add along with the position to add them
  @param attributes: function to determine the attributes to apply to a specific mention
  */
-internal func insert(_ mentions: [(CreateMention, NSRange)],
-                     with attributes: @escaping (CreateMention?) -> [AttributeContainer]) -> (NSAttributedString) -> (NSAttributedString, Int) {
+internal func apply(attributes: @escaping (CreateMention?) -> [AttributeContainer], to mentions: [(CreateMention, NSRange)]) -> (NSAttributedString) -> (NSAttributedString, NSRange) {
     return { string in
-        var endIndex: Int = NSNotFound
+        var selectedRange: NSRange = NSRange(location: NSNotFound, length: 0)
         var attributedText = string
         mentions.forEach { createMention, range in
-            assert(range.location != NSNotFound,
-                   "Mention must have a range to insert into")
-            assert(NSMaxRange(range) <= attributedText.string.utf16.count,
-                   "Mention range is out of bounds for the text length")
-
-            (attributedText, endIndex) = attributedText |> apply(attributes(createMention), range: range)
+            (attributedText, selectedRange) = attributedText |> apply(attributes(createMention), range: range)
         }
 
-        return (attributedText, endIndex)
+        return (attributedText, selectedRange)
     }
 }
 
@@ -56,13 +54,13 @@ internal func insert(_ mentions: [(CreateMention, NSRange)],
  @param range: The range of characters to replace
  @param text: The text to replace the characters with
  */
-internal func replace(charactersIn range: NSRange, with text: String) -> (NSAttributedString) -> (NSAttributedString, Int) {
+internal func replace(charactersIn range: NSRange, with text: String) -> (NSAttributedString) -> (NSAttributedString, NSRange) {
     return { string in
         let attributedText = string.mutableAttributedText
         attributedText.mutableString.replaceCharacters(in: range, with: text)
-        let endIndex = range.location + text.utf16.count
+        let selectedRange = NSRange(location: range.location + text.utf16.count, length: 0)
 
-        return (attributedText, endIndex)
+        return (attributedText, selectedRange)
     }
 }
 
@@ -76,16 +74,15 @@ internal func replace(charactersIn range: NSRange, with text: String) -> (NSAttr
 internal func add(_ mention: CreateMention,
                   spaceAfterMention: Bool,
                   at range: NSRange,
-                  with attributes: @escaping (CreateMention?) -> [AttributeContainer]) -> (NSAttributedString) -> (NSAttributedString, Int) {
+                  with attributes: @escaping (CreateMention?) -> [AttributeContainer]) -> (NSAttributedString) -> (NSAttributedString, NSRange) {
     return { string in
         var attributedText = string
         let adjustedRange = range.adjustLength(for: mention.name)
-        var endIndex: Int = NSNotFound
-        (attributedText, _) = attributedText
+        var selectedRange: NSRange
+        (attributedText, selectedRange) = attributedText
             |> replace(charactersIn: range, with: mention.mentionName(with: spaceAfterMention))
-            >=> insert([(mention, adjustedRange)], with: attributes)
-        endIndex = range.location + mention.mentionName(with: spaceAfterMention).count
+            >=> apply(attributes(mention), range: adjustedRange)
 
-        return (attributedText, endIndex)
+        return (attributedText, selectedRange)
     }
 }

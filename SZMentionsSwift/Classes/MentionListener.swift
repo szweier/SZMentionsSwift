@@ -174,9 +174,10 @@ extension MentionListener /* Public */ {
      */
     public func insertExistingMentions(_ existingMentions: [(CreateMention, NSRange)]) {
         mentions = mentions |> insert(existingMentions)
-        let (text, _) = mentionsTextView.attributedText
-            |> insert(existingMentions, with: mentionTextAttributes)
+        let (text, selectedRange) = mentionsTextView.attributedText |> apply(attributes: mentionTextAttributes,
+                                                                             to: existingMentions)
         mentionsTextView.attributedText = text
+        mentionsTextView.selectedRange = selectedRange
     }
 
     /**
@@ -187,10 +188,10 @@ extension MentionListener /* Public */ {
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard let currentMentionRange = currentMentionRange else { return false }
 
-        let (text, location) = mentionsTextView.attributedText
+        let (text, selectedRange) = mentionsTextView.attributedText
             |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange, with: mentionTextAttributes)
         mentionsTextView.attributedText = text
-        mentionsTextView.selectedRange = NSRange(location: location, length: 0)
+        mentionsTextView.selectedRange = selectedRange
 
         mentions = mentions |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange)
 
@@ -207,25 +208,18 @@ extension MentionListener /* Internal */ {
      @param timer: the timer that called the method
      */
     @objc internal func cooldownTimerFired(_: Timer) {
-        if let filterString = filterString, filterString != stringCurrentlyBeingFiltered {
+        if let filterString = filterString, !filterString.isEmpty, filterString != stringCurrentlyBeingFiltered,
+            (!filterString.contains(" ") || searchSpaces) {
             stringCurrentlyBeingFiltered = filterString
 
-            if mentionsTextView.selectedRange.location >= 1 {
-                let rangeTuple = mentionsTextView.text.range(of: triggers,
-                                                             options: .backwards,
-                                                             range: NSRange(location: 0,
-                                                                            length: NSMaxRange(mentionsTextView.selectedRange)))
-                let location = rangeTuple.range.location
-                guard location != NSNotFound, location <= mentionsTextView.text.utf16.count else { return }
+            let searchResult = mentionsTextView.text.range(of: triggers,
+                                                           options: .backwards,
+                                                           range: NSRange(location: 0,
+                                                                          length: NSMaxRange(mentionsTextView.selectedRange)))
+            let location = searchResult.range.location
+            guard location != NSNotFound, location <= mentionsTextView.text.utf16.count else { return }
 
-                let startIndex = mentionsTextView.text.index(mentionsTextView.text.startIndex, offsetBy: location)
-                let endIndex = mentionsTextView.text.index(startIndex, offsetBy: 1)
-                let substringTrigger = mentionsTextView.text[startIndex ..< endIndex]
-
-                if substringTrigger == rangeTuple.foundString {
-                    showMentionsListWithString(filterString, rangeTuple.foundString)
-                }
-            }
+            showMentionsListWithString(filterString, searchResult.foundString)
         }
     }
 }
@@ -245,11 +239,11 @@ extension MentionListener /* Private */ {
         let string = String(mentionsTextView.text[startIndex ..< endIndex])
 
         var textBeforeTrigger = " "
-        let rangeTuple = string.range(of: triggers, options: .backwards)
-        let location = rangeTuple.range.location
+        let searchResult = string.range(of: triggers, options: .backwards)
+        let location = searchResult.range.location
 
         mentionEnabled = false
-        let trigger = rangeTuple.foundString
+        let trigger = searchResult.foundString
 
         if location != NSNotFound {
             (mentionEnabled, textBeforeTrigger) = mentionsTextView.text.isMentionEnabledAt(location)
@@ -266,6 +260,8 @@ extension MentionListener /* Private */ {
                 stringForMention.range(of: trigger, options: .anchored) != nil {
                 mentionString = stringForMention
             }
+
+            filterString = ""
 
             if !mentionString.isEmpty {
                 currentMentionRange = (textView.text as NSString).range(
@@ -311,10 +307,10 @@ extension MentionListener /* Private */ {
         var shouldAdjust = true
 
         if let clearedMention = mentions |> mentionBeingEdited(at: range) >=> clearMention(), clearedMention {
-            let (text, location) = mentionsTextView.attributedText
+            let (text, selectedRange) = mentionsTextView.attributedText
                 |> replace(charactersIn: range, with: text)
             mentionsTextView.attributedText = text
-            mentionsTextView.selectedRange = NSRange(location: location, length: 0)
+            mentionsTextView.selectedRange = selectedRange
 
             shouldAdjust = false
         }
@@ -350,26 +346,34 @@ extension MentionListener: UITextViewDelegate {
 
             return false
         } else if text.utf16.count > 1 {
-            // Pasting
-            _ = mentions |> mentionBeingEdited(at: range) >=> clearMention()
+            // Pasting / inserting predictive text
 
             textView.delegate = nil
+
+            //////////////////////////////////////////////////////////////////////////////////////////
             // The following snippet is because if you click on a predictive text without this snippet
             // the predictive text will be added twice.
             let originalText = mentionsTextView.attributedText
-            let (newText, _) = mentionsTextView.attributedText
+            let (tmpText, _) = mentionsTextView.attributedText
                 |> replace(charactersIn: range, with: text)
-            mentionsTextView.attributedText = newText
+            mentionsTextView.attributedText = tmpText
             mentionsTextView.attributedText = originalText
-            let (newText2, location) = mentionsTextView.attributedText
+            // End UITextView bug workaround
+            //////////////////////////////////////////////////////////////////////////////////////////
+            _ = mentions |> mentionBeingEdited(at: range) >=> clearMention()
+
+            let (newText, selectedRange) = mentionsTextView.attributedText
                 |> replace(charactersIn: range, with: text)
                 >=> apply(defaultTextAttributes, range: range.adjustLength(for: text))
-            mentionsTextView.attributedText = newText2
-            mentionsTextView.selectedRange = NSRange(location: location, length: 0)
+            mentionsTextView.attributedText = newText
+            mentionsTextView.selectedRange = selectedRange
 
             mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
+
             mentions = mentions |> adjusted(forTextChangeAt: range, text: text)
+
             adjust(textView, range: textView.selectedRange)
+
             textView.delegate = self
 
             return false

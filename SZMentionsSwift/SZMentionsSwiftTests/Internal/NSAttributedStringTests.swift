@@ -26,8 +26,7 @@ class NSAttributedStringTests: QuickSpec {
             it("Should insert existing mentions") {
                 var attributedText = NSAttributedString(string: "Test Steven Zweier")
                 (attributedText, _) = attributedText
-                    |> insert([(ExampleMention(name: "Steven Zweier"), NSRange(location: 5, length: 13))],
-                              with: mentionAttributesClosure)
+                    |> apply(mentionAttributesClosure(ExampleMention(name: "Steven Zweier")), range: NSRange(location: 5, length: 13))
 
                 expect(attributedText.attributes(at: 5, effectiveRange: nil)[.backgroundColor] as? UIColor).to(equal(UIColor.red))
                 expect(attributedText.attributes(at: 5, effectiveRange: nil)[.foregroundColor] as? UIColor).to(equal(UIColor.blue))
@@ -37,8 +36,7 @@ class NSAttributedStringTests: QuickSpec {
                 var attributedText = NSAttributedString(string: "Test Steven Zweier")
                 expect(
                     (attributedText, _) = attributedText
-                        |> insert([(ExampleMention(name: "Steven Zweier"), NSRange(location: NSNotFound, length: 13))],
-                                  with: mentionAttributesClosure)
+                        |> apply(mentionAttributesClosure(ExampleMention(name: "Steven Zweier")), range: NSRange(location: NSNotFound, length: 13))
                 ).to(throwAssertion())
             }
 
@@ -47,8 +45,7 @@ class NSAttributedStringTests: QuickSpec {
 
                 expect {
                     (attributedText, _) = attributedText
-                        |> insert([(ExampleMention(name: "Steven Zweier"), NSRange(location: 30, length: 13))],
-                                  with: mentionAttributesClosure)
+                        |> apply(mentionAttributesClosure(ExampleMention(name: "Steven Zweier")), range: NSRange(location: 30, length: 13))
                 }.to(throwAssertion())
             }
 

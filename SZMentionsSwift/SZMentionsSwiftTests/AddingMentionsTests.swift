@@ -154,7 +154,7 @@ class AddingMentions: QuickSpec {
                 addMention(named: "Steven", on: mentionsListener)
 
                 expect(mentionsListener.mentions[0].range.location).to(equal(0))
-                expect(textView.selectedRange.location).to(equal(7))
+                expect(textView.selectedRange.location).to(equal(6))
             }
 
             it("Should test that adding text immediately after the mention changes back to default attributes") {

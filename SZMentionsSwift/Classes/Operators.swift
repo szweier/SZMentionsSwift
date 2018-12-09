@@ -5,6 +5,7 @@
 //  Created by Steven Zweier on 12/6/18.
 //  Copyright © 2016 Steven Zweier. All rights reserved.
 //
+import UIKit
 
 precedencegroup ForwardApplication {
     associativity: left
@@ -50,12 +51,12 @@ internal func >=> <A, B, C>(
 }
 
 internal func >=> <A, B, C>(
-    _ f: @escaping (A) -> (B, Int),
-    _ g: @escaping (B) -> (C, Int)
-) -> ((A) -> (C, Int)) {
+    _ f: @escaping (A) -> (B, NSRange),
+    _ g: @escaping (B) -> (C, NSRange)
+) -> ((A) -> (C, NSRange)) {
     return { a in
         let (b, _) = f(a)
-        let (c, endIndex) = g(b)
-        return (c, endIndex)
+        let (c, selectedRange) = g(b)
+        return (c, selectedRange)
     }
 }
