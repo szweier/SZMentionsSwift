@@ -130,7 +130,6 @@ class Delegates: QuickSpec {
                 update(text: "\n", type: .insert, on: mentionsListener)
 
                 expect(self.shouldAddMentionOnReturnKeyCalled).to(beTruthy())
-                expect(self.hidingMentionsList).to(beTruthy())
             }
 
             it("Should allow for mentions to be added in advance") {

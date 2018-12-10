@@ -32,7 +32,7 @@ class NSAttributedStringTests: QuickSpec {
                 expect(attributedText.attributes(at: 5, effectiveRange: nil)[.foregroundColor] as? UIColor).to(equal(UIColor.blue))
             }
 
-            pending("Should throw assertion if range location is NSNotFound") {
+            it("Should throw assertion if range location is NSNotFound") {
                 var attributedText = NSAttributedString(string: "Test Steven Zweier")
                 expect(
                     (attributedText, _) = attributedText
@@ -40,7 +40,7 @@ class NSAttributedStringTests: QuickSpec {
                 ).to(throwAssertion())
             }
 
-            pending("Should throw assertion if range location is out of bounds") {
+            it("Should throw assertion if range location is out of bounds") {
                 var attributedText = NSAttributedString(string: "Test Steven Zweier")
 
                 expect {

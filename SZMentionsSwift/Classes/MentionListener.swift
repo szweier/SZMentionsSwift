@@ -155,7 +155,7 @@ public class MentionListener: NSObject {
 
 extension MentionListener /* Public */ {
     /**
-     @brief Resets the textView to empty text and removes all mentions
+     @brief Resets the textView to empty text, default typing attributes and removes all mentions
      */
     public func reset() {
         mentions = []
@@ -164,13 +164,10 @@ extension MentionListener /* Public */ {
     }
 
     /**
-     @brief Insert mentions into an existing textview.  This is provided assuming you are given text
-     along with a list of users mentioned in that text and want to prep the textview in advance.
+     @brief Sets up UITextView and Mentions array with provided list of mentions and their ranges.
 
-     @param mention: the mention object adhereing to the CreateMention protocol
-     `name` is used as the name to set for the mention.  This parameter
-     is returned in the mentions array in the object parameter of the Mention object.
-     `range` is used the range to place the metion at
+     @param existingMentions: Tuple array of (CreateMention, NSRange) which is used to update the
+     mentions arrtay and apply mention attributes to the provided ranges
      */
     public func insertExistingMentions(_ existingMentions: [(CreateMention, NSRange)]) {
         mentions = mentions |> insert(existingMentions)
@@ -181,9 +178,10 @@ extension MentionListener /* Public */ {
     }
 
     /**
-     @brief Adds a mention to the current mention range (determined by triggers + characters typed up to space or end of line)
-     @param mention: the mention object to apply
-     @return Bool: whether or not a mention was added
+     @brief Adds a mention to the current mention range
+     @param createMention: The mention to be added
+
+     @return Bool: Whether or not a mention was added
      */
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard let currentMentionRange = currentMentionRange else { return false }
@@ -195,6 +193,7 @@ extension MentionListener /* Public */ {
 
         mentions = mentions |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange)
 
+        mentionEnabled = false
         filterString = nil
         hideMentions()
 
@@ -208,8 +207,8 @@ extension MentionListener /* Internal */ {
      @param timer: the timer that called the method
      */
     @objc internal func cooldownTimerFired(_: Timer) {
-        if let filterString = filterString, !filterString.isEmpty, filterString != stringCurrentlyBeingFiltered,
-            (!filterString.contains(" ") || searchSpaces) {
+        if let filterString = filterString, filterString != stringCurrentlyBeingFiltered,
+            !filterString.isEmpty, (!filterString.contains(" ") || searchSpaces) {
             stringCurrentlyBeingFiltered = filterString
 
             let searchResult = mentionsTextView.text.range(of: triggers,
@@ -226,13 +225,12 @@ extension MentionListener /* Internal */ {
 
 extension MentionListener /* Private */ {
     /**
-     @brief Uses the text view to determine the current mention being adjusted based on
-     the currently selected range and the nearest trigger when doing a backward search.  It also
-     sets the currentMentionRange to be used as the range to replace when adding a mention.
-     @param textView: the mentions text view
-     @param range: the selected range
+     @brief Determines whether or not a mention is being added.
+     If a mention is being added then set `currentMentionRange`, `filterString` and call
+     `showMentionsListWithString`
+     otherwise call `hideMentions`
      */
-    private func adjust(_ textView: UITextView, range: NSRange) {
+    private func handleMentionsList(_ textView: UITextView, range: NSRange) {
         let startIndex = mentionsTextView.text.startIndex
         let endIndex = mentionsTextView.text.index(startIndex,
                                                    offsetBy: min(NSMaxRange(range), mentionsTextView.text.count))
@@ -269,7 +267,8 @@ extension MentionListener /* Private */ {
                     options: .backwards,
                     range: NSRange(location: 0, length: NSMaxRange(textView.selectedRange))
                 )
-                filterString = mentionString.replacingOccurrences(of: trigger, with: "").replacingOccurrences(of: "\n", with: "")
+                filterString = mentionString.replacingOccurrences(of: trigger, with: "")
+                    .replacingOccurrences(of: "\n", with: "")
 
                 if let filterString = filterString, !(cooldownTimer?.isValid ?? false) {
                     stringCurrentlyBeingFiltered = filterString
@@ -284,40 +283,23 @@ extension MentionListener /* Private */ {
         mentionEnabled = false
     }
 
+    /**
+     @brief Removes the provided mention from the mentions list and resets the text attributes to default
+     on the text view.
+
+     @return Bool: Always returns true to indicate a mention was removed
+     */
     private func clearMention() -> (Mention?) -> Bool {
         return { mention in
             guard let mention = mention else { return false }
             self.mentions = self.mentions |> remove([mention])
-            let (text, _) = self.mentionsTextView.attributedText
+            let (text, selectedRange) = self.mentionsTextView.attributedText
                 |> apply(self.defaultTextAttributes, range: mention.range)
             self.mentionsTextView.attributedText = text
+            self.mentionsTextView.selectedRange = selectedRange
 
             return true
         }
-    }
-
-    /**
-     @brief Determines whether or not we should allow the textView to adjust its own text
-     @param textView: the mentions text view
-     @param range: the range of what text will change
-     @param text: the text to replace the range with
-     @return Bool: whether or not the textView should adjust the text itself
-     */
-    @discardableResult private func shouldAdjust(_: UITextView, range: NSRange, text: String) -> Bool {
-        var shouldAdjust = true
-
-        if let clearedMention = mentions |> mentionBeingEdited(at: range) >=> clearMention(), clearedMention {
-            let (text, selectedRange) = mentionsTextView.attributedText
-                |> replace(charactersIn: range, with: text)
-            mentionsTextView.attributedText = text
-            mentionsTextView.selectedRange = selectedRange
-
-            shouldAdjust = false
-        }
-
-        mentions = mentions |> adjusted(forTextChangeAt: range, text: text)
-
-        return shouldAdjust
     }
 
     /**
@@ -341,9 +323,8 @@ extension MentionListener: UITextViewDelegate {
         textView.typingAttributes = defaultTextAttributes.dictionary
 
         if text == "\n", mentionEnabled, didHandleMentionOnReturn() {
-            mentionEnabled = false
-            hideMentions()
-
+            // If mentions were handled on return then `addMention` should've been called.
+            // Nothing to do here.
             return false
         } else if text.utf16.count > 1 {
             // Pasting / inserting predictive text
@@ -372,14 +353,27 @@ extension MentionListener: UITextViewDelegate {
 
             mentions = mentions |> adjusted(forTextChangeAt: range, text: text)
 
-            adjust(textView, range: textView.selectedRange)
+            handleMentionsList(textView, range: textView.selectedRange)
 
             textView.delegate = self
 
             return false
         }
 
-        return shouldAdjust(textView, range: range, text: text)
+        var shouldAdjust = true
+
+        if let clearedMention = mentions |> mentionBeingEdited(at: range) >=> clearMention(), clearedMention {
+            let (text, selectedRange) = mentionsTextView.attributedText
+                |> replace(charactersIn: range, with: text)
+            mentionsTextView.attributedText = text
+            mentionsTextView.selectedRange = selectedRange
+
+            shouldAdjust = false
+        }
+
+        mentions = mentions |> adjusted(forTextChangeAt: range, text: text)
+
+        return shouldAdjust
     }
 
     public func textViewDidChange(_ textView: UITextView) {
@@ -401,7 +395,7 @@ extension MentionListener: UITextViewDelegate {
 
     public func textViewDidChangeSelection(_ textView: UITextView) {
         delegate?.textViewDidChangeSelection?(textView)
-        adjust(textView, range: textView.selectedRange)
+        handleMentionsList(textView, range: textView.selectedRange)
     }
 
     public func textViewDidEndEditing(_ textView: UITextView) {

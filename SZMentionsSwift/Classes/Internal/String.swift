@@ -27,7 +27,7 @@ internal extension String {
     }
 
     func isMentionEnabledAt(_ location: Int) -> (Bool, String) {
-        guard location != 0 else { return (true, " ") }
+        guard location != 0 else { return (true, "") }
 
         let start = index(startIndex, offsetBy: location - 1)
         let end = index(start, offsetBy: 1)
