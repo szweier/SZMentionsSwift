@@ -159,6 +159,7 @@ extension MentionListener /* Public */ {
      */
     public func reset() {
         mentions = []
+
         mentionsTextView.text = ""
         mentionsTextView.typingAttributes = defaultTextAttributes.dictionary
     }
@@ -171,8 +172,9 @@ extension MentionListener /* Public */ {
      */
     public func insertExistingMentions(_ existingMentions: [(CreateMention, NSRange)]) {
         mentions = mentions |> insert(existingMentions)
-        let (text, selectedRange) = mentionsTextView.attributedText |> apply(attributes: mentionTextAttributes,
-                                                                             to: existingMentions)
+
+        let (text, selectedRange) = mentionsTextView.attributedText
+            |> apply(attributes: mentionTextAttributes, to: existingMentions)
         mentionsTextView.attributedText = text
         mentionsTextView.selectedRange = selectedRange
     }
@@ -186,12 +188,12 @@ extension MentionListener /* Public */ {
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard let currentMentionRange = currentMentionRange else { return false }
 
+        mentions = mentions |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange)
+
         let (text, selectedRange) = mentionsTextView.attributedText
             |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange, with: mentionTextAttributes)
         mentionsTextView.attributedText = text
         mentionsTextView.selectedRange = selectedRange
-
-        mentions = mentions |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange)
 
         mentionEnabled = false
         filterString = nil
@@ -292,7 +294,9 @@ extension MentionListener /* Private */ {
     private func clearMention() -> (Mention?) -> Bool {
         return { mention in
             guard let mention = mention else { return false }
+
             self.mentions = self.mentions |> remove([mention])
+
             let (text, selectedRange) = self.mentionsTextView.attributedText
                 |> apply(self.defaultTextAttributes, range: mention.range)
             self.mentionsTextView.attributedText = text
