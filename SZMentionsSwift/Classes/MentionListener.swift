@@ -188,7 +188,8 @@ extension MentionListener /* Public */ {
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard let currentMentionRange = currentMentionRange else { return false }
 
-        mentions = mentions |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange)
+        mentions = mentions
+            |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange)
 
         let (text, selectedRange) = mentionsTextView.attributedText
             |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange, with: mentionTextAttributes)
@@ -269,8 +270,7 @@ extension MentionListener /* Private */ {
                     options: .backwards,
                     range: NSRange(location: 0, length: NSMaxRange(textView.selectedRange))
                 )
-                filterString = mentionString.replacingOccurrences(of: trigger, with: "")
-                    .replacingOccurrences(of: "\n", with: "")
+                filterString = mentionString.filter { ![trigger, "\n"].contains(String($0)) }
 
                 if let filterString = filterString, !(cooldownTimer?.isValid ?? false) {
                     stringCurrentlyBeingFiltered = filterString
@@ -312,7 +312,7 @@ extension MentionListener /* Private */ {
     private func activateCooldownTimer() {
         cooldownTimer?.invalidate()
         let timer = Timer(timeInterval: cooldownInterval, target: self,
-                          selector: #selector(MentionListener.cooldownTimerFired(_:)), userInfo: nil,
+                          selector: #selector(cooldownTimerFired(_:)), userInfo: nil,
                           repeats: false)
         cooldownTimer = timer
         RunLoop.main.add(timer, forMode: RunLoop.Mode.default)
