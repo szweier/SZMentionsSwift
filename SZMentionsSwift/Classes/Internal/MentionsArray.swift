@@ -10,6 +10,7 @@ import UIKit
 /**
  @brief returns the mention being edited (if a mention is being edited)
  @param range: the range to look for a mention
+
  @return Mention?: the mention being edited (if one exists)
  */
 internal func mentionBeingEdited(at range: NSRange) -> ([Mention]) -> Mention? {
@@ -32,7 +33,8 @@ internal func mentionBeingEdited(at range: NSRange) -> ([Mention]) -> Mention? {
 internal func adjusted(forTextChangeAt range: NSRange, text: String) -> ([Mention]) -> [Mention] {
     return { mentions in
         let remainingLengthOfMention = text.utf16.count - range.length
-        return mentions.compactMap { mention in
+
+        return mentions.map { mention in
             guard mention.range.location >= NSMaxRange(range) else { return mention }
             var adjustedMention = mention
             adjustedMention.range.location += remainingLengthOfMention
