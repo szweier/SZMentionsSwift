@@ -11,8 +11,8 @@ internal class Verifier {
 
     static func verifySetup(withDefaultTextAttributes defaultTextAttributes: [AttributeContainer],
                             mentionTextAttributes: [AttributeContainer]) {
-        let sortedMentionAttributes = mentionTextAttributes.sorted(by: { $0.name > $1.name })
-        let sortedAttributes = defaultTextAttributes.sorted(by: { $0.name > $1.name })
+        let sortedMentionAttributes = mentionTextAttributes.sorted(by: { $0.name.rawValue > $1.name.rawValue })
+        let sortedAttributes = defaultTextAttributes.sorted(by: { $0.name.rawValue > $1.name.rawValue })
         let attributesMatch = sortedMentionAttributes.elementsEqual(sortedAttributes) {
             (mentionAttribute, defaultAttribute) -> Bool in
             return mentionAttribute.name == defaultAttribute.name

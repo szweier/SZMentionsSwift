@@ -16,12 +16,10 @@ class ExampleMentionsTableViewDataManager: NSObject {
         return [
             "Steven Zweier",
             "John Smith",
-            "Joe Tesla"].map {
-                ExampleMention(name: $0, range: NSRange(location: 0, length: 0))
-        }
+            "Joe Tesla"].map (ExampleMention.init)
     }()
     private var mentionsList: [ExampleMention] {
-        guard !mentions.isEmpty else { return mentions }
+        guard !mentions.isEmpty, filterString != "" else { return mentions }
         return mentions.filter {
             return $0.name.lowercased().contains(filterString.lowercased())
         }

@@ -11,31 +11,31 @@ import SZMentionsSwift
 
 class ExampleAccessoryView: UIView {
     struct Attribute: AttributeContainer {
-        var name: String
-        var value: NSObject
+        var name: NSAttributedString.Key
+        var value: Any
     }
     private let textView = UITextView()
     private let mentionsTableView = UITableView()
     private let mentionAttributes: [AttributeContainer] = [
         Attribute(
-            name: NSAttributedStringKey.foregroundColor.rawValue,
+            name: .foregroundColor,
             value: UIColor.black),
         Attribute(
-            name: NSAttributedStringKey.font.rawValue,
+            name: .font,
             value: UIFont(name: "ChalkboardSE-Bold", size: 12)!),
         Attribute(
-            name: NSAttributedStringKey.backgroundColor.rawValue,
+            name: .backgroundColor,
             value: UIColor.lightGray)
     ]
     private let defaultAttributes: [AttributeContainer] = [
         Attribute(
-            name: NSAttributedStringKey.foregroundColor.rawValue,
+            name: .foregroundColor,
             value: UIColor.gray),
         Attribute(
-            name: NSAttributedStringKey.font.rawValue,
+            name: .font,
             value: UIFont(name: "ArialMT", size: 12)!),
         Attribute(
-            name: NSAttributedStringKey.backgroundColor.rawValue,
+            name: .backgroundColor,
             value: UIColor.white)
     ]
     private var dataManager: ExampleMentionsTableViewDataManager?
@@ -43,10 +43,10 @@ class ExampleAccessoryView: UIView {
     init(delegate: UITextViewDelegate) {
         super.init(frame: .zero)
         autoresizingMask = .flexibleHeight
-        let mentionsListener = MentionListener(mentionTextView: textView,
-                                                    attributesForMention: { mention in self.mentionAttributes },
+        let mentionsListener = MentionListener(mentionsTextView: textView,
+                                                    mentionTextAttributes: { mention in self.mentionAttributes },
                                                     defaultTextAttributes: defaultAttributes,
-                                                    spaceAfterMention: true,
+                                                    spaceAfterMention: false,
                                                     hideMentions: hideMentions,
                                                     didHandleMentionOnReturn: didHandleMentionOnReturn,
                                                     showMentionsListWithString: showMentionsListWithString)
@@ -56,9 +56,8 @@ class ExampleAccessoryView: UIView {
         addConstraintsToTextView(textView)
         textView.text = "Test Steven Zweier mention"
         
-        let mention = ExampleMention(name: "Steven Zweier",
-                                       range: NSRange(location: 5, length: 13))
-        mentionsListener.insertExistingMentions([mention])
+        let mention = ExampleMention(name: "Steven Zweier")
+        mentionsListener.insertExistingMentions([(mention, NSRange(location: 5, length: 13))])
         
         dataManager = ExampleMentionsTableViewDataManager(
             mentionTableView: mentionsTableView,

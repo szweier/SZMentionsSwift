@@ -12,10 +12,10 @@ internal struct Attribute: AttributeContainer {
     /**
      @brief Name of the attribute to set on a string
      */
-    var name: String
+    var name: NSAttributedString.Key
 
     /**
      @brief Value of the attribute to set on a string
      */
-    var value: NSObject
+    var value: Any
 }

@@ -2,11 +2,11 @@ import Nimble
 import Quick
 @testable import SZMentionsSwift
 
-class AttributeSpec: QuickSpec {
+class VerifierTests: QuickSpec {
     override func spec() {
-        describe("Attribute Handling") {
-            let attribute = Attribute(name: NSAttributedStringKey.foregroundColor.rawValue, value: UIColor.red)
-            let attribute2 = Attribute(name: NSAttributedStringKey.backgroundColor.rawValue, value: UIColor.black)
+        describe("Attributes Match") {
+            let attribute = Attribute(name: .foregroundColor, value: UIColor.red)
+            let attribute2 = Attribute(name: .backgroundColor, value: UIColor.black)
 
             it("Should throw an exception if the attribute types don't match") {
                 expect(Verifier.verifySetup(withDefaultTextAttributes: [attribute],

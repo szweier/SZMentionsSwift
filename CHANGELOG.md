@@ -1,5 +1,13 @@
 # Change Log
 
+## [2.0.6](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.6) (1/31/2019)
+
+#### Fixed
+* Delegate method behavior [Issue #87](https://github.com/szweier/SZMentionsSwift/issues/87)
+
+#### Cleaned
+* Refactored code to become more functional
+
 ## [2.0.5](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.5) (10/8/2018)
 
 #### Fixed

@@ -3,6 +3,17 @@ import Quick
 @testable import SZMentionsSwift
 
 class MentionsDisplay: QuickSpec {
+    var hidingMentionsList = false
+    var mentionsString = ""
+    var triggerString = ""
+
+    func hideMentions() { hidingMentionsList = true }
+    func showMentions(mention: String, trigger: String) {
+        hidingMentionsList = false
+        mentionsString = mention
+        triggerString = trigger
+    }
+
     override func spec() {
         describe("Mentions Display") {
             var mentionsListener: MentionListener!
@@ -11,48 +22,60 @@ class MentionsDisplay: QuickSpec {
             it("Should show the mentions list when typing a mention and hide when a space is added if search spaces is false") {
                 mentionsListener = generateMentionsListener(searchSpacesInMentions: false)
                 textView.insertText("@t")
-                expect(hidingMentionsList).to(beFalsy())
-                expect(mentionsString).to(equal("t"))
-                expect(triggerString).to(equal("@"))
+
+                expect(self.hidingMentionsList).to(beFalsy())
+                expect(self.mentionsString).to(equal("t"))
+                expect(self.triggerString).to(equal("@"))
+
                 textView.insertText(" ")
-                expect(hidingMentionsList).to(beTruthy())
+
+                expect(self.hidingMentionsList).to(beTruthy())
             }
 
             it("Should show the mentions list when typing a mention and remain visible when a space is added if search spaces is true") {
                 mentionsListener = generateMentionsListener(searchSpacesInMentions: true)
                 textView.insertText("@t")
-                expect(hidingMentionsList).to(beFalsy())
-                expect(mentionsString).to(equal("t"))
-                expect(triggerString).to(equal("@"))
+
+                expect(self.hidingMentionsList).to(beFalsy())
+                expect(self.mentionsString).to(equal("t"))
+                expect(self.triggerString).to(equal("@"))
+
                 textView.insertText(" ")
-                expect(hidingMentionsList).to(beFalsy())
+
+                expect(self.hidingMentionsList).to(beFalsy())
             }
 
             it("Should show the mentions list when typing a mention on a new line and hide when a space is added if search spaces is false") {
                 mentionsListener = generateMentionsListener(searchSpacesInMentions: false)
                 textView.insertText("\n@t")
-                expect(hidingMentionsList).to(beFalsy())
-                expect(mentionsString).to(equal("t"))
-                expect(triggerString).to(equal("@"))
+
+                expect(self.hidingMentionsList).to(beFalsy())
+                expect(self.mentionsString).to(equal("t"))
+                expect(self.triggerString).to(equal("@"))
+
                 textView.insertText(" ")
-                expect(hidingMentionsList).to(beTruthy())
+
+                expect(self.hidingMentionsList).to(beTruthy())
             }
 
             it("Should show the mentions list when typing a mention on a new line and remain visible when a space is added if search spaces is true") {
                 mentionsListener = generateMentionsListener(searchSpacesInMentions: true)
                 textView.insertText("\n@t")
-                expect(hidingMentionsList).to(beFalsy())
-                expect(mentionsString).to(equal("t"))
-                expect(triggerString).to(equal("@"))
+
+                expect(self.hidingMentionsList).to(beFalsy())
+                expect(self.mentionsString).to(equal("t"))
+                expect(self.triggerString).to(equal("@"))
+
                 textView.insertText(" ")
-                expect(hidingMentionsList).to(beFalsy())
+
+                expect(self.hidingMentionsList).to(beFalsy())
             }
 
             func generateMentionsListener(searchSpacesInMentions: Bool) -> MentionListener {
-                return MentionListener(mentionTextView: textView,
+                return MentionListener(mentionsTextView: textView,
                                        searchSpaces: searchSpacesInMentions,
                                        hideMentions: hideMentions,
-                                       didHandleMentionOnReturn: didHandleMention,
+                                       didHandleMentionOnReturn: { true },
                                        showMentionsListWithString: showMentions)
             }
         }
