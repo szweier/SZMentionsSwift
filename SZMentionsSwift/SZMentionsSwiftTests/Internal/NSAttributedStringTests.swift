@@ -2,6 +2,20 @@ import Nimble
 import Quick
 @testable import SZMentionsSwift
 
+private extension NSAttributedString {
+    func attribute(_ attribute: NSAttributedString.Key, at location: Int) -> Any? {
+        return attributes(at: location, effectiveRange: nil)[attribute]
+    }
+
+    func backgroundColor(at location: Int) -> UIColor? {
+        return attribute(.backgroundColor, at: location) as? UIColor
+    }
+
+    func foregroundColor(at location: Int) -> UIColor? {
+        return attribute(.foregroundColor, at: location) as? UIColor
+    }
+}
+
 class NSAttributedStringTests: QuickSpec {
     override func spec() {
         let mentionAttributes = [
@@ -19,8 +33,8 @@ class NSAttributedStringTests: QuickSpec {
                 (attributedText, _) = attributedText
                     |> apply(mentionAttributes, range: NSRange(location: 0, length: attributedText.length))
 
-                expect(attributedText.attributes(at: 0, effectiveRange: nil)[.backgroundColor] as? UIColor).to(equal(UIColor.red))
-                expect(attributedText.attributes(at: 0, effectiveRange: nil)[.foregroundColor] as? UIColor).to(equal(UIColor.blue))
+                expect(attributedText.backgroundColor(at: 0)) == .red
+                expect(attributedText.foregroundColor(at: 0)) == .blue
             }
 
             it("Should insert existing mentions") {
@@ -28,8 +42,8 @@ class NSAttributedStringTests: QuickSpec {
                 (attributedText, _) = attributedText
                     |> apply(mentionAttributesClosure(ExampleMention(name: "Steven Zweier")), range: NSRange(location: 5, length: 13))
 
-                expect(attributedText.attributes(at: 5, effectiveRange: nil)[.backgroundColor] as? UIColor).to(equal(UIColor.red))
-                expect(attributedText.attributes(at: 5, effectiveRange: nil)[.foregroundColor] as? UIColor).to(equal(UIColor.blue))
+                expect(attributedText.backgroundColor(at: 5)) == .red
+                expect(attributedText.foregroundColor(at: 5)) == .blue
             }
 
             it("Should throw assertion if range location is NSNotFound") {
@@ -56,12 +70,12 @@ class NSAttributedStringTests: QuickSpec {
                                                                             at: NSRange(location: 5, length: 4),
                                                                             with: mentionAttributesClosure)
 
-                expect(attributedText.attributes(at: 2, effectiveRange: nil)[.backgroundColor] as? UIColor).to(beNil())
-                expect(attributedText.attributes(at: 2, effectiveRange: nil)[.foregroundColor] as? UIColor).to(beNil())
-                expect(attributedText.attributes(at: 5, effectiveRange: nil)[.backgroundColor] as? UIColor).to(equal(UIColor.red))
-                expect(attributedText.attributes(at: 5, effectiveRange: nil)[.foregroundColor] as? UIColor).to(equal(UIColor.blue))
-                expect(attributedText.attributes(at: 17, effectiveRange: nil)[.backgroundColor] as? UIColor).to(equal(UIColor.red))
-                expect(attributedText.attributes(at: 17, effectiveRange: nil)[.foregroundColor] as? UIColor).to(equal(UIColor.blue))
+                expect(attributedText.backgroundColor(at: 2)).to(beNil())
+                expect(attributedText.foregroundColor(at: 2)).to(beNil())
+                expect(attributedText.backgroundColor(at: 5)) == .red
+                expect(attributedText.foregroundColor(at: 5)) == .blue
+                expect(attributedText.backgroundColor(at: 17)) == .red
+                expect(attributedText.foregroundColor(at: 17)) == .blue
             }
         }
 
@@ -74,13 +88,13 @@ class NSAttributedStringTests: QuickSpec {
                     |> apply(mentionAttributes, range: NSRange(location: 0, length: textView.attributedText.length))
                 textView.attributedText = text
 
-                expect(textView.typingAttributes[.backgroundColor] as? UIColor).to(equal(UIColor.red))
-                expect(textView.typingAttributes[.foregroundColor] as? UIColor).to(equal(UIColor.blue))
+                expect(textView.typingAttributes[.backgroundColor] as? UIColor) == .red
+                expect(textView.typingAttributes[.foregroundColor] as? UIColor) == .blue
 
                 textView.typingAttributes = (defaultAttributes as [AttributeContainer]).dictionary
 
                 expect(textView.typingAttributes[.backgroundColor] as? UIColor).to(beNil())
-                expect(textView.typingAttributes[.foregroundColor] as? UIColor).to(equal(UIColor.black))
+                expect(textView.typingAttributes[.foregroundColor] as? UIColor) == .black
             }
         }
     }
