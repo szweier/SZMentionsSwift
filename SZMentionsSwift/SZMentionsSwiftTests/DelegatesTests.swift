@@ -21,12 +21,11 @@ class Delegates: QuickSpec {
         var shouldInteractWithTextAttachment: Bool = false
         var triggeredDelegateMethod: Bool = false
 
-        func textView(_: UITextView, shouldInteractWith _: NSTextAttachment,
-                      in _: NSRange) -> Bool {
+        func textView(_: UITextView, shouldInteractWith _: NSTextAttachment, in _: NSRange, interaction _: UITextItemInteraction) -> Bool {
             return shouldInteractWithTextAttachment
         }
 
-        func textView(_: UITextView, shouldInteractWith _: URL, in _: NSRange) -> Bool {
+        func textView(_: UITextView, shouldInteractWith _: URL, in _: NSRange, interaction _: UITextItemInteraction) -> Bool {
             return shouldInteractWithTextAttachment
         }
 
@@ -69,23 +68,23 @@ class Delegates: QuickSpec {
             }
 
             it("Should return false for textView(shouldInteractWith:in) for a text attachment when overridden") {
-                expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSRange(location: 0, length: 0))).to(beFalsy())
+                expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSRange(location: 0, length: 0), interaction: .invokeDefaultAction)).to(beFalsy())
             }
 
             it("Should return true for textView(shouldInteractWith:in) for a text attachment when not overridden") {
                 mentionsListener.delegate = nil
 
-                expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSRange(location: 0, length: 0))).to(beTruthy())
+                expect(mentionsListener.textView(textView, shouldInteractWith: NSTextAttachment(), in: NSRange(location: 0, length: 0), interaction: .invokeDefaultAction)).to(beTruthy())
             }
 
             it("Should return false for textView(shouldInteractWith:in) for a URL when overridden") {
-                expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSRange(location: 0, length: 0))).to(beFalsy())
+                expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSRange(location: 0, length: 0), interaction: .invokeDefaultAction)).to(beFalsy())
             }
 
             it("Should return true for textView(shouldInteractWith:in) for a URL when not overridden") {
                 mentionsListener.delegate = nil
 
-                expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSRange(location: 0, length: 0))).to(beTruthy())
+                expect(mentionsListener.textView(textView, shouldInteractWith: URL(string: "http://test.com")!, in: NSRange(location: 0, length: 0), interaction: .invokeDefaultAction)).to(beTruthy())
             }
 
             it("Should return false for textViewShouldBeginEditing when overridden") {
