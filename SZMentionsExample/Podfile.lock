@@ -1,16 +1,16 @@
 PODS:
-  - SZMentionsSwift (1.0.9)
+  - SZMentionsSwift (2.0.6)
 
 DEPENDENCIES:
   - SZMentionsSwift (from `../`)
 
 EXTERNAL SOURCES:
   SZMentionsSwift:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
-  SZMentionsSwift: 2ef0ad898e5d66c11dae617d24f985bf3483c857
+  SZMentionsSwift: f0d567f029dd323083c068d974a4c5349505e16d
 
-PODFILE CHECKSUM: 9c6e21eee08ecb2e38137db64d46c2087cde9c31
+PODFILE CHECKSUM: 883d2b174a984c9e306f59a41820c1a47c833532
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.5.3
