@@ -16,10 +16,15 @@ class Delegates: QuickSpec {
     }
 
     class TextViewDelegate: NSObject, UITextViewDelegate {
-        var shouldBeginEditing: Bool = false
-        var shouldEndEditing: Bool = false
-        var shouldInteractWithTextAttachment: Bool = false
-        var triggeredDelegateMethod: Bool = false
+        var shouldBeginEditing = false
+        var shouldEndEditing = false
+        var shouldInteractWithTextAttachment = false
+        var triggeredDelegateMethod = false
+        var textViewDidChange = false
+
+        func textViewDidChange(_: UITextView) {
+            textViewDidChange = true
+        }
 
         func textView(_: UITextView, shouldInteractWith _: NSTextAttachment, in _: NSRange, interaction _: UITextItemInteraction) -> Bool {
             return shouldInteractWithTextAttachment
@@ -122,7 +127,7 @@ class Delegates: QuickSpec {
             it("Should call delegate method to determine if adding mention on return should be enabled") {
                 expect(self.shouldAddMentionOnReturnKeyCalled).to(beFalsy())
 
-                update(text: "@t", type: .insert, on: mentionsListener)
+                type(text: "@t", on: mentionsListener)
 
                 expect(self.hidingMentionsList).to(beFalsy())
 
@@ -170,6 +175,12 @@ class Delegates: QuickSpec {
                 let insertMentions: [(CreateMention, NSRange)] = [mention, mention2]
 
                 expect(mentionsListener.insertExistingMentions(insertMentions)).to(throwAssertion())
+            }
+
+            it("Should call textView didChange when inserting any text with a utf16 count greater than 1") {
+                expect(textViewDelegate.textViewDidChange).to(beFalsy())
+                update(text: "🤪", type: .insert, on: mentionsListener)
+                expect(textViewDelegate.textViewDidChange).to(beTruthy())
             }
         }
     }
