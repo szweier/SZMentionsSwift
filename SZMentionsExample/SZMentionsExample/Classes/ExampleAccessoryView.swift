@@ -83,12 +83,12 @@ class ExampleAccessoryView: UIView {
         addConstraints(
             NSLayoutConstraint.constraints(
                 withVisualFormat: "|-5-[textView]-5-|",
-                options: NSLayoutFormatOptions(rawValue: 0),
+                options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                 metrics: nil,
                 views: ["textView": textView]) +
                 NSLayoutConstraint.constraints(
                     withVisualFormat: "V:|-5-[textView(30)]-5-|",
-                    options: NSLayoutFormatOptions(rawValue: 0),
+                    options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                     metrics: nil,
                     views: ["textView": textView])
         )
@@ -110,7 +110,7 @@ extension ExampleAccessoryView {
             mentionsTableView.removeFromSuperview()
             addConstraints(NSLayoutConstraint.constraints(
                 withVisualFormat: "V:|-5-[textView(30)]-5-|",
-                options: NSLayoutFormatOptions(rawValue: 0),
+                options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                 metrics: nil,
                 views: ["textView": textView])
             )
@@ -125,17 +125,17 @@ extension ExampleAccessoryView {
             addConstraints(
                 NSLayoutConstraint.constraints(
                     withVisualFormat: "|-5-[tableview]-5-|",
-                    options: NSLayoutFormatOptions(rawValue: 0),
+                    options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                     metrics: nil,
                     views: ["tableview": mentionsTableView]) +
                     NSLayoutConstraint.constraints(
                         withVisualFormat: "|-5-[textView]-5-|",
-                        options: NSLayoutFormatOptions(rawValue: 0),
+                        options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                         metrics: nil,
                         views: ["textView": textView]) +
                     NSLayoutConstraint.constraints(
                         withVisualFormat: "V:|-5-[tableview(100)][textView(30)]-5-|",
-                        options: NSLayoutFormatOptions(rawValue: 0),
+                        options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                         metrics: nil,
                         views: ["textView": textView, "tableview": mentionsTableView])
             )

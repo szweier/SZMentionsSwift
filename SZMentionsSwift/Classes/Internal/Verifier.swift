@@ -15,7 +15,7 @@ internal class Verifier {
         let sortedAttributes = defaultTextAttributes.sorted(by: { $0.name.rawValue > $1.name.rawValue })
         let attributesMatch = sortedMentionAttributes.elementsEqual(sortedAttributes) {
             (mentionAttribute, defaultAttribute) -> Bool in
-            return mentionAttribute.name == defaultAttribute.name
+            mentionAttribute.name == defaultAttribute.name
         }
         assert(attributesMatch, attributeConsistencyError)
     }

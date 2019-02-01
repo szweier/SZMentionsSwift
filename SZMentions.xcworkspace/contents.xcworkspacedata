@@ -5,9 +5,6 @@
       location = "group:SZMentionsSwift/SZMentionsSwift.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:SZMentionsExample/SZMentionsExample.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
 </Workspace>
