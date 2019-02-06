@@ -97,6 +97,6 @@ internal func add(_ mention: CreateMention,
             |> replace(charactersIn: range, with: mention.mentionName(with: spaceAfterMention))
             >=> apply(attributes(mention), range: adjustedRange)
 
-        return (attributedText, selectedRange)
+        return (attributedText, NSRange(location: selectedRange.location + (spaceAfterMention ? 1 : 0), length: selectedRange.length))
     }
 }
