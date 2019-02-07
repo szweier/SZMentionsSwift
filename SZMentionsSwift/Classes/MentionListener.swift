@@ -177,6 +177,8 @@ extension MentionListener /* Public */ {
             |> apply(attributes: mentionTextAttributes, to: existingMentions)
         mentionsTextView.attributedText = text
         mentionsTextView.selectedRange = selectedRange
+
+        notifyOfTextViewChange(on: mentionsTextView)
     }
 
     /**
@@ -195,6 +197,8 @@ extension MentionListener /* Public */ {
             |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange, with: mentionTextAttributes)
         mentionsTextView.attributedText = text
         mentionsTextView.selectedRange = selectedRange
+
+        notifyOfTextViewChange(on: mentionsTextView)
 
         mentionEnabled = false
         filterString = ""
@@ -311,6 +315,12 @@ extension MentionListener /* Private */ {
         cooldownTimer = timer
         RunLoop.main.add(timer, forMode: RunLoop.Mode.default)
     }
+
+    private func notifyOfTextViewChange(on textView: UITextView) {
+        // Calling textViewDidChange delegate method because we manually adjusted the textView.
+        delegate?.textViewDidChange?(textView)
+        delegate?.textViewDidChangeSelection?(textView)
+    }
 }
 
 extension MentionListener: UITextViewDelegate {
@@ -328,8 +338,6 @@ extension MentionListener: UITextViewDelegate {
             shouldChangeText = false
         } else if text.utf16.count > 1 {
             // Pasting / inserting predictive text
-
-            textView.delegate = nil
 
             //////////////////////////////////////////////////////////////////////////////////////////
             // The following snippet is because if you click on a predictive text without this snippet
@@ -355,8 +363,6 @@ extension MentionListener: UITextViewDelegate {
 
             handleMentionsList(textView, range: textView.selectedRange)
 
-            textView.delegate = self
-
             shouldChangeText = false
         } else {
             if let mention = mentions |> mentionBeingEdited(at: range) {
@@ -372,6 +378,9 @@ extension MentionListener: UITextViewDelegate {
             mentions = mentions |> adjusted(forTextChangeAt: range, text: text)
         }
 
+        if !shouldChangeText {
+            notifyOfTextViewChange(on: textView)
+        }
         return shouldChangeText
     }
 
