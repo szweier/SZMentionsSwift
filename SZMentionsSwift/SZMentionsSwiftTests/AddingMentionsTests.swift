@@ -105,6 +105,7 @@ class AddingMentions: QuickSpec {
 
                 expect(mentionsListener.mentions[0].range.location).to(equal(0))
                 expect(mentionsListener.mentions[0].range.length).to(equal(6))
+                expect(textView.selectedRange.location).to(equal(7))
 
                 update(text: "@t", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
                 addMention(named: "Steven Zweier", on: mentionsListener)
@@ -112,6 +113,7 @@ class AddingMentions: QuickSpec {
                 expect(mentionsListener.mentions[1].range.location).to(equal(0))
                 expect(mentionsListener.mentions[1].range.length).to(equal(13))
                 expect(mentionsListener.mentions[0].range.location).to(equal(14))
+                expect(textView.selectedRange.location).to(equal(14))
             }
 
             it("Should test editing after mention does not delete the mention") {
@@ -154,7 +156,7 @@ class AddingMentions: QuickSpec {
                 addMention(named: "Steven", on: mentionsListener)
 
                 expect(mentionsListener.mentions[0].range.location).to(equal(0))
-                expect(textView.selectedRange.location).to(equal(6))
+                expect(textView.selectedRange.location).to(equal(7))
             }
 
             it("Should test that adding text immediately after the mention changes back to default attributes") {
