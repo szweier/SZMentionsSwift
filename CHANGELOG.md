@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.0.7](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.7) (2/6/2019)
+
+#### Fixed
+* Call proper delegate methods to notify about text changes made by the library [Issue #93](https://github.com/szweier/SZMentionsSwift/issues/93)
+* Fix issue where the selectedRange wasn't properly set when spaceAfterMention was set to true [Issue #96](https://github.com/szweier/SZMentionsSwift/issues/96)
+
 ## [2.0.6](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.6) (1/31/2019)
 
 #### Fixed
