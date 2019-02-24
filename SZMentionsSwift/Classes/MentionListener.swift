@@ -13,7 +13,7 @@ public class MentionListener: NSObject {
      @brief Array list of mentions managed by listener, accessible via the
      public mentions property.
      */
-    private(set) var mentions: [Mention] = []
+    public private(set) var mentions: [Mention] = []
 
     /**
      @brief An optional delegate that can be used to handle all UITextView delegate

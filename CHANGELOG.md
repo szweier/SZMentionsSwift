@@ -1,5 +1,10 @@
 # Change Log
 
+## [2.0.8](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.8) (2/24/2019)
+
+#### Fixed
+* Enable public getter for mentions array [Issue #101](https://github.com/szweier/SZMentionsSwift/issues/101)
+
 ## [2.0.7](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.7) (2/6/2019)
 
 #### Fixed
