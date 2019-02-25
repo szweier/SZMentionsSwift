@@ -241,6 +241,14 @@ class AddingMentions: QuickSpec {
                 expect(textView.text.utf16.count).to(equal(5))
             }
 
+            it("Should test that text can be added and removed without crashes when search spaces is true.") {
+                mentionsListener = generateMentionsListener(spaceAfterMention: false, searchSpaces: true)
+                update(text: "@s", type: .insert, on: mentionsListener)
+                update(text: "", type: .delete, on: mentionsListener)
+                update(text: "", type: .delete, on: mentionsListener)
+                expect(textView.text.isEmpty).to(beTruthy())
+            }
+
             func generateMentionsListener(spaceAfterMention: Bool, searchSpaces: Bool) -> MentionListener {
                 let attribute = Attribute(name: .foregroundColor, value: UIColor.red)
                 let attribute2 = Attribute(name: .foregroundColor, value: UIColor.black)
