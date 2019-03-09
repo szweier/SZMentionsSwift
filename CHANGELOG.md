@@ -1,5 +1,10 @@
 # Change Log
 
+## [2.0.9](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.9) (3/9/2019)
+
+#### Fixed
+* No longer crashes when deleting a mention that is currently being edited when search spaces is enabled [Issue #102](https://github.com/szweier/SZMentionsSwift/issues/102)
+
 ## [2.0.8](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.8) (2/24/2019)
 
 #### Fixed
