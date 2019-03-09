@@ -1,5 +1,5 @@
 PODS:
-  - SZMentionsSwift (2.0.6)
+  - SZMentionsSwift (2.0.9)
 
 DEPENDENCIES:
   - SZMentionsSwift (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  SZMentionsSwift: f0d567f029dd323083c068d974a4c5349505e16d
+  SZMentionsSwift: bbaedd8c1d8a89b93b67a0856c1bac526ecef702
 
 PODFILE CHECKSUM: 883d2b174a984c9e306f59a41820c1a47c833532
 
