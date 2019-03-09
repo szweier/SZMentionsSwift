@@ -251,6 +251,8 @@ extension MentionListener /* Private */ {
 
         if location != NSNotFound {
             (mentionEnabled, textBeforeTrigger) = mentionsTextView.text.isMentionEnabledAt(location)
+        } else {
+            mentionEnabled = false
         }
 
         if mentionEnabled {
