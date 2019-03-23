@@ -8,6 +8,29 @@
 
 SZMentionsSwift is a lightweight mentions library for iOS. This library was built to assist with the adding, removing and editing of a mention within a textview.
 
+## What can it do
+
+
+#### Add mentions
+
+You can easily add mentions by typing the trigger (default: @) followed by text to filter your list by. Tapping the name will insert the mention into the textView.
+
+![](ReadMeAssets/Add-Mentions.gif)
+
+#### Insert mentions
+
+Any text, including mentions, that are inserted before other mentions will automatically adjust the ranges for all existing mentions.
+
+![](ReadMeAssets/Insert-Mentions.gif)
+
+#### Delete mentions
+
+If at any point text is changed within an existing mention that mention will be removed from the mentions array and any remaining text associated with that mention will revert to default styling.
+
+![](ReadMeAssets/Delete-Mentions.gif)
+
+For more technical details on usage you can check [here](#Usage)
+
 ## How To Get Started
 
 - [Download SZMentionsSwift](https://github.com/stevenzweier/SZMentionsSwift/archive/master.zip) and try out the iOS example app. 
