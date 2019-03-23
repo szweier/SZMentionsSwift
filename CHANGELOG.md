@@ -1,5 +1,10 @@
 # Change Log
 
+## [2.1.0](https://github.com/szweier/SZMentionsSwift/releases/tag/2.1.0) (3/23/2019)
+
+#### Added
+* Carthage - [Issue #105](https://github.com/szweier/SZMentionsSwift/issues/105)
+ 
 ## [2.0.9](https://github.com/szweier/SZMentionsSwift/releases/tag/2.0.9) (3/9/2019)
 
 #### Fixed

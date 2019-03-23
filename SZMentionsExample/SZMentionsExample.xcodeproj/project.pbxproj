@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1029C6759EB7AECF9E1C6691 /* Pods_SZMentionsExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BDCA30ACE6B9A8CDF0925F /* Pods_SZMentionsExample.framework */; };
 		DBCFB3891C449874007E3722 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DBCFB3881C449874007E3722 /* Assets.xcassets */; };
+		DBDFB78B2246A87100F6FC54 /* SZMentionsSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBDFB78A2246A87100F6FC54 /* SZMentionsSwift.framework */; };
 		DBE8B4AF1C657FC60090EF32 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B4AA1C657FC60090EF32 /* AppDelegate.swift */; };
 		DBE8B4B01C657FC60090EF32 /* ExampleAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B4AB1C657FC60090EF32 /* ExampleAccessoryView.swift */; };
 		DBE8B4B11C657FC60090EF32 /* ExampleMention.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE8B4AC1C657FC60090EF32 /* ExampleMention.swift */; };
@@ -17,13 +17,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		31DE8F8120329E3E42F8D3A4 /* Pods-SZMentionsExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SZMentionsExample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SZMentionsExample/Pods-SZMentionsExample.debug.xcconfig"; sourceTree = "<group>"; };
-		65F2359B511F513D3649A347 /* Pods-SZMentionsExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SZMentionsExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-SZMentionsExample/Pods-SZMentionsExample.release.xcconfig"; sourceTree = "<group>"; };
-		A0BDCA30ACE6B9A8CDF0925F /* Pods_SZMentionsExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SZMentionsExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBCFB37E1C449874007E3722 /* SZMentionsExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SZMentionsExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBCFB3881C449874007E3722 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DBCFB38D1C449874007E3722 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DBE8B4A71C657F720090EF32 /* SZMentionsSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SZMentionsSwift.framework; path = "../../SZMentionsSwift/build/Debug-iphoneos/SZMentionsSwift.framework"; sourceTree = "<group>"; };
+		DBDFB78A2246A87100F6FC54 /* SZMentionsSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SZMentionsSwift.framework; path = Carthage/Build/iOS/SZMentionsSwift.framework; sourceTree = "<group>"; };
 		DBE8B4AA1C657FC60090EF32 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DBE8B4AB1C657FC60090EF32 /* ExampleAccessoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleAccessoryView.swift; sourceTree = "<group>"; };
 		DBE8B4AC1C657FC60090EF32 /* ExampleMention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleMention.swift; sourceTree = "<group>"; };
@@ -36,29 +33,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1029C6759EB7AECF9E1C6691 /* Pods_SZMentionsExample.framework in Frameworks */,
+				DBDFB78B2246A87100F6FC54 /* SZMentionsSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		364E7282A2ABB0AECFB0F497 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				31DE8F8120329E3E42F8D3A4 /* Pods-SZMentionsExample.debug.xcconfig */,
-				65F2359B511F513D3649A347 /* Pods-SZMentionsExample.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		DBCFB3751C449874007E3722 = {
 			isa = PBXGroup;
 			children = (
 				DBCFB3801C449874007E3722 /* SZMentionsExample */,
 				DBCFB37F1C449874007E3722 /* Products */,
-				DBF2DF521C4B0EE5001B9788 /* Frameworks */,
-				364E7282A2ABB0AECFB0F497 /* Pods */,
+				DBDFB7892246A87100F6FC54 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,6 +67,14 @@
 			path = SZMentionsExample;
 			sourceTree = "<group>";
 		};
+		DBDFB7892246A87100F6FC54 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DBDFB78A2246A87100F6FC54 /* SZMentionsSwift.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		DBE8B4A91C657FC60090EF32 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -92,16 +87,6 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		DBF2DF521C4B0EE5001B9788 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				DBE8B4A71C657F720090EF32 /* SZMentionsSwift.framework */,
-				A0BDCA30ACE6B9A8CDF0925F /* Pods_SZMentionsExample.framework */,
-			);
-			name = Frameworks;
-			path = SZMentionsExample;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -109,11 +94,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DBCFB39B1C449874007E3722 /* Build configuration list for PBXNativeTarget "SZMentionsExample" */;
 			buildPhases = (
-				0A380C1C98E32C6CB1DBC291 /* [CP] Check Pods Manifest.lock */,
 				DBCFB37A1C449874007E3722 /* Sources */,
 				DBCFB37B1C449874007E3722 /* Frameworks */,
 				DBCFB37C1C449874007E3722 /* Resources */,
-				31A8783F2C13B7B36B1259CD /* [CP] Embed Pods Frameworks */,
+				DBDFB78C2246A8A900F6FC54 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -136,8 +120,9 @@
 				TargetAttributes = {
 					DBCFB37D1C449874007E3722 = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = K2V4RUXGKP;
 						LastSwiftMigration = 0910;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -171,40 +156,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0A380C1C98E32C6CB1DBC291 /* [CP] Check Pods Manifest.lock */ = {
+		DBDFB78C2246A8A900F6FC54 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
+			inputFileListPaths = (
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/SZMentionsSwift.framework",
+			);
+			name = Carthage;
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SZMentionsExample-checkManifestLockResult.txt",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SZMentionsSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		31A8783F2C13B7B36B1259CD /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-SZMentionsExample/Pods-SZMentionsExample-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SZMentionsSwift/SZMentionsSwift.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SZMentionsSwift.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SZMentionsExample/Pods-SZMentionsExample-frameworks.sh\"\n";
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -331,12 +301,17 @@
 		};
 		DBCFB39C1C449874007E3722 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 31DE8F8120329E3E42F8D3A4 /* Pods-SZMentionsExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = K2V4RUXGKP;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Carthage/Build/iOS",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = SZMentionsExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -346,12 +321,17 @@
 		};
 		DBCFB39D1C449874007E3722 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 65F2359B511F513D3649A347 /* Pods-SZMentionsExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = K2V4RUXGKP;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SRCROOT)/Carthage/Build/iOS",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = SZMentionsExample/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

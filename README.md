@@ -1,3 +1,4 @@
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![codecov](https://codecov.io/gh/szweier/SZMentionsSwift/branch/master/graph/badge.svg)](https://codecov.io/gh/szweier/SZMentionsSwift)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/szweier)
 [![Build Status](https://travis-ci.org/szweier/SZMentionsSwift.svg?branch=master)](https://travis-ci.org/szweier/SZMentionsSwift)
@@ -16,6 +17,26 @@ SZMentionsSwift is a lightweight mentions library for iOS. This library was buil
 - If you **need help**, feel free to tweet [@StevenZweier](http://twitter.com/StevenZweier)
 - If you **found a bug**, **have a feature request**, or **have a general question** open an issue.
 - If you **want to contribute**, submit a pull request.
+
+## Installation with Carthage
+
+[Carthage](https://github.com/Carthage/Carthage/blob/master/README.md)
+
+#### Cartfile
+
+To integrate SZMentionsSwift into your Xcode project using CocoaPods, specify it in your `Cartfile`:
+
+```
+github "szweier/SZMentionsSwift"
+```
+
+Then, run the following command:
+
+```bash
+$ carthage update
+```
+
+[More Info Here](https://github.com/Carthage/Carthage/blob/master/README.md#adding-frameworks-to-an-application)
 
 ## Installation with CocoaPods
 

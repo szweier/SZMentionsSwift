@@ -9,5 +9,5 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/szweier/SZMentionsSwift.git", :tag => s.version.to_s }
   s.platform     = :ios, '10.1'
   s.requires_arc = true
-  s.source_files = 'SZMentionsSwift/Classes/**/*'
+  s.source_files = 'Classes/**/*'
 end
