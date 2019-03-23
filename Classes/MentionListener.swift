@@ -215,7 +215,7 @@ extension MentionListener /* Internal */ {
      */
     @objc internal func cooldownTimerFired(_: Timer) {
         if filterString != stringCurrentlyBeingFiltered,
-            !filterString.isEmpty, (!filterString.contains(" ") || searchSpaces) {
+            !filterString.isEmpty, !filterString.contains(" ") || searchSpaces {
             stringCurrentlyBeingFiltered = filterString
 
             let searchResult = mentionsTextView.text.range(of: triggers,

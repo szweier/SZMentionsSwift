@@ -17,7 +17,7 @@
                BlueprintIdentifier = "DBCFB37D1C449874007E3722"
                BuildableName = "SZMentionsExample.app"
                BlueprintName = "SZMentionsExample"
-               ReferencedContainer = "container:SZMentionsExample.xcodeproj">
+               ReferencedContainer = "container:SZMentionsExample-Cocoapods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,15 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DBCFB37D1C449874007E3722"
-            BuildableName = "SZMentionsExample.app"
-            BlueprintName = "SZMentionsExample"
-            ReferencedContainer = "container:SZMentionsExample.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -58,7 +49,7 @@
             BlueprintIdentifier = "DBCFB37D1C449874007E3722"
             BuildableName = "SZMentionsExample.app"
             BlueprintName = "SZMentionsExample"
-            ReferencedContainer = "container:SZMentionsExample.xcodeproj">
+            ReferencedContainer = "container:SZMentionsExample-Cocoapods.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -70,16 +61,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DBCFB37D1C449874007E3722"
             BuildableName = "SZMentionsExample.app"
             BlueprintName = "SZMentionsExample"
-            ReferencedContainer = "container:SZMentionsExample.xcodeproj">
+            ReferencedContainer = "container:SZMentionsExample-Cocoapods.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

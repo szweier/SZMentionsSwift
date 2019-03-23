@@ -40,9 +40,9 @@ class AddingMentions: QuickSpec {
                 addMention(named: "Steven", on: mentionsListener)
                 update(text: ". ", type: .insert, on: mentionsListener)
 
-                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                expect((textView.attributedText.attribute(.foregroundColor, at: 10, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                expect((textView.attributedText.attribute(.foregroundColor, at: 12, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
+                expect(textView.attributedText.attribute(.foregroundColor, at: 10, effectiveRange: nil) as? UIColor).to(equal(UIColor.red))
+                expect(textView.attributedText.attribute(.foregroundColor, at: 12, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
             }
 
             it("Should adjust the location of an existing mention correctly") {
@@ -135,7 +135,7 @@ class AddingMentions: QuickSpec {
 
                 update(text: "test", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
 
-                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
             }
 
             it("Should test that the correct mention range is replaced if multiple exist and that the selected range is correct") {
@@ -165,7 +165,7 @@ class AddingMentions: QuickSpec {
 
                 update(text: "test", type: .insert, on: mentionsListener)
 
-                expect((textView.attributedText.attribute(.foregroundColor, at: textView.selectedRange.location - 1, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect(textView.attributedText.attribute(.foregroundColor, at: textView.selectedRange.location - 1, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
             }
 
             it("Should test that the mention position is correct to start text on a new line") {
@@ -209,14 +209,14 @@ class AddingMentions: QuickSpec {
 
                 expect(mentionsListener.mentions.count).to(equal(1))
                 expect(textView.attributedText.string).to(equal("Steven Zweier"))
-                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
-                expect((textView.attributedText.attribute(.foregroundColor, at: 12, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.red))
+                expect(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor).to(equal(UIColor.red))
+                expect(textView.attributedText.attribute(.foregroundColor, at: 12, effectiveRange: nil) as? UIColor).to(equal(UIColor.red))
 
                 update(text: "Test", type: .insert, at: NSRange(location: 7, length: 0), on: mentionsListener)
 
                 expect(textView.attributedText.string).to(equal("Steven TestZweier"))
-                expect((textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
-                expect((textView.attributedText.attribute(.foregroundColor, at: 16, effectiveRange: nil)! as! UIColor)).to(equal(UIColor.black))
+                expect(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
+                expect(textView.attributedText.attribute(.foregroundColor, at: 16, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
                 expect(mentionsListener.mentions.count).to(equal(0))
             }
 

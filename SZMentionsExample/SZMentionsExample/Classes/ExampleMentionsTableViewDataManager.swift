@@ -6,24 +6,27 @@
 //  Copyright © 2016 Steven Zweier. All rights reserved.
 //
 
-import UIKit
 import SZMentionsSwift
+import UIKit
 
 class ExampleMentionsTableViewDataManager: NSObject {
     private let cellIdentifier = "Cell"
     private let listener: MentionListener
     private let mentions: [ExampleMention] = {
-        return [
+        [
             "Steven Zweier",
             "John Smith",
-            "Joe Tesla"].map (ExampleMention.init)
+            "Joe Tesla",
+        ].map(ExampleMention.init)
     }()
+
     private var mentionsList: [ExampleMention] {
         guard !mentions.isEmpty, filterString != "" else { return mentions }
         return mentions.filter {
-            return $0.name.lowercased().contains(filterString.lowercased())
+            $0.name.lowercased().contains(filterString.lowercased())
         }
     }
+
     private let tableView: UITableView
     private var filterString: String = ""
 
@@ -31,7 +34,8 @@ class ExampleMentionsTableViewDataManager: NSObject {
         tableView = mentionTableView
         tableView.register(
             UITableViewCell.self,
-            forCellReuseIdentifier: cellIdentifier)
+            forCellReuseIdentifier: cellIdentifier
+        )
         listener = mentionsListener
         super.init()
     }
@@ -43,17 +47,17 @@ class ExampleMentionsTableViewDataManager: NSObject {
 }
 
 extension ExampleMentionsTableViewDataManager: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         listener.addMention(mentionsList[indexPath.row])
     }
 }
 
 extension ExampleMentionsTableViewDataManager: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in _: UITableView) -> Int {
         return 1
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
         return mentionsList.count
     }
 

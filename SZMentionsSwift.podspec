@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SZMentionsSwift"
-  s.version          = "2.0.9"
+  s.version          = "2.1.0"
   s.summary          = "Highly customizable mentions library"
   s.description      = "Mentions library used to help manage mentions in a UITextView"
   s.homepage         = "http://www.stevenzweier.com"
@@ -9,5 +9,5 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/szweier/SZMentionsSwift.git", :tag => s.version.to_s }
   s.platform     = :ios, '10.1'
   s.requires_arc = true
-  s.source_files = 'SZMentionsSwift/Classes/**/*'
+  s.source_files = 'Classes/**/*'
 end
