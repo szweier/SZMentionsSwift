@@ -64,7 +64,8 @@
 				DBCFB3881C449874007E3722 /* Assets.xcassets */,
 				DBCFB38D1C449874007E3722 /* Info.plist */,
 			);
-			path = SZMentionsExample;
+			name = SZMentionsExample;
+			path = ../SZMentionsExample;
 			sourceTree = "<group>";
 		};
 		DBDFB7892246A87100F6FC54 /* Frameworks */ = {
@@ -126,7 +127,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DBCFB3791C449874007E3722 /* Build configuration list for PBXProject "SZMentionsExample" */;
+			buildConfigurationList = DBCFB3791C449874007E3722 /* Build configuration list for PBXProject "SZMentionsExample-Carthage" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -161,14 +162,10 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/SZMentionsSwift.framework",
 			);
 			name = Carthage;
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/SZMentionsSwift.framework",
 			);
@@ -310,7 +307,7 @@
 					"$(SRCROOT)/Carthage/Build/iOS",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = SZMentionsExample/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/../SZMentionsExample/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -330,7 +327,7 @@
 					"$(SRCROOT)/Carthage/Build/iOS",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = SZMentionsExample/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/../SZMentionsExample/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks $(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.StevenZweier.SZMentionsSwiftExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -342,7 +339,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DBCFB3791C449874007E3722 /* Build configuration list for PBXProject "SZMentionsExample" */ = {
+		DBCFB3791C449874007E3722 /* Build configuration list for PBXProject "SZMentionsExample-Carthage" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DBCFB3991C449874007E3722 /* Debug */,
