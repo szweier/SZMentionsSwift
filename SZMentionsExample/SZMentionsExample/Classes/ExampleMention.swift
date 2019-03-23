@@ -6,8 +6,8 @@
 //  Copyright © 2016 Steven Zweier. All rights reserved.
 //
 
-import UIKit
 import SZMentionsSwift
+import UIKit
 
 struct ExampleMention: CreateMention {
     var name: String = ""

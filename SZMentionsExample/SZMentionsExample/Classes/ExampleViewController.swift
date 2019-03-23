@@ -6,11 +6,10 @@
 //  Copyright © 2016 Steven Zweier. All rights reserved.
 //
 
-import UIKit
 import SZMentionsSwift
+import UIKit
 
 class ExampleViewController: UIViewController, UITextViewDelegate {
-
     private var myInputAccessoryView: ExampleAccessoryView!
 
     init() {
@@ -18,7 +17,7 @@ class ExampleViewController: UIViewController, UITextViewDelegate {
         myInputAccessoryView = ExampleAccessoryView(delegate: self)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -26,7 +25,7 @@ class ExampleViewController: UIViewController, UITextViewDelegate {
         return myInputAccessoryView
     }
 
-    override var canBecomeFirstResponder : Bool {
+    override var canBecomeFirstResponder: Bool {
         return true
     }
 
