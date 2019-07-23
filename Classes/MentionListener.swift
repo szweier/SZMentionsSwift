@@ -249,7 +249,8 @@ extension MentionListener /* Private */ {
         let location = searchResult.range.location
         let trigger = searchResult.foundString
 
-        if location != NSNotFound {
+        // Triggers found in mentios are ignored, thus allowing to use them
+        if location != NSNotFound, (mentions |> mentionBeingEdited(at: searchResult.range)) == nil {
             (mentionEnabled, textBeforeTrigger) = mentionsTextView.text.isMentionEnabledAt(location)
         } else {
             mentionEnabled = false
