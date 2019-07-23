@@ -390,12 +390,24 @@ extension MentionListener: UITextViewDelegate {
         delegate?.textViewDidChange?(textView)
     }
 
+    @available(iOS 10.0, *)
     public func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         return delegate?.textView?(textView, shouldInteractWith: textAttachment, in: characterRange, interaction: interaction) ?? true
     }
 
+    @available(iOS, introduced: 7.0, deprecated: 10.0)
+    public func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange) -> Bool {
+        return delegate?.textView?(textView, shouldInteractWith: textAttachment, in: characterRange) ?? true
+    }
+
+    @available(iOS 10.0, *)
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         return delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange, interaction: interaction) ?? true
+    }
+
+    @available(iOS, introduced: 7.0, deprecated: 10.0)
+    public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        return delegate?.textView?(textView, shouldInteractWith: URL, in: characterRange) ?? true
     }
 
     public func textViewDidBeginEditing(_ textView: UITextView) {
