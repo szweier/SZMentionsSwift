@@ -249,6 +249,17 @@ class AddingMentions: QuickSpec {
                 expect(textView.text.isEmpty).to(beTruthy())
             }
 
+            it("Should test mention with emoji can be searched properly") {
+                mentionsListener = generateMentionsListener(spaceAfterMention: true, searchSpaces: true)
+
+                update(text: "@t", type: .insert, on: mentionsListener)
+                addMention(named: "Steven😌", on: mentionsListener)
+
+                expect(mentionsListener.mentions[0].range.location).to(equal(0))
+                expect(mentionsListener.mentions[0].range.length).to(equal(8))
+                expect(textView.selectedRange.location).to(equal(9))
+            }
+
             func generateMentionsListener(spaceAfterMention: Bool, searchSpaces: Bool) -> MentionListener {
                 let attribute = Attribute(name: .foregroundColor, value: UIColor.red)
                 let attribute2 = Attribute(name: .foregroundColor, value: UIColor.black)

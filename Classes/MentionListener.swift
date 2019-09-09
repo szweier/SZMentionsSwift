@@ -258,8 +258,8 @@ extension MentionListener /* Private */ {
         if mentionEnabled {
             var mentionString: String = ""
             if searchSpaces {
-                let startIndex = mentionsTextView.text.index(mentionsTextView.text.startIndex, offsetBy: location)
-                let endIndex = mentionsTextView.text.index(startIndex, offsetBy: NSMaxRange(textView.selectedRange) - location)
+                let startIndex = mentionsTextView.text.utf16.index(mentionsTextView.text.startIndex, offsetBy: location)
+                let endIndex = mentionsTextView.text.utf16.index(startIndex, offsetBy: NSMaxRange(textView.selectedRange) - location)
                 mentionString = String(mentionsTextView.text[startIndex ..< endIndex])
             } else if let stringBeingTyped = stringToSelectedIndex.components(separatedBy: textBeforeTrigger).last,
                 let stringForMention = stringBeingTyped.components(separatedBy: " ").last,
