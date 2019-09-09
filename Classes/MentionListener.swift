@@ -301,24 +301,16 @@ extension MentionListener /* Private */ {
      @brief Removes the provided mention from the mentions list and resets the text attributes to default
      on the text view.
      */
-    private func clearMention(_ removeEntireMention: Bool) -> (Mention?) -> Void {
+    private func clearMention() -> (Mention?) -> Void {
         return { mention in
             guard let mention = mention else { return }
 
             self.mentions = self.mentions |> remove([mention])
 
-            let values: (text: NSAttributedString, selectedRange: NSRange)
-
-            if removeEntireMention {
-                values = self.mentionsTextView.attributedText
-                    |> replace(charactersIn: mention.range, with: "")
-            } else {
-                values = self.mentionsTextView.attributedText
-                    |> apply(self.defaultTextAttributes, range: mention.range)
-            }
-
-            self.mentionsTextView.attributedText = values.text
-            self.mentionsTextView.selectedRange = values.selectedRange
+            let (text, selectedRange) = self.mentionsTextView.attributedText
+                |> apply(self.defaultTextAttributes, range: mention.range)
+            self.mentionsTextView.attributedText = text
+            self.mentionsTextView.selectedRange = selectedRange
         }
     }
 
@@ -357,23 +349,31 @@ extension MentionListener: UITextViewDelegate {
         } else if text.utf16.count > 1 {
             // Pasting / inserting predictive text
 
+            let replacementRange: NSRange
+
+            if removeEntireMention, let mention = mentions |> mentionBeingEdited(at: range) {
+                replacementRange = mention.range
+            } else {
+                replacementRange = range
+            }
             //////////////////////////////////////////////////////////////////////////////////////////
             // The following snippet is because if you click on a predictive text without this snippet
             // the predictive text will be added twice.
             let originalText = mentionsTextView.attributedText
             let (tmpText, _) = mentionsTextView.attributedText
-                |> replace(charactersIn: range, with: text)
+                |> replace(charactersIn: replacementRange, with: text)
             mentionsTextView.attributedText = tmpText
             mentionsTextView.attributedText = originalText
             // End UITextView bug workaround
             //////////////////////////////////////////////////////////////////////////////////////////
-            mentions |> mentionBeingEdited(at: range) >=> clearMention(removeEntireMention)
+            mentions |> mentionBeingEdited(at: range) >=> clearMention()
 
-            let (newText, selectedRange) = mentionsTextView.attributedText
-                |> replace(charactersIn: range, with: text)
-                >=> apply(defaultTextAttributes, range: range.adjustLength(for: text))
-            mentionsTextView.attributedText = newText
-            mentionsTextView.selectedRange = selectedRange
+            let values: (newText: NSAttributedString, selectedRange: NSRange)
+            values = mentionsTextView.attributedText
+                |> replace(charactersIn: replacementRange, with: text)
+                >=> apply(defaultTextAttributes, range: replacementRange.adjustLength(for: text))
+            mentionsTextView.attributedText = values.newText
+            mentionsTextView.selectedRange = values.selectedRange
 
             mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
 
@@ -384,11 +384,19 @@ extension MentionListener: UITextViewDelegate {
             shouldChangeText = false
         } else {
             if let mention = mentions |> mentionBeingEdited(at: range) {
-                mention |> clearMention(removeEntireMention)
-                let (text, selectedRange) = mentionsTextView.attributedText
-                    |> replace(charactersIn: range, with: text)
-                mentionsTextView.attributedText = text
-                mentionsTextView.selectedRange = selectedRange
+                mention |> clearMention()
+                let values: (text: NSAttributedString, selectedRange: NSRange)
+                let replacementRange: NSRange
+
+                if removeEntireMention {
+                    replacementRange = mention.range
+                } else {
+                    replacementRange = range
+                }
+                values = mentionsTextView.attributedText
+                    |> replace(charactersIn: replacementRange, with: "")
+                mentionsTextView.attributedText = values.text
+                mentionsTextView.selectedRange = values.selectedRange
 
                 shouldChangeText = false
             }
