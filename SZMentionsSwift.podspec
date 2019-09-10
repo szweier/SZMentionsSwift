@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SZMentionsSwift"
-  s.version          = "2.1.1"
+  s.version          = "2.1.2"
   s.summary          = "Highly customizable mentions library"
   s.description      = "Mentions library used to help manage mentions in a UITextView"
   s.homepage         = "http://www.stevenzweier.com"
