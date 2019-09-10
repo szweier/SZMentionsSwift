@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.1.2](https://github.com/szweier/SZMentionsSwift/releases/tag/2.1.2) (9/9/2019)
+
+#### Added
+* Ability to have Emoji in Mention - [Issue #113](https://github.com/szweier/SZMentionsSwift/issues/113)
+* Ability to remove the entire mention when edited - [Issue #110](https://github.com/szweier/SZMentionsSwift/issues/110)
+
 ## [2.1.1](https://github.com/szweier/SZMentionsSwift/releases/tag/2.1.1) (4/30/2019)
 
 #### Fixed

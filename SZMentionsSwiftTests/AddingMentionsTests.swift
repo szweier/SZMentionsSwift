@@ -10,7 +10,7 @@ class AddingMentions: QuickSpec {
 
             beforeEach {
                 textView = UITextView()
-                mentionsListener = generateMentionsListener(spaceAfterMention: false, searchSpaces: false)
+                mentionsListener = generateMentionsListener()
             }
 
             it("Should add mention with the correct range") {
@@ -75,15 +75,31 @@ class AddingMentions: QuickSpec {
                 expect(mentionsListener.mentions[0].range.location).to(equal(13))
             }
 
-            it("Should remove the mention when editing the middle of a mention") {
+            it("Should remove the mention but retain the text when editing the middle of a mention") {
                 update(text: "Testing @t", type: .insert, on: mentionsListener)
                 addMention(named: "Steven", on: mentionsListener)
 
                 expect(mentionsListener.mentions.count).to(equal(1))
+                expect(mentionsListener.mentionsTextView.text).to(equal("Testing Steven"))
 
                 update(text: "", type: .delete, at: NSRange(location: 11, length: 1), on: mentionsListener)
 
                 expect(mentionsListener.mentions.isEmpty).to(beTruthy())
+                expect(mentionsListener.mentionsTextView.text).to(equal("Testing Steen"))
+            }
+
+            it("Should remove the mention and the text when editing the middle of a mention") {
+                mentionsListener = generateMentionsListener(removeEntireMention: true)
+                update(text: "Testing @t", type: .insert, on: mentionsListener)
+                addMention(named: "Steven", on: mentionsListener)
+
+                expect(mentionsListener.mentions.count).to(equal(1))
+                expect(mentionsListener.mentionsTextView.text).to(equal("Testing Steven"))
+
+                update(text: "", type: .delete, at: NSRange(location: 11, length: 1), on: mentionsListener)
+
+                expect(mentionsListener.mentions.isEmpty).to(beTruthy())
+                expect(mentionsListener.mentionsTextView.text).to(equal("Testing "))
             }
 
             it("Should allow you to reset the mentionsListener and textView to the original state") {
@@ -98,7 +114,7 @@ class AddingMentions: QuickSpec {
             }
 
             it("Should test mention location is adjusted properly when a mention is inserted behind a mention when space after mention is true") {
-                mentionsListener = generateMentionsListener(spaceAfterMention: true, searchSpaces: false)
+                mentionsListener = generateMentionsListener(spaceAfterMention: true)
 
                 update(text: "@t", type: .insert, on: mentionsListener)
                 addMention(named: "Steven", on: mentionsListener)
@@ -138,6 +154,27 @@ class AddingMentions: QuickSpec {
                 expect(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
             }
 
+            it("Should test that pasting text within a mention resets its attributes but retains the text") {
+                update(text: "@s", type: .insert, on: mentionsListener)
+                addMention(named: "Steven", on: mentionsListener)
+
+                update(text: "test", type: .insert, at: NSRange(location: 1, length: 0), on: mentionsListener)
+
+                expect(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
+                expect(textView.text).to(equal("Stestteven"))
+            }
+
+            it("Should test that pasting text within a mention resets its attributes and removes the text when removeEntireMention is true") {
+                mentionsListener = generateMentionsListener(removeEntireMention: true)
+                update(text: "@s", type: .insert, on: mentionsListener)
+                addMention(named: "Steven", on: mentionsListener)
+
+                update(text: "test", type: .insert, at: NSRange(location: 1, length: 0), on: mentionsListener)
+
+                expect(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
+                expect(textView.text).to(equal("test"))
+            }
+
             it("Should test that the correct mention range is replaced if multiple exist and that the selected range is correct") {
                 update(text: " @st", type: .insert, on: mentionsListener)
                 update(text: "@st", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
@@ -149,7 +186,7 @@ class AddingMentions: QuickSpec {
             }
 
             it("Should test that the correct mention range is replaced if multiple exist and that the selected range is correct when space after mention is true") {
-                mentionsListener = generateMentionsListener(spaceAfterMention: true, searchSpaces: false)
+                mentionsListener = generateMentionsListener(spaceAfterMention: true)
                 update(text: " @st", type: .insert, on: mentionsListener)
                 update(text: "@st", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
 
@@ -242,7 +279,7 @@ class AddingMentions: QuickSpec {
             }
 
             it("Should test that text can be added and removed without crashes when search spaces is true.") {
-                mentionsListener = generateMentionsListener(spaceAfterMention: false, searchSpaces: true)
+                mentionsListener = generateMentionsListener(searchSpaces: true)
                 update(text: "@s", type: .insert, on: mentionsListener)
                 update(text: "", type: .delete, on: mentionsListener)
                 update(text: "", type: .delete, on: mentionsListener)
@@ -260,7 +297,9 @@ class AddingMentions: QuickSpec {
                 expect(textView.selectedRange.location).to(equal(9))
             }
 
-            func generateMentionsListener(spaceAfterMention: Bool, searchSpaces: Bool) -> MentionListener {
+            func generateMentionsListener(spaceAfterMention: Bool = false,
+                                          searchSpaces: Bool = false,
+                                          removeEntireMention: Bool = false) -> MentionListener {
                 let attribute = Attribute(name: .foregroundColor, value: UIColor.red)
                 let attribute2 = Attribute(name: .foregroundColor, value: UIColor.black)
 
@@ -269,6 +308,7 @@ class AddingMentions: QuickSpec {
                                        defaultTextAttributes: [attribute2],
                                        spaceAfterMention: spaceAfterMention,
                                        searchSpaces: searchSpaces,
+                                       removeEntireMention: removeEntireMention,
                                        hideMentions: {},
                                        didHandleMentionOnReturn: { false },
                                        showMentionsListWithString: { _, _ in })
