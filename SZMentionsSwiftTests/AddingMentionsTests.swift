@@ -297,6 +297,17 @@ class AddingMentions: QuickSpec {
                 expect(textView.selectedRange.location).to(equal(9))
             }
 
+            it("Should test mention after emoji does not crash") {
+                mentionsListener = generateMentionsListener(spaceAfterMention: true, searchSpaces: true)
+
+                update(text: "😌 @Ste", type: .insert, on: mentionsListener)
+                addMention(named: "Steven😌", on: mentionsListener)
+
+                expect(mentionsListener.mentions[0].range.location).to(equal(3))
+                expect(mentionsListener.mentions[0].range.length).to(equal(8))
+                expect(textView.selectedRange.location).to(equal(12))
+            }
+
             func generateMentionsListener(spaceAfterMention: Bool = false,
                                           searchSpaces: Bool = false,
                                           removeEntireMention: Bool = false) -> MentionListener {
