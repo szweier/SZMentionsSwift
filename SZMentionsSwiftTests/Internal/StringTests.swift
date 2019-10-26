@@ -1,59 +1,54 @@
-import Nimble
-import Quick
 @testable import SZMentionsSwift
+import XCTest
 
-class StringExtensionTests: QuickSpec {
-    override func spec() {
-        describe("Search") {
-            it("Should be able to search with multiple search items prioritizing the first element in the search array") {
-                let stringToSearch = "This is a #test string to @search"
-                let result = stringToSearch.range(of: ["@", "#"], options: .caseInsensitive)
-                expect(result.range).to(equal(NSRange(location: 26, length: 1)))
-                expect(result.foundString).to(equal("@"))
-            }
+private final class StringExtensionTests: XCTestCase {
+    func test_shouldBeAbleToSearchWithMultipleSearchItemsPrioritizingTheFirstElementInTheSearchArray() {
+        let stringToSearch = "This is a #test string to @search"
+        let result = stringToSearch.range(of: ["@", "#"], options: .caseInsensitive)
+        XCTAssertEqual(result.range, NSRange(location: 26, length: 1))
+        XCTAssertEqual(result.foundString, "@")
+    }
 
-            it("Should be able to search with multiple search items prioritizing the first element in the search array") {
-                let stringToSearch = "This is a #test string to @search"
-                let result = stringToSearch.range(of: ["#", "@"], options: .caseInsensitive)
-                expect(result.range).to(equal(NSRange(location: 10, length: 1)))
-                expect(result.foundString).to(equal("#"))
-            }
+    func test_shouldBeAbleToSearchWithMultipleSearchItemsPrioritizingTheFirstElementInTheSearchArray2() {
+        let stringToSearch = "This is a #test string to @search"
+        let result = stringToSearch.range(of: ["#", "@"], options: .caseInsensitive)
+        XCTAssertEqual(result.range, NSRange(location: 10, length: 1))
+        XCTAssertEqual(result.foundString, "#")
+    }
 
-            it("Should be able to search with multiple search items prioritizing the first element in the search array") {
-                let stringToSearch = "This is a test string to @search"
-                let result = stringToSearch.range(of: ["#", "@"], options: .caseInsensitive)
-                expect(result.range).to(equal(NSRange(location: 25, length: 1)))
-                expect(result.foundString).to(equal("@"))
-            }
+    func test_shouldBeAbleToSearchWithMultipleSearchItemsPrioritizingTheFirstElementInTheSearchArray_whenOnlyOneExists() {
+        let stringToSearch = "This is a test string to @search"
+        let result = stringToSearch.range(of: ["#", "@"], options: .caseInsensitive)
+        XCTAssertEqual(result.range, NSRange(location: 25, length: 1))
+        XCTAssertEqual(result.foundString, "@")
+    }
 
-            it("Should return NSNotFound with empty string when given an empty input array") {
-                let stringToSearch = "This is a test string to @search"
-                let result = stringToSearch.range(of: [], options: .caseInsensitive)
-                expect(result.range).to(equal(NSRange(location: NSNotFound, length: 0)))
-                expect(result.foundString).to(equal(""))
-            }
+    func test_shouldReturnNSNotFoundWithEmptyString_whenGivenAnEmptyInputArray() {
+        let stringToSearch = "This is a test string to @search"
+        let result = stringToSearch.range(of: [], options: .caseInsensitive)
+        XCTAssertEqual(result.range, NSRange(location: NSNotFound, length: 0))
+        XCTAssertEqual(result.foundString, "")
+    }
 
-            it("Should properly search within a specified range") {
-                let stringToSearch = "This is a test #string to @search"
-                let result = stringToSearch.range(of: ["#", "@"], options: .caseInsensitive, range: NSRange(location: 17, length: 16))
-                expect(result.range).to(equal(NSRange(location: 26, length: 1)))
-                expect(result.foundString).to(equal("@"))
-            }
+    func test_shouldProperlySearchWithinASpecifiedRange() {
+        let stringToSearch = "This is a test #string to @search"
+        let result = stringToSearch.range(of: ["#", "@"], options: .caseInsensitive, range: NSRange(location: 17, length: 16))
+        XCTAssertEqual(result.range, NSRange(location: 26, length: 1))
+        XCTAssertEqual(result.foundString, "@")
+    }
 
-            it("Should return true for isMentionEnabledAt when the trigger is preceeded by a space") {
-                let stringToSearch = "This is @search"
-                expect(stringToSearch.isMentionEnabledAt(8).0).to(beTrue())
-            }
+    func test_shouldReturnTrueForIsMentionEnabledAt_whenTheTriggerIsPreceededByASpace() {
+        let stringToSearch = "This is @search"
+        XCTAssertTrue(stringToSearch.isMentionEnabledAt(8).0)
+    }
 
-            it("Should return true for isMentionEnabledAt when the trigger is preceeded by a \n") {
-                let stringToSearch = "This is\n@search"
-                expect(stringToSearch.isMentionEnabledAt(8).0).to(beTrue())
-            }
+    func test_shouldReturnTrueForIsMentionEnabledAt_whenTheTriggerIsPreceededByANewLine() {
+        let stringToSearch = "This is\n@search"
+        XCTAssertTrue(stringToSearch.isMentionEnabledAt(8).0)
+    }
 
-            it("Should return true for isMentionEnabledAt when the trigger is not preceeded by \n nor a space") {
-                let stringToSearch = "This is@search"
-                expect(stringToSearch.isMentionEnabledAt(7).0).to(beFalse())
-            }
-        }
+    func test_shouldReturnTrueForIsMentionEnabledAt_whenTheTriggerIsNotPreceededByANewLineNorASpace() {
+        let stringToSearch = "This is@search"
+        XCTAssertFalse(stringToSearch.isMentionEnabledAt(7).0)
     }
 }
