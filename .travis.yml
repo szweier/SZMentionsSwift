@@ -1,8 +1,6 @@
 language: swift
 osx_image: xcode10.2
 
-before_install:
-  - carthage update --cache-builds --platform "ios"
 script: 
   - xcodebuild -project SZMentionsSwift.xcodeproj -scheme SZMentionsSwift CODE_SIGN_IDENTITY= CODE_SIGNING_REQUIRED=NO -enableCodeCoverage YES -destination 'platform=iOS Simulator,name=iPhone 7,OS=latest' test
 after_success:
