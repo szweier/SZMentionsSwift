@@ -1,115 +1,116 @@
-import Nimble
-import Quick
 @testable import SZMentionsSwift
+import XCTest
 
-class MentionsArrayTests: QuickSpec {
-    override func spec() {
-        describe("Search") {
-            let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
+private final class MentionsArraySearchTests: XCTestCase {
+    var mentions: [Mention]!
 
-            it("Should NOT return mention being edited if positioned BEFORE the FIRST letter of the mention") {
-                expect(mentions |> mentionBeingEdited(at: NSRange(location: 0, length: 0))).to(beNil())
-            }
+    override func setUp() {
+        super.setUp()
+        mentions = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
+    }
 
-            it("Should return mention being edited if positioned AFTER the FIRST letter of the mention") {
-                expect(mentions |> mentionBeingEdited(at: NSRange(location: 1, length: 0))).to(equal(mentions[0]))
-            }
+    func test_shouldNOTReturnMentionBeingEditedIfPositionedBEFORETheFIRSTLetterOfTheMention() {
+        XCTAssertNil(mentions |> mentionBeingEdited(at: NSRange(location: 0, length: 0)))
+    }
 
-            it("Should return mention being edited if positioned BEFORE the LAST letter of the mention") {
-                expect(mentions |> mentionBeingEdited(at: NSRange(location: 9, length: 0))).to(equal(mentions[0]))
-            }
+    func test_shouldReturnMentionBeingEditedIfPositionedAFTERTheFIRSTLetterOfTheMention() {
+        XCTAssertEqual(mentions |> mentionBeingEdited(at: NSRange(location: 1, length: 0)), mentions[0])
+    }
 
-            it("Should NOT return mention being edited if positioned AFTER the LAST letter of the mention") {
-                expect(mentions |> mentionBeingEdited(at: NSRange(location: 10, length: 0))).to(beNil())
-            }
-        }
+    func test_shouldReturnMentionBeingEditedIfPositionedBEFORETheLASTLetterOfTheMention() {
+        XCTAssertEqual(mentions |> mentionBeingEdited(at: NSRange(location: 9, length: 0)), mentions[0])
+    }
 
-        describe("Adjust") {
-            it("Should properly adjust the location of mentions located after added text") {
-                var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention()),
-                                           Mention(range: NSRange(location: 15, length: 10), object: ExampleMention())]
+    func test_shouldNOTReturnMentionBeingEditedIfPositionedAFTERTheLASTLetterOfTheMention() {
+        XCTAssertNil(mentions |> mentionBeingEdited(at: NSRange(location: 10, length: 0)))
+    }
+}
 
-                let insertText = "Test "
-                expect(mentions[0].range.location).to(equal(0))
-                expect(mentions[1].range.location).to(equal(15))
-                mentions = mentions |> adjusted(forTextChangeAt: NSRange(location: 5, length: 0), text: insertText)
-                expect(mentions[0].range.location).to(equal(0))
-                expect(mentions[1].range.location).to(equal(15 + insertText.count))
-            }
-        }
+private final class MentionsArrayAdjustTests: XCTestCase {
+    func test_shouldProperlyAdjustTheLocationOfMentionsLocatedAfterAddedText() {
+        var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention()),
+                                   Mention(range: NSRange(location: 15, length: 10), object: ExampleMention())]
 
-        describe("Mention Being Edited") {
-            it("Should return nil being edited if selection is before the first letter") {
-                let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
+        let insertText = "Test "
+        XCTAssertEqual(mentions[0].range.location, 0)
+        XCTAssertEqual(mentions[1].range.location, 15)
+        mentions = mentions |> adjusted(forTextChangeAt: NSRange(location: 5, length: 0), text: insertText)
+        XCTAssertEqual(mentions[0].range.location, 0)
+        XCTAssertEqual(mentions[1].range.location, 15 + insertText.count)
+    }
+}
 
-                expect(mentions |> mentionBeingEdited(at: NSRange(location: 0, length: 0))).to(beNil())
-            }
+private final class MentionsArrayMentionBeingEditedTests: XCTestCase {
+    func test_shouldReturnNilBeingEditedIfSelectionIsBeforeTheFirstLetter() {
+        let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
 
-            it("Should return the mention being edited if selection is after the first letter") {
-                let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
+        XCTAssertNil(mentions |> mentionBeingEdited(at: NSRange(location: 0, length: 0)))
+    }
 
-                expect(mentions |> mentionBeingEdited(at: NSRange(location: 1, length: 0))).toNot(beNil())
-            }
-            it("Should return nil being edited if selection is after the last letter") {
-                let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
+    func test_shouldReturnTheMentionBeingEditedIfSelectionIsAfterTheFirstLetter() {
+        let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
 
-                expect(mentions |> mentionBeingEdited(at: NSRange(location: 10, length: 0))).to(beNil())
-            }
+        XCTAssertNotNil(mentions |> mentionBeingEdited(at: NSRange(location: 1, length: 0)))
+    }
 
-            it("Should return the mention being edited if selection is before the last letter") {
-                let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
+    func test_shouldReturnNilBeingEditedIfSelectionIsAfterTheLastLetter() {
+        let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
 
-                expect(mentions |> mentionBeingEdited(at: NSRange(location: 9, length: 0))).toNot(beNil())
-            }
+        XCTAssertNil(mentions |> mentionBeingEdited(at: NSRange(location: 10, length: 0)))
+    }
 
-            it("Should return the mention being edited if selection intersects the mention at the beginning") {
-                let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
+    func test_shouldReturnTheMentionBeingEditedIfSelectionIsBeforeTheLastLetter() {
+        let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
 
-                expect(mentions |> mentionBeingEdited(at: NSRange(location: 0, length: 3))).toNot(beNil())
-            }
+        XCTAssertNotNil(mentions |> mentionBeingEdited(at: NSRange(location: 9, length: 0)))
+    }
 
-            it("Should return the mention being edited if selection intersects the mention at the end") {
-                let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
+    func test_shouldReturnTheMentionBeingEditedIfSelectionIntersectsTheMentionAtTheBeginning() {
+        let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
 
-                expect(mentions |> mentionBeingEdited(at: NSRange(location: 9, length: 3))).toNot(beNil())
-            }
-        }
+        XCTAssertNotNil(mentions |> mentionBeingEdited(at: NSRange(location: 0, length: 3)))
+    }
 
-        describe("Insert Mention") {
-            it("Should return a new mentions array with a mention inserted") {
-                var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
-                let createMentionObject = ExampleMention(name: "Test Mention")
-                mentions = mentions |> insert([(createMentionObject, NSRange(location: 15, length: 12))])
-                expect(mentions.count).to(equal(2))
-                expect(mentions[1]).to(equal(Mention(range: NSRange(location: 15, length: 12), object: createMentionObject)))
-            }
-        }
+    func test_shouldReturnTheMentionBeingEditedIfSelectionIntersectsTheMentionAtTheEnd() {
+        let mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
 
-        describe("Remove Mention") {
-            it("Should return an array with a single item removed") {
-                var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention()),
-                                           Mention(range: NSRange(location: 13, length: 10), object: ExampleMention())]
-                mentions = mentions |> remove([mentions[0]])
-                expect(mentions.count).to(equal(1))
-            }
+        XCTAssertNotNil(mentions |> mentionBeingEdited(at: NSRange(location: 9, length: 3)))
+    }
+}
 
-            it("Should return an array with a multiple items removed") {
-                var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention()),
-                                           Mention(range: NSRange(location: 13, length: 10), object: ExampleMention())]
-                mentions = mentions |> remove([mentions[0], mentions[1]])
-                expect(mentions.isEmpty).to(beTrue())
-            }
-        }
+private final class MentionsArrayInsertMentionTests: XCTestCase {
+    func test_shouldReturnANewMentionsArrayWithAMentionInserted() {
+        var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
+        let createMentionObject = ExampleMention(name: "Test Mention")
+        mentions = mentions |> insert([(createMentionObject, NSRange(location: 15, length: 12))])
+        XCTAssertEqual(mentions.count, 2)
+        XCTAssertEqual(mentions[1], Mention(range: NSRange(location: 15, length: 12), object: createMentionObject))
+    }
+}
 
-        describe("Add Mention") {
-            it("Should return an array with a single item added") {
-                var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
-                let mentionToAdd = ExampleMention(name: "Added Mention")
-                mentions = mentions |> SZMentionsSwift.add(mentionToAdd, spaceAfterMention: false, at: NSRange(location: 0, length: 0))
-                expect(mentions.count).to(equal(2))
-                expect(mentions[0]).to(equal(Mention(range: NSRange(location: 13, length: 10), object: ExampleMention())))
-                expect(mentions[1]).to(equal(Mention(range: NSRange(location: 0, length: 13), object: mentionToAdd)))
-            }
-        }
+private final class MentionsArrayRemoveMentionTests: XCTestCase {
+    func test_shouldReturnAnArrayWithASingleItemRemoved() {
+        var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention()),
+                                   Mention(range: NSRange(location: 13, length: 10), object: ExampleMention())]
+        mentions = mentions |> remove([mentions[0]])
+        XCTAssertEqual(mentions.count, 1)
+    }
+
+    func test_shouldReturnAnArrayWithAMultipleItemsRemoved() {
+        var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention()),
+                                   Mention(range: NSRange(location: 13, length: 10), object: ExampleMention())]
+        mentions = mentions |> remove([mentions[0], mentions[1]])
+        XCTAssertTrue(mentions.isEmpty)
+    }
+}
+
+private final class MentionsArrayAddMentionTests: XCTestCase {
+    func test_shouldReturnAnArrayWithASingleItemAdded() {
+        var mentions: [Mention] = [Mention(range: NSRange(location: 0, length: 10), object: ExampleMention())]
+        let mentionToAdd = ExampleMention(name: "Added Mention")
+        mentions = mentions |> SZMentionsSwift.add(mentionToAdd, spaceAfterMention: false, at: NSRange(location: 0, length: 0))
+        XCTAssertEqual(mentions.count, 2)
+        XCTAssertEqual(mentions[0], Mention(range: NSRange(location: 13, length: 10), object: ExampleMention()))
+        XCTAssertEqual(mentions[1], Mention(range: NSRange(location: 0, length: 13), object: mentionToAdd))
     }
 }

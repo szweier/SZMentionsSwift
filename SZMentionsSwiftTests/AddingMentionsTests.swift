@@ -1,329 +1,331 @@
-import Nimble
-import Quick
 @testable import SZMentionsSwift
+import XCTest
 
-class AddingMentions: QuickSpec {
-    override func spec() {
-        describe("Adding Mentions") {
-            var textView: UITextView!
-            var mentionsListener: MentionListener!
+private final class AddingMentions: XCTestCase {
+    var textView: UITextView!
+    var mentionsListener: MentionListener!
 
-            beforeEach {
-                textView = UITextView()
-                mentionsListener = generateMentionsListener()
-            }
+    override func setUp() {
+        super.setUp()
+        textView = UITextView()
+        mentionsListener = generateMentionsListener()
+    }
 
-            it("Should add mention with the correct range") {
-                update(text: "Testing @t", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+    override func tearDown() {
+        textView = nil
+        mentionsListener = nil
+        super.tearDown()
+    }
 
-                expect(mentionsListener.mentions.count).to(equal(1))
-                expect(mentionsListener.mentions[0].range.location).to(equal(8))
-                expect(mentionsListener.mentions[0].range.length).to(equal(6))
-            }
+    func test_shouldAddMentionWithTheCorrectRange() {
+        update(text: "Testing @t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-            it("Should add two mentions with correct range") {
-                update(text: "@t", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions.count, 1)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 8)
+        XCTAssertEqual(mentionsListener.mentions[0].range.length, 6)
+    }
 
-                update(text: " Testing @t", type: .insert, on: mentionsListener)
-                addMention(named: "Steven Zweier", on: mentionsListener)
+    func test_shouldAddTwoMentionsWithCorrectRange() {
+        update(text: "@t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-                expect(mentionsListener.mentions[0].range.location).to(equal(0))
-                expect(mentionsListener.mentions[0].range.length).to(equal(6))
-                expect(mentionsListener.mentions[1].range.location).to(equal(15))
-                expect(mentionsListener.mentions[1].range.length).to(equal(13))
-            }
+        update(text: " Testing @t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven Zweier", on: mentionsListener)
 
-            it("Should add mention attributes to mention") {
-                update(text: "Test @t", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
-                update(text: ". ", type: .insert, on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 0)
+        XCTAssertEqual(mentionsListener.mentions[0].range.length, 6)
+        XCTAssertEqual(mentionsListener.mentions[1].range.location, 15)
+        XCTAssertEqual(mentionsListener.mentions[1].range.length, 13)
+    }
 
-                expect(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
-                expect(textView.attributedText.attribute(.foregroundColor, at: 10, effectiveRange: nil) as? UIColor).to(equal(UIColor.red))
-                expect(textView.attributedText.attribute(.foregroundColor, at: 12, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
-            }
+    func test_shouldAddMentionAttributesToMention() {
+        update(text: "Test @t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
+        update(text: ". ", type: .insert, on: mentionsListener)
 
-            it("Should adjust the location of an existing mention correctly") {
-                update(text: "Testing @t", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertEqual(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor, UIColor.black)
+        XCTAssertEqual(textView.attributedText.attribute(.foregroundColor, at: 10, effectiveRange: nil) as? UIColor, UIColor.red)
+        XCTAssertEqual(textView.attributedText.attribute(.foregroundColor, at: 12, effectiveRange: nil) as? UIColor, UIColor.black)
+    }
 
-                expect(mentionsListener.mentions[0].range.location).to(equal(8))
+    func test_shouldAdjustTheLocationOfAnExistingMentionCorrectly() {
+        update(text: "Testing @t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-                update(text: "", type: .replace, at: NSRange(location: 0, length: 3), on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 8)
 
-                expect(mentionsListener.mentions[0].range.location).to(equal(5))
+        update(text: "", type: .replace, at: NSRange(location: 0, length: 3), on: mentionsListener)
 
-                update(text: "", type: .replace, at: NSRange(location: 0, length: 5), on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 5)
 
-                expect(mentionsListener.mentions[0].range.location).to(equal(0))
-            }
+        update(text: "", type: .replace, at: NSRange(location: 0, length: 5), on: mentionsListener)
 
-            it("Should adjust the location of an existing mention correctly") {
-                update(text: "@t", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 0)
+    }
 
-                expect(mentionsListener.mentions[0].range.location).to(equal(0))
-                expect(mentionsListener.mentions[0].range.length).to(equal(6))
+    func test_shouldAdjustTheLocationOfAnExistingMentionCorrectly2() {
+        update(text: "@t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-                type(text: "@t", at: NSRange(location: 0, length: 0), on: mentionsListener)
-                addMention(named: "Steven Zweier", on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 0)
+        XCTAssertEqual(mentionsListener.mentions[0].range.length, 6)
 
-                expect(mentionsListener.mentions[1].range.location).to(equal(0))
-                expect(mentionsListener.mentions[1].range.length).to(equal(13))
-                expect(mentionsListener.mentions[0].range.location).to(equal(13))
-            }
+        type(text: "@t", at: NSRange(location: 0, length: 0), on: mentionsListener)
+        addMention(named: "Steven Zweier", on: mentionsListener)
 
-            it("Should remove the mention but retain the text when editing the middle of a mention") {
-                update(text: "Testing @t", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions[1].range.location, 0)
+        XCTAssertEqual(mentionsListener.mentions[1].range.length, 13)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 13)
+    }
 
-                expect(mentionsListener.mentions.count).to(equal(1))
-                expect(mentionsListener.mentionsTextView.text).to(equal("Testing Steven"))
+    func test_shouldRemoveTheMentionButRetainTheText_whenEditingTheMiddleOfAMention() {
+        update(text: "Testing @t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-                update(text: "", type: .delete, at: NSRange(location: 11, length: 1), on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions.count, 1)
+        XCTAssertEqual(mentionsListener.mentionsTextView.text, "Testing Steven")
 
-                expect(mentionsListener.mentions.isEmpty).to(beTruthy())
-                expect(mentionsListener.mentionsTextView.text).to(equal("Testing Steen"))
-            }
+        update(text: "", type: .delete, at: NSRange(location: 11, length: 1), on: mentionsListener)
 
-            it("Should remove the mention and the text when editing the middle of a mention") {
-                mentionsListener = generateMentionsListener(removeEntireMention: true)
-                update(text: "Testing @t", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertTrue(mentionsListener.mentions.isEmpty)
+        XCTAssertEqual(mentionsListener.mentionsTextView.text, "Testing Steen")
+    }
 
-                expect(mentionsListener.mentions.count).to(equal(1))
-                expect(mentionsListener.mentionsTextView.text).to(equal("Testing Steven"))
+    func test_shouldRemoveTheMentionAndTheTextWhenEditingTheMiddleOfAMention() {
+        mentionsListener = generateMentionsListener(removeEntireMention: true)
+        update(text: "Testing @t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-                update(text: "", type: .delete, at: NSRange(location: 11, length: 1), on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions.count, 1)
+        XCTAssertEqual(mentionsListener.mentionsTextView.text, "Testing Steven")
 
-                expect(mentionsListener.mentions.isEmpty).to(beTruthy())
-                expect(mentionsListener.mentionsTextView.text).to(equal("Testing "))
-            }
+        update(text: "", type: .delete, at: NSRange(location: 11, length: 1), on: mentionsListener)
 
-            it("Should allow you to reset the mentionsListener and textView to the original state") {
-                update(text: "@St", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertTrue(mentionsListener.mentions.isEmpty)
+        XCTAssertEqual(mentionsListener.mentionsTextView.text, "Testing ")
+    }
 
-                expect(mentionsListener.mentions.count).to(equal(1))
+    func test_shouldAllowYouToResetTheMentionsListenerAndTextViewToTheOriginalState() {
+        update(text: "@St", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-                mentionsListener.reset()
+        XCTAssertEqual(mentionsListener.mentions.count, 1)
 
-                expect(mentionsListener.mentions.count).to(equal(0))
-            }
+        mentionsListener.reset()
 
-            it("Should test mention location is adjusted properly when a mention is inserted behind a mention when space after mention is true") {
-                mentionsListener = generateMentionsListener(spaceAfterMention: true)
+        XCTAssertEqual(mentionsListener.mentions.count, 0)
+    }
 
-                update(text: "@t", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+    func test_shouldTestMentionLocationIsAdjustedProperlyWhenAMentionIsInsertedBehindAMention_whenSpaceAfterMentionisTrue() {
+        mentionsListener = generateMentionsListener(spaceAfterMention: true)
 
-                expect(mentionsListener.mentions[0].range.location).to(equal(0))
-                expect(mentionsListener.mentions[0].range.length).to(equal(6))
-                expect(textView.selectedRange.location).to(equal(7))
+        update(text: "@t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-                update(text: "@t", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
-                addMention(named: "Steven Zweier", on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 0)
+        XCTAssertEqual(mentionsListener.mentions[0].range.length, 6)
+        XCTAssertEqual(textView.selectedRange.location, 7)
 
-                expect(mentionsListener.mentions[1].range.location).to(equal(0))
-                expect(mentionsListener.mentions[1].range.length).to(equal(13))
-                expect(mentionsListener.mentions[0].range.location).to(equal(14))
-                expect(textView.selectedRange.location).to(equal(14))
-            }
+        update(text: "@t", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
+        addMention(named: "Steven Zweier", on: mentionsListener)
 
-            it("Should test editing after mention does not delete the mention") {
-                update(text: "Testing @t", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions[1].range.location, 0)
+        XCTAssertEqual(mentionsListener.mentions[1].range.length, 13)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 14)
+        XCTAssertEqual(textView.selectedRange.location, 14)
+    }
 
-                update(text: " ", type: .insert, on: mentionsListener)
+    func test_shouldTestEditingAfterMentionDoesNotDeleteTheMention() {
+        update(text: "Testing @t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-                expect(mentionsListener.mentions.count).to(equal(1))
+        update(text: " ", type: .insert, on: mentionsListener)
 
-                update(text: "", type: .delete, at: NSRange(location: 14, length: 1), on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions.count, 1)
 
-                expect(mentionsListener.mentions.count).to(equal(1))
-            }
+        update(text: "", type: .delete, at: NSRange(location: 14, length: 1), on: mentionsListener)
 
-            it("Should test that pasting text before a leading mention resets its attributes") {
-                update(text: "@s", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions.count, 1)
+    }
 
-                update(text: "test", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
+    func test_shouldTestThatPastingTextBeforeALeadingMention_resetsItsAttributes() {
+        update(text: "@s", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-                expect(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
-            }
+        update(text: "test", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
 
-            it("Should test that pasting text within a mention resets its attributes but retains the text") {
-                update(text: "@s", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertEqual(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor, UIColor.black)
+    }
 
-                update(text: "test", type: .insert, at: NSRange(location: 1, length: 0), on: mentionsListener)
+    func test_shouldTestThatPastingTextWithinAMentionResetsItsAttributesButRetainsTheText() {
+        update(text: "@s", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-                expect(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
-                expect(textView.text).to(equal("Stestteven"))
-            }
+        update(text: "test", type: .insert, at: NSRange(location: 1, length: 0), on: mentionsListener)
 
-            it("Should test that pasting text within a mention resets its attributes and removes the text when removeEntireMention is true") {
-                mentionsListener = generateMentionsListener(removeEntireMention: true)
-                update(text: "@s", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertEqual(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor, UIColor.black)
+        XCTAssertEqual(textView.text, "Stestteven")
+    }
 
-                update(text: "test", type: .insert, at: NSRange(location: 1, length: 0), on: mentionsListener)
+    func test_shouldTestThatPastingTextWithinAMentionResetsItsAttributesAndRemovesTheText_whenRemoveEntireMentionIsTrue() {
+        mentionsListener = generateMentionsListener(removeEntireMention: true)
+        update(text: "@s", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-                expect(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
-                expect(textView.text).to(equal("test"))
-            }
+        update(text: "test", type: .insert, at: NSRange(location: 1, length: 0), on: mentionsListener)
 
-            it("Should test that the correct mention range is replaced if multiple exist and that the selected range is correct") {
-                update(text: " @st", type: .insert, on: mentionsListener)
-                update(text: "@st", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
+        XCTAssertEqual(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor, UIColor.black)
+        XCTAssertEqual(textView.text, "test")
+    }
 
-                addMention(named: "Steven", on: mentionsListener)
+    func test_shouldTestThatTheCorrectMentionRangeIsReplacedIfMultipleExistAndThatTheSelectedRange_isCorrect() {
+        update(text: " @st", type: .insert, on: mentionsListener)
+        update(text: "@st", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
 
-                expect(mentionsListener.mentions[0].range.location).to(equal(0))
-                expect(textView.selectedRange.location).to(equal(6))
-            }
+        addMention(named: "Steven", on: mentionsListener)
 
-            it("Should test that the correct mention range is replaced if multiple exist and that the selected range is correct when space after mention is true") {
-                mentionsListener = generateMentionsListener(spaceAfterMention: true)
-                update(text: " @st", type: .insert, on: mentionsListener)
-                update(text: "@st", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 0)
+        XCTAssertEqual(textView.selectedRange.location, 6)
+    }
 
-                addMention(named: "Steven", on: mentionsListener)
+    func test_shouldTestThatTheCorrectMentionRangeIsReplacedIfMultipleExistAndThatTheSelectedRangeIsCorrect_whenSpaceAfterMentionIsTrue() {
+        mentionsListener = generateMentionsListener(spaceAfterMention: true)
+        update(text: " @st", type: .insert, on: mentionsListener)
+        update(text: "@st", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
 
-                expect(mentionsListener.mentions[0].range.location).to(equal(0))
-                expect(textView.selectedRange.location).to(equal(7))
-            }
+        addMention(named: "Steven", on: mentionsListener)
 
-            it("Should test that adding text immediately after the mention changes back to default attributes") {
-                update(text: "@s", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 0)
+        XCTAssertEqual(textView.selectedRange.location, 7)
+    }
 
-                update(text: "test", type: .insert, on: mentionsListener)
+    func test_shouldTestThatAddingTextImmediatelyAfterTheMentionChangesBackToDefaultAttributes() {
+        update(text: "@s", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-                expect(textView.attributedText.attribute(.foregroundColor, at: textView.selectedRange.location - 1, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
-            }
+        update(text: "test", type: .insert, on: mentionsListener)
 
-            it("Should test that the mention position is correct to start text on a new line") {
-                update(text: "\n@t", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertEqual(textView.attributedText.attribute(.foregroundColor, at: textView.selectedRange.location - 1, effectiveRange: nil) as? UIColor, UIColor.black)
+    }
 
-                expect(mentionsListener.mentions[0].range.location).to(equal(1))
-            }
+    func test_shouldTestThatTheMentionPositionIsCorrectToStartTextOnANewLine() {
+        update(text: "\n@t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-            it("Should test that mention position is correct in the middle of new line text") {
-                update(text: "Testing \nnew line @t", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 1)
+    }
 
-                expect(mentionsListener.mentions[0].range.location).to(equal(18))
-            }
+    func test_shouldTestThatMentionPositionIsCorrectInTheMiddleOfNewLineText() {
+        update(text: "Testing \nnew line @t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-            it("Should accurately detect whether or not a mention is being edited") {
-                update(text: "@s", type: .insert, on: mentionsListener)
-                addMention(named: "Steven", on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 18)
+    }
 
-                expect(mentionsListener.mentions |> mentionBeingEdited(at: NSRange(location: 0, length: 0))).to(beNil())
+    func test_shouldAccuratelyDetectWhetherOrNotAMentionIsBeingEdited() {
+        update(text: "@s", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
 
-                update(text: "t", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
+        XCTAssertNil(mentionsListener.mentions |> mentionBeingEdited(at: NSRange(location: 0, length: 0)))
 
-                expect(mentionsListener.mentions |> mentionBeingEdited(at: NSRange(location: 1, length: 0))).to(beNil())
-            }
+        update(text: "t", type: .insert, at: NSRange(location: 0, length: 0), on: mentionsListener)
 
-            it("Should not crash when deleting two mentions at a time") {
-                update(text: "@St", type: .insert, on: mentionsListener)
-                addMention(named: "Steven Zweier", on: mentionsListener)
-                update(text: " @Jo", type: .insert, on: mentionsListener)
-                addMention(named: "John Smith", on: mentionsListener)
-                update(text: "", type: .delete, at: NSRange(location: 0, length: textView.text.utf16.count), on: mentionsListener)
+        XCTAssertNil(mentionsListener.mentions |> mentionBeingEdited(at: NSRange(location: 1, length: 0)))
+    }
 
-                expect(textView.text.isEmpty).to(beTruthy())
-            }
+    func test_shouldNotCrashWhenDeletingTwoMentionsAtATime() {
+        update(text: "@St", type: .insert, on: mentionsListener)
+        addMention(named: "Steven Zweier", on: mentionsListener)
+        update(text: " @Jo", type: .insert, on: mentionsListener)
+        addMention(named: "John Smith", on: mentionsListener)
+        update(text: "", type: .delete, at: NSRange(location: 0, length: textView.text.utf16.count), on: mentionsListener)
 
-            it("Should remove existing mention when pasting text within the mention") {
-                update(text: "@St", type: .insert, on: mentionsListener)
-                addMention(named: "Steven Zweier", on: mentionsListener)
+        XCTAssertTrue(textView.text.isEmpty)
+    }
 
-                expect(mentionsListener.mentions.count).to(equal(1))
-                expect(textView.attributedText.string).to(equal("Steven Zweier"))
-                expect(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor).to(equal(UIColor.red))
-                expect(textView.attributedText.attribute(.foregroundColor, at: 12, effectiveRange: nil) as? UIColor).to(equal(UIColor.red))
+    func test_shouldRemoveExistingMentionWhenPastingTextWithinTheMention() {
+        update(text: "@St", type: .insert, on: mentionsListener)
+        addMention(named: "Steven Zweier", on: mentionsListener)
 
-                update(text: "Test", type: .insert, at: NSRange(location: 7, length: 0), on: mentionsListener)
+        XCTAssertEqual(mentionsListener.mentions.count, 1)
+        XCTAssertEqual(textView.attributedText.string, "Steven Zweier")
+        XCTAssertEqual(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor, UIColor.red)
+        XCTAssertEqual(textView.attributedText.attribute(.foregroundColor, at: 12, effectiveRange: nil) as? UIColor, UIColor.red)
 
-                expect(textView.attributedText.string).to(equal("Steven TestZweier"))
-                expect(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
-                expect(textView.attributedText.attribute(.foregroundColor, at: 16, effectiveRange: nil) as? UIColor).to(equal(UIColor.black))
-                expect(mentionsListener.mentions.count).to(equal(0))
-            }
+        update(text: "Test", type: .insert, at: NSRange(location: 7, length: 0), on: mentionsListener)
 
-            it("Should not add mention if range is nil") {
-                expect(addMention(named: "John Smith", on: mentionsListener)).to(beFalsy())
-            }
+        XCTAssertEqual(textView.attributedText.string, "Steven TestZweier")
+        XCTAssertEqual(textView.attributedText.attribute(.foregroundColor, at: 0, effectiveRange: nil) as? UIColor, UIColor.black)
+        XCTAssertEqual(textView.attributedText.attribute(.foregroundColor, at: 16, effectiveRange: nil) as? UIColor, UIColor.black)
+        XCTAssertEqual(mentionsListener.mentions.count, 0)
+    }
 
-            it("Should properly delete text during mention creation") {
-                update(text: "@ste", type: .insert, on: mentionsListener)
-                ["", ""].forEach { update(text: $0, type: .delete, on: mentionsListener) }
-                mentionsListener.cooldownTimerFired(Timer())
-                update(text: "", type: .delete, on: mentionsListener)
-                mentionsListener.cooldownTimerFired(Timer())
+    func test_shouldNotAddMentionIfRangeIsNil() {
+        XCTAssertFalse(addMention(named: "John Smith", on: mentionsListener))
+    }
 
-                expect(textView.text.utf16.count).to(equal(1))
-            }
+    func test_shouldProperlyDeleteTextDuringMentionCreation() {
+        update(text: "@ste", type: .insert, on: mentionsListener)
+        ["", ""].forEach { update(text: $0, type: .delete, on: mentionsListener) }
+        mentionsListener.cooldownTimerFired(Timer())
+        update(text: "", type: .delete, on: mentionsListener)
+        mentionsListener.cooldownTimerFired(Timer())
 
-            it("Should properly add a space during mention creation") {
-                update(text: "@ste ", type: .insert, on: mentionsListener)
-                mentionsListener.cooldownTimerFired(Timer())
+        XCTAssertEqual(textView.text.utf16.count, 1)
+    }
 
-                expect(textView.text.utf16.count).to(equal(5))
-            }
+    func test_shouldProperlyAddASpaceDuringMentionCreation() {
+        update(text: "@ste ", type: .insert, on: mentionsListener)
+        mentionsListener.cooldownTimerFired(Timer())
 
-            it("Should test that text can be added and removed without crashes when search spaces is true.") {
-                mentionsListener = generateMentionsListener(searchSpaces: true)
-                update(text: "@s", type: .insert, on: mentionsListener)
-                update(text: "", type: .delete, on: mentionsListener)
-                update(text: "", type: .delete, on: mentionsListener)
-                expect(textView.text.isEmpty).to(beTruthy())
-            }
+        XCTAssertEqual(textView.text.utf16.count, 5)
+    }
 
-            it("Should test mention with emoji can be searched properly") {
-                mentionsListener = generateMentionsListener(spaceAfterMention: true, searchSpaces: true)
+    func test_shouldTestThatTextCanBeAddedAndRemovedWithoutCrashes_whenSearchSpacesIsTrue() {
+        mentionsListener = generateMentionsListener(searchSpaces: true)
+        update(text: "@s", type: .insert, on: mentionsListener)
+        update(text: "", type: .delete, on: mentionsListener)
+        update(text: "", type: .delete, on: mentionsListener)
+        XCTAssertTrue(textView.text.isEmpty)
+    }
 
-                update(text: "@t", type: .insert, on: mentionsListener)
-                addMention(named: "Steven😌", on: mentionsListener)
+    func test_shouldTestMentionWithEmojiCanBeSearchedProperly() {
+        mentionsListener = generateMentionsListener(spaceAfterMention: true, searchSpaces: true)
 
-                expect(mentionsListener.mentions[0].range.location).to(equal(0))
-                expect(mentionsListener.mentions[0].range.length).to(equal(8))
-                expect(textView.selectedRange.location).to(equal(9))
-            }
+        update(text: "@t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven😌", on: mentionsListener)
 
-            it("Should test mention after emoji does not crash") {
-                mentionsListener = generateMentionsListener(spaceAfterMention: true, searchSpaces: true)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 0)
+        XCTAssertEqual(mentionsListener.mentions[0].range.length, 8)
+        XCTAssertEqual(textView.selectedRange.location, 9)
+    }
 
-                update(text: "😌 @Ste", type: .insert, on: mentionsListener)
-                addMention(named: "Steven😌", on: mentionsListener)
+    func test_shouldTestMentionAfterEmojiDoesNotCrash() {
+        mentionsListener = generateMentionsListener(spaceAfterMention: true, searchSpaces: true)
 
-                expect(mentionsListener.mentions[0].range.location).to(equal(3))
-                expect(mentionsListener.mentions[0].range.length).to(equal(8))
-                expect(textView.selectedRange.location).to(equal(12))
-            }
+        update(text: "😌 @Ste", type: .insert, on: mentionsListener)
+        addMention(named: "Steven😌", on: mentionsListener)
 
-            func generateMentionsListener(spaceAfterMention: Bool = false,
-                                          searchSpaces: Bool = false,
-                                          removeEntireMention: Bool = false) -> MentionListener {
-                let attribute = Attribute(name: .foregroundColor, value: UIColor.red)
-                let attribute2 = Attribute(name: .foregroundColor, value: UIColor.black)
+        XCTAssertEqual(mentionsListener.mentions[0].range.location, 3)
+        XCTAssertEqual(mentionsListener.mentions[0].range.length, 8)
+        XCTAssertEqual(textView.selectedRange.location, 12)
+    }
 
-                return MentionListener(mentionsTextView: textView,
-                                       mentionTextAttributes: { _ in [attribute] },
-                                       defaultTextAttributes: [attribute2],
-                                       spaceAfterMention: spaceAfterMention,
-                                       searchSpaces: searchSpaces,
-                                       removeEntireMention: removeEntireMention,
-                                       hideMentions: {},
-                                       didHandleMentionOnReturn: { false },
-                                       showMentionsListWithString: { _, _ in })
-            }
-        }
+    func generateMentionsListener(spaceAfterMention: Bool = false,
+                                  searchSpaces: Bool = false,
+                                  removeEntireMention: Bool = false) -> MentionListener {
+        let attribute = Attribute(name: .foregroundColor, value: UIColor.red)
+        let attribute2 = Attribute(name: .foregroundColor, value: UIColor.black)
+
+        return MentionListener(mentionsTextView: textView,
+                               mentionTextAttributes: { _ in [attribute] },
+                               defaultTextAttributes: [attribute2],
+                               spaceAfterMention: spaceAfterMention,
+                               searchSpaces: searchSpaces,
+                               removeEntireMention: removeEntireMention,
+                               hideMentions: {},
+                               didHandleMentionOnReturn: { false },
+                               showMentionsListWithString: { _, _ in })
     }
 }

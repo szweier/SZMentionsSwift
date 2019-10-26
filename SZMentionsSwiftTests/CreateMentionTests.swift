@@ -1,21 +1,16 @@
-import Nimble
-import Quick
 @testable import SZMentionsSwift
+import XCTest
 
-class CreateMentionTests: QuickSpec {
-    override func spec() {
-        describe("Name helper") {
-            it("Should return a name without a space if spaceAfterMention is false") {
-                let mention = ExampleMention(name: "Steven Zweier")
+private final class CreateMentionTests: XCTestCase {
+    func test_shouldReturnANameWithoutASpace_whenSpaceAfterMentionIsFalse() {
+        let mention = ExampleMention(name: "Steven Zweier")
 
-                expect(mention.mentionName(with: false)).to(equal("Steven Zweier"))
-            }
+        XCTAssertEqual(mention.mentionName(with: false), "Steven Zweier")
+    }
 
-            it("Should return a name with a space if spaceAfterMention is true") {
-                let mention = ExampleMention(name: "Steven Zweier")
+    func test_shouldReturnANameWithASpace_whenSpaceAfterMentionIsTrue() {
+        let mention = ExampleMention(name: "Steven Zweier")
 
-                expect(mention.mentionName(with: true)).to(equal("Steven Zweier "))
-            }
-        }
+        XCTAssertEqual(mention.mentionName(with: true), "Steven Zweier ")
     }
 }

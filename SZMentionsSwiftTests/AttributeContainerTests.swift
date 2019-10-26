@@ -1,20 +1,15 @@
-import Nimble
-import Quick
 @testable import SZMentionsSwift
+import XCTest
 
-class AttributeContainerTests: QuickSpec {
-    override func spec() {
-        describe("Dictionary") {
-            it("Should be generated from an array of AttributeContainers") {
-                let actual = [
-                    Attribute(name: .backgroundColor, value: UIColor.red) as AttributeContainer,
-                    Attribute(name: .foregroundColor, value: UIColor.blue) as AttributeContainer,
-                ].dictionary as! [NSAttributedString.Key: UIColor]
-                let expected: [NSAttributedString.Key: UIColor] = [NSAttributedString.Key.backgroundColor: UIColor.red,
-                                                                   NSAttributedString.Key.foregroundColor: UIColor.blue]
+private final class AttributeContainerTests: XCTestCase {
+    func test_shouldBeGeneratedFromAnArrayOfAttributeContainers() {
+        let actual = [
+            Attribute(name: .backgroundColor, value: UIColor.red) as AttributeContainer,
+            Attribute(name: .foregroundColor, value: UIColor.blue) as AttributeContainer,
+        ].dictionary as! [NSAttributedString.Key: UIColor]
+        let expected: [NSAttributedString.Key: UIColor] = [NSAttributedString.Key.backgroundColor: UIColor.red,
+                                                           NSAttributedString.Key.foregroundColor: UIColor.blue]
 
-                expect(actual).to(equal(expected))
-            }
-        }
+        XCTAssertEqual(actual, expected)
     }
 }
