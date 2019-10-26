@@ -346,42 +346,6 @@ extension MentionListener: UITextViewDelegate {
             // If mentions were handled on return then `addMention` should've been called.
             // Nothing to do here.
             shouldChangeText = false
-        } else if text.utf16.count > 1 {
-            // Pasting / inserting predictive text
-
-            let replacementRange: NSRange
-
-            if removeEntireMention, let mention = mentions |> mentionBeingEdited(at: range) {
-                replacementRange = mention.range
-            } else {
-                replacementRange = range
-            }
-            //////////////////////////////////////////////////////////////////////////////////////////
-            // The following snippet is because if you click on a predictive text without this snippet
-            // the predictive text will be added twice.
-            let originalText = mentionsTextView.attributedText
-            let (tmpText, _) = mentionsTextView.attributedText
-                |> replace(charactersIn: replacementRange, with: text)
-            mentionsTextView.attributedText = tmpText
-            mentionsTextView.attributedText = originalText
-            // End UITextView bug workaround
-            //////////////////////////////////////////////////////////////////////////////////////////
-            mentions |> mentionBeingEdited(at: range) >=> clearMention()
-
-            let values: (newText: NSAttributedString, selectedRange: NSRange)
-            values = mentionsTextView.attributedText
-                |> replace(charactersIn: replacementRange, with: text)
-                >=> apply(defaultTextAttributes, range: replacementRange.adjustLength(for: text))
-            mentionsTextView.attributedText = values.newText
-            mentionsTextView.selectedRange = values.selectedRange
-
-            mentionsTextView.scrollRangeToVisible(mentionsTextView.selectedRange)
-
-            mentions = mentions |> adjusted(forTextChangeAt: range, text: text)
-
-            handleMentionsList(textView, range: textView.selectedRange)
-
-            shouldChangeText = false
         } else {
             if let mention = mentions |> mentionBeingEdited(at: range) {
                 mention |> clearMention()
@@ -394,7 +358,7 @@ extension MentionListener: UITextViewDelegate {
                     replacementRange = range
                 }
                 values = mentionsTextView.attributedText
-                    |> replace(charactersIn: replacementRange, with: "")
+                    |> replace(charactersIn: replacementRange, with: text)
                 mentionsTextView.attributedText = values.text
                 mentionsTextView.selectedRange = values.selectedRange
 
