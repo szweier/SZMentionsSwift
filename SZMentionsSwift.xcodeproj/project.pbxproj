@@ -25,8 +25,6 @@
 		DB632EA822466338009CF525 /* CreateMention.swift in Headers */ = {isa = PBXBuildFile; fileRef = DB1DF4BA1F74A66700EA8E63 /* CreateMention.swift */; settings = {ATTRIBUTES = (Public, ); }; };
 		DB6C1C1121B6BBE500C178AC /* NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6C1C1021B6BBE500C178AC /* NSAttributedString.swift */; };
 		DB6C1C1321B7140100C178AC /* NSRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6C1C1221B7140100C178AC /* NSRange.swift */; };
-		DB83882722467B6500F9D8C8 /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB83882522467B6500F9D8C8 /* Quick.framework */; };
-		DB83882822467B6500F9D8C8 /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB83882622467B6500F9D8C8 /* Nimble.framework */; };
 		DBC779F31FDB6161006CD115 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC779F21FDB6161006CD115 /* String.swift */; };
 		DBDC67BE21B88B0F000CF22C /* AddingMentionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3DB5DC1EA17EB8004CBD91 /* AddingMentionsTests.swift */; };
 		DBDC67C121B8B0F0000CF22C /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBDC67C021B8B0F0000CF22C /* Helper.swift */; };
@@ -95,8 +93,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB83882722467B6500F9D8C8 /* Quick.framework in Frameworks */,
-				DB83882822467B6500F9D8C8 /* Nimble.framework in Frameworks */,
 				DBF2DF611C4B1067001B9788 /* SZMentionsSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -239,7 +235,6 @@
 			buildConfigurationList = DBF2DF661C4B1067001B9788 /* Build configuration list for PBXNativeTarget "SZMentionsSwiftTests" */;
 			buildPhases = (
 				DB83882C22467D5F00F9D8C8 /* SwiftFormat */,
-				DB19955C22467A3000E8D52D /* Carthage */,
 				DBF2DF581C4B1067001B9788 /* Sources */,
 				DBF2DF591C4B1067001B9788 /* Frameworks */,
 				DBF2DF5A1C4B1067001B9788 /* Resources */,
@@ -312,28 +307,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		DB19955C22467A3000E8D52D /* Carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Quick.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/Nimble.framework",
-			);
-			name = Carthage;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Quick.framework",
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Nimble.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
 		DB83882B22467BEC00F9D8C8 /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
