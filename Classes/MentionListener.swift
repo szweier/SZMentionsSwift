@@ -363,9 +363,11 @@ extension MentionListener: UITextViewDelegate {
                 mentionsTextView.selectedRange = values.selectedRange
 
                 shouldChangeText = false
-            }
 
-            mentions = mentions |> adjusted(forTextChangeAt: range, text: text)
+                mentions = mentions |> adjusted(forTextChangeAt: replacementRange, text: text)
+            } else {
+                mentions = mentions |> adjusted(forTextChangeAt: range, text: text)
+            }
         }
 
         if !shouldChangeText {
