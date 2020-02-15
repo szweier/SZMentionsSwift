@@ -1,5 +1,10 @@
 # Change Log
 
+## [2.1.3](https://github.com/szweier/SZMentionsSwift/releases/tag/2.1.3) (2/14/2020)
+
+#### Fixed
+* Deleting multiple mentions - [Issue #126](https://github.com/szweier/SZMentionsSwift/issues/126)
+
 ## [2.1.2](https://github.com/szweier/SZMentionsSwift/releases/tag/2.1.2) (10/25/2019)
 
 #### Added
