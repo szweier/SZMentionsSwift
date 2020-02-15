@@ -92,6 +92,34 @@ private final class AddingMentions: XCTestCase {
         XCTAssertEqual(mentionsListener.mentionsTextView.text, "Testing Steen")
     }
 
+    func test_shouldRemoveMultipleMentionsAndTheTextWhenEditingTheMiddleOfAMention() {
+        mentionsListener = generateMentionsListener(removeEntireMention: true)
+        update(text: "Testing @t", type: .insert, on: mentionsListener)
+        addMention(named: "Steven", on: mentionsListener)
+        update(text: " @j", type: .insert, on: mentionsListener)
+        addMention(named: "Joe", on: mentionsListener)
+        update(text: " and @g", type: .insert, on: mentionsListener)
+        addMention(named: "George", on: mentionsListener)
+
+        XCTAssertEqual(mentionsListener.mentions.count, 3)
+        XCTAssertEqual(mentionsListener.mentionsTextView.text, "Testing Steven Joe and George")
+
+        update(text: "", type: .delete, at: NSRange(location: 11, length: 1), on: mentionsListener)
+
+        XCTAssertEqual(mentionsListener.mentions.count, 2)
+        XCTAssertEqual(mentionsListener.mentionsTextView.text, "Testing  Joe and George")
+
+        update(text: "", type: .delete, at: NSRange(location: 10, length: 1), on: mentionsListener)
+
+        XCTAssertEqual(mentionsListener.mentions.count, 1)
+        XCTAssertEqual(mentionsListener.mentionsTextView.text, "Testing   and George")
+
+        update(text: "", type: .delete, at: NSRange(location: 15, length: 1), on: mentionsListener)
+
+        XCTAssertTrue(mentionsListener.mentions.isEmpty)
+        XCTAssertEqual(mentionsListener.mentionsTextView.text, "Testing   and ")
+    }
+
     func test_shouldRemoveTheMentionAndTheTextWhenEditingTheMiddleOfAMention() {
         mentionsListener = generateMentionsListener(removeEntireMention: true)
         update(text: "Testing @t", type: .insert, on: mentionsListener)
