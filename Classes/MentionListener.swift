@@ -230,8 +230,10 @@ extension MentionListener /* Internal */ {
                                                            options: .backwards,
                                                            range: NSRange(location: 0,
                                                                           length: NSMaxRange(mentionsTextView.selectedRange)))
+
+            let mention = mentions |> mentionBeingEdited(at: searchResult.range)
             let location = searchResult.range.location
-            guard location != NSNotFound, location <= mentionsTextView.text.utf16.count else { return }
+            guard location != NSNotFound, location <= mentionsTextView.text.utf16.count, mention == nil else { return }
 
             showMentionsListWithString(filterString, searchResult.foundString)
         }
@@ -285,7 +287,8 @@ extension MentionListener /* Private */ {
                 )
                 filterString = mentionString.filter { ![trigger, "\n"].contains(String($0)) }
 
-                if !(cooldownTimer?.isValid ?? false) {
+                let mention = mentions |> mentionBeingEdited(at: searchResult.range)
+                if !(cooldownTimer?.isValid ?? false), mention == nil {
                     stringCurrentlyBeingFiltered = filterString
                     showMentionsListWithString(filterString, trigger)
                 }
