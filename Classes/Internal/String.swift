@@ -26,13 +26,17 @@ internal extension String {
         return (foundRange, string)
     }
 
-    func isMentionEnabledAt(_ location: Int) -> (Bool, String) {
+    func isMentionEnabledAt(_ location: Int, considerTextBefore: Bool = true) -> (Bool, String) {
         guard location != 0 else { return (true, "") }
 
         let start = utf16.index(startIndex, offsetBy: location - 1)
         let end = utf16.index(start, offsetBy: 1)
         let textBeforeTrigger = String(utf16[start ..< end]) ?? ""
 
-        return (textBeforeTrigger == " " || textBeforeTrigger == "\n", textBeforeTrigger)
+        if considerTextBefore {
+            return (textBeforeTrigger == " " || textBeforeTrigger == "\n", textBeforeTrigger)
+        } else {
+            return (true, textBeforeTrigger)
+        }
     }
 }
