@@ -37,6 +37,11 @@ public class MentionListener: NSObject {
     private let considerTextBefore: Bool
 
     /**
+     @brief Replace an edited mention with a newly created one
+     */
+    private let replaceEditedMention: Bool
+
+    /**
      @brief Triggers to start a mention. Default: @
      */
     private let triggers: [String]
@@ -143,6 +148,7 @@ public class MentionListener: NSObject {
         cooldownInterval: TimeInterval = 0.5,
         searchSpaces: Bool = false,
         considerTextBefore: Bool = true,
+        replaceEditedMention: Bool = false,
         removeEntireMention: Bool = false,
         hideMentions: @escaping () -> Void,
         didHandleMentionOnReturn: @escaping () -> Bool,
@@ -159,6 +165,7 @@ public class MentionListener: NSObject {
 
         self.searchSpaces = searchSpaces
         self.considerTextBefore = considerTextBefore
+        self.replaceEditedMention = replaceEditedMention
         self.mentionsTextView = mentionsTextView
         self.delegate = delegate
         self.spaceAfterMention = spaceAfterMention
@@ -211,7 +218,9 @@ extension MentionListener /* Public */ {
      */
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard currentMentionRange.location != NSNotFound else { return false }
-
+        if let mention = mentions |> mentionBeingEdited(at: currentMentionRange), replaceEditedMention {
+            mention |> clearMention()
+        }
         mentions = mentions
             |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange)
 
@@ -307,7 +316,6 @@ extension MentionListener /* Private */ {
                 return
             }
         }
-
         hideMentions()
     }
 
