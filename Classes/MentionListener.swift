@@ -218,6 +218,7 @@ extension MentionListener /* Public */ {
      */
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard currentMentionRange.location != NSNotFound else { return false }
+        
         if let mention = mentions |> mentionBeingEdited(at: currentMentionRange), replaceEditedMention {
             mention |> clearMention()
         }
@@ -316,6 +317,7 @@ extension MentionListener /* Private */ {
                 return
             }
         }
+        
         hideMentions()
     }
 
