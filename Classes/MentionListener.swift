@@ -218,7 +218,6 @@ extension MentionListener /* Public */ {
      */
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard currentMentionRange.location != NSNotFound else { return false }
-        
         if let mention = mentions |> mentionBeingEdited(at: currentMentionRange), replaceEditedMention {
             mention |> clearMention()
         }
@@ -271,8 +270,19 @@ extension MentionListener /* Private */ {
      */
     private func handleMentionsList(_ textView: UITextView, range: NSRange) {
         let startIndex = mentionsTextView.text.startIndex
-        let endIndex = mentionsTextView.text.index(startIndex,
+        var endIndex = mentionsTextView.text.index(startIndex,
                                                    offsetBy: min(NSMaxRange(range), mentionsTextView.text.count))
+        // Need to convert NSRange and the offset to String.Index
+        // in order to handle emojis character count case
+        if let selectedRange = textView.selectedTextRange {
+            let cursorPosition = textView.offset(from: textView.beginningOfDocument, to: selectedRange.end)
+            let positionRange = NSRange(location: 0, length: cursorPosition)
+            if let stringOffset = Range(positionRange, in: textView.text) {
+                print(stringOffset.upperBound)
+                endIndex = stringOffset.upperBound
+            }
+        }
+        
         let stringToSelectedIndex = String(mentionsTextView.text[startIndex ..< endIndex])
 
         var textBeforeTrigger = " "
@@ -317,7 +327,6 @@ extension MentionListener /* Private */ {
                 return
             }
         }
-        
         hideMentions()
     }
 
