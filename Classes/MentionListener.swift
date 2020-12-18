@@ -278,7 +278,6 @@ extension MentionListener /* Private */ {
             let cursorPosition = textView.offset(from: textView.beginningOfDocument, to: selectedRange.end)
             let positionRange = NSRange(location: 0, length: cursorPosition)
             if let stringOffset = Range(positionRange, in: textView.text) {
-                print(stringOffset.upperBound)
                 endIndex = stringOffset.upperBound
             }
         }
