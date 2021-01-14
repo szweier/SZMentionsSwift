@@ -13,6 +13,7 @@ profile
 *.moved-aside
 DerivedData
 .idea/
+.swiftpm
 
 Carthage/
 
