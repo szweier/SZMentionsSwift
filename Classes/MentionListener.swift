@@ -32,6 +32,16 @@ public class MentionListener: NSObject {
     private let searchSpaces: Bool
 
     /**
+     @brief Tell listener that mentioning should start regardless characters before trigger
+     */
+    private let considerTextBefore: Bool
+
+    /**
+     @brief Replace an edited mention with a newly created one
+     */
+    private let replaceEditedMention: Bool
+
+    /**
      @brief Triggers to start a mention. Default: @
      */
     private let triggers: [String]
@@ -66,6 +76,11 @@ public class MentionListener: NSObject {
      @return Whether or not the mention was handled
      */
     private let didHandleMentionOnReturn: () -> Bool
+
+    /**
+     @brief Called when a user deletes a mention
+     */
+    private let didDeleteMention: (Mention) -> Void
 
     /**
      @brief Called when the UITextView is editing a mention.
@@ -132,9 +147,12 @@ public class MentionListener: NSObject {
         triggers: [String] = ["@"],
         cooldownInterval: TimeInterval = 0.5,
         searchSpaces: Bool = false,
+        considerTextBefore: Bool = true,
+        replaceEditedMention: Bool = false,
         removeEntireMention: Bool = false,
         hideMentions: @escaping () -> Void,
         didHandleMentionOnReturn: @escaping () -> Bool,
+        didDeleteMention: @escaping (Mention) -> Void = { _ in },
         showMentionsListWithString: @escaping (String, String) -> Void
     ) {
         self.mentionTextAttributes = mentionTextAttributes ?? { _ in
@@ -146,6 +164,8 @@ public class MentionListener: NSObject {
                              mentionTextAttributes: self.mentionTextAttributes(nil))
 
         self.searchSpaces = searchSpaces
+        self.considerTextBefore = considerTextBefore
+        self.replaceEditedMention = replaceEditedMention
         self.mentionsTextView = mentionsTextView
         self.delegate = delegate
         self.spaceAfterMention = spaceAfterMention
@@ -155,6 +175,7 @@ public class MentionListener: NSObject {
         self.hideMentions = hideMentions
         self.didHandleMentionOnReturn = didHandleMentionOnReturn
         self.showMentionsListWithString = showMentionsListWithString
+        self.didDeleteMention = didDeleteMention
         self.mentionsTextView.typingAttributes = self.defaultTextAttributes.dictionary
         super.init()
         mentionsTextView.delegate = self
@@ -197,7 +218,9 @@ extension MentionListener /* Public */ {
      */
     @discardableResult public func addMention(_ createMention: CreateMention) -> Bool {
         guard currentMentionRange.location != NSNotFound else { return false }
-
+        if let mention = mentions |> mentionBeingEdited(at: currentMentionRange), replaceEditedMention {
+            mention |> clearMention()
+        }
         mentions = mentions
             |> add(createMention, spaceAfterMention: spaceAfterMention, at: currentMentionRange)
 
@@ -247,8 +270,18 @@ extension MentionListener /* Private */ {
      */
     private func handleMentionsList(_ textView: UITextView, range: NSRange) {
         let startIndex = mentionsTextView.text.startIndex
-        let endIndex = mentionsTextView.text.index(startIndex,
+        var endIndex = mentionsTextView.text.index(startIndex,
                                                    offsetBy: min(NSMaxRange(range), mentionsTextView.text.count))
+        // Need to convert NSRange and the offset to String.Index
+        // in order to handle emojis character count case
+        if let selectedRange = textView.selectedTextRange {
+            let cursorPosition = textView.offset(from: textView.beginningOfDocument, to: selectedRange.end)
+            let positionRange = NSRange(location: 0, length: cursorPosition)
+            if let stringOffset = Range(positionRange, in: textView.text) {
+                endIndex = stringOffset.upperBound
+            }
+        }
+        
         let stringToSelectedIndex = String(mentionsTextView.text[startIndex ..< endIndex])
 
         var textBeforeTrigger = " "
@@ -258,7 +291,7 @@ extension MentionListener /* Private */ {
         let trigger = searchResult.foundString
 
         if location != NSNotFound {
-            (mentionEnabled, textBeforeTrigger) = mentionsTextView.text.isMentionEnabledAt(location)
+            (mentionEnabled, textBeforeTrigger) = mentionsTextView.text.isMentionEnabledAt(location, considerTextBefore: considerTextBefore)
         } else {
             mentionEnabled = false
         }
@@ -293,7 +326,6 @@ extension MentionListener /* Private */ {
                 return
             }
         }
-
         hideMentions()
     }
 
@@ -311,6 +343,7 @@ extension MentionListener /* Private */ {
                 |> apply(self.defaultTextAttributes, range: mention.range)
             self.mentionsTextView.attributedText = text
             self.mentionsTextView.selectedRange = selectedRange
+            self.didDeleteMention(mention)
         }
     }
 
@@ -336,7 +369,10 @@ extension MentionListener /* Private */ {
 extension MentionListener: UITextViewDelegate {
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange,
                          replacementText text: String) -> Bool {
-        _ = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
+        let delegateResult = delegate?.textView?(textView, shouldChangeTextIn: range, replacementText: text)
+        guard delegateResult ?? true else {
+            return false 
+        }
 
         textView.typingAttributes = defaultTextAttributes.dictionary
 
